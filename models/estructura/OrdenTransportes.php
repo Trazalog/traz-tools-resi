@@ -29,7 +29,7 @@ class OrdenTransportes extends CI_Model
     }
 
     function ObtenerOTpordominio($dominio){
-        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransportes | obtener_Tipo_residuo($dominio)");
+        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransportes | ObtenerOTpordominio($dominio)");
         $sotr = usrIdGeneradorByNick();
         $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculo/asignadoARetiro/$dominio/solicitanteTransporte/$sotr");
         $aux =json_decode($aux["data"]);
@@ -100,13 +100,11 @@ class OrdenTransportes extends CI_Model
         return $aux->valores->valor;
     }
 
-    function obtenerEquipo()
-    {
-        log_message('INFO','#TRAZA|Contenedores|obtener_Estado() >> '); 
+    function obtenerEquipo(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransportes | obtenerEquipo()');
         $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculos");
         $aux =json_decode($aux["data"]);
         return $aux->vehiculos->vehiculo;
-        
     }
 
     function obtenerContenedores()

@@ -542,17 +542,21 @@
             dataType: 'json',
             url: "<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/obtener_Tipo_residuo",
             success: function(respuesta) {
-                var selector = $("#tica_id");
-                selector.find('option').remove();
-                selector.append('<option value="noSelect" disabled selected>-Seleccione opcion-</option>');
-                respuesta.forEach(function(e) {
-                    selector.append("<option value='" + e.tica_id + "'>" + e.valor + "</option");
-                });
-                wc();
+                if(respuesta != null){
+                    var selector = $("#tica_id");
+                    selector.find('option').remove();
+                    selector.append('<option value="noSelect" disabled selected>-Seleccione opcion-</option>');
+                    respuesta.forEach(function(e) {
+                        selector.append("<option value='" + e.tica_id + "'>" + e.valor + "</option");
+                    });
+                }else{
+                    var selector = $("#tica_id");
+                    selector.append('<option value="" disabled selected>-Sin tipo de residuos asociados-</option>');
+                    error('Error', 'No se encontraron tipos de residuos para el transportista seleccionado.');
+                }
             },
             error: function() {
                 var selector = $("#tica_id");
-                selector.find('option').remove();
                 selector.append('<option value="" disabled selected>-Error-</option>');
                 wc();
             },

@@ -18,20 +18,18 @@
     </div>
 	<!--__________________________-->
     <div class="col-md-4">
-                <div class="form-group">
-                        <label for="valorizado" style="margin-left: 11rem;">Valorizado:</label>
-                        <br>
-                        <!-- <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                     -->
-                            <select class="form-control select2 select2-hidden-accesible" style="margin-left: 11rem; width:35rem;" name="valorizado" id="valorizado_id">
-                                <option value="" disabled selected>-Seleccione opcion-</option>
-                                    <?php
-                                        foreach ($tipoValorizado as $l) {
-                                            echo '<option  value="'.$l->tabl_id.'">'.$l->valor.'</option>';
-                                        }
-                                    ?>
-                            </select>
-                        <!-- </div> -->
-                 </div>
+        <div class="form-group">
+            <label for="valorizado" style="margin-left: 11rem;">Valorizado:</label>
+            <br>
+            <select class="form-control select2 select2-hidden-accesible" style="margin-left: 11rem; width:35rem;" name="valorizado" id="valorizado_id">
+                <option value="" disabled selected>-Seleccione opción-</option>
+                <?php
+                    foreach ($tipoValorizado as $l) {
+                        echo '<option  value="'.$l->tabl_id.'">'.$l->valor.'</option>';
+                    }
+                ?>
+            </select>
+        </div>
     </div>
 </div>
 <div class="col-md-12  ">

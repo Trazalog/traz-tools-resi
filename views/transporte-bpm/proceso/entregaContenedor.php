@@ -44,7 +44,7 @@
     <label for="camion">Camion:</label>
     <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                    
         <select class="form-control select2 select2-hidden-accesible" name="camion" id="camion_id">
-            <option value="" disabled selected>-Seleccione opcion-</option>
+            <option value="" disabled selected>-Seleccione opción-</option>
             <?php
                 foreach ($camion as $l) {
                     echo '<option  value="'.$l->equi_id.'">'.$l->dominio.'</option>';
@@ -76,37 +76,27 @@
         <?php
             echo "<div id='divdato' dato-infoContenedores='".json_encode($infoContenedores)."' dato-ContEntregados='".json_encode($infoContenedoresEntregados)."'>";
             echo '</div>';
-            if($infoContenedores)
-            {
+            if($infoContenedores){
                 $id = 0;
-                foreach($infoContenedores as $fila)
-                {
+                foreach($infoContenedores as $fila){
                     echo "<tr ide='$id' data-json='".json_encode($fila)."'>";
-                        
-                        if($infoContenedoresEntregados)
-                        {   
-                            foreach($infoContenedoresEntregados as $a)
-                            {
-                                if($fila->valor == $a->valor )
-                                {   
-                                    if($fila->cantidad_acordada - $a->cant_entregados == 0)
-                                    {echo '<td><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></td>';}
-                                    else{
+                        if($infoContenedoresEntregados){   
+                            foreach($infoContenedoresEntregados as $a){
+                                if($fila->valor == $a->valor ){   
+                                    if($fila->cantidad_acordada - $a->cant_entregados == 0){
+                                        echo '<td><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></td>';
+                                    }else{
                                         echo    '<td>';
                                         echo    '<button  type="button" title="Entregar"  class="btn btn-primary btn-circle btnEntregar" data-toggle="modal"  id="btnEntregar"  ><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>&nbsp';	
                                         echo 	 "</td>";
                                     }
                                 }else{
-                                    
-                                    if(count($infoContenedores) != count($infoContenedoresEntregados))
-                                    {
-                                    echo    '<td>';
-                                    echo    '<button  type="button" title="Entregar"  class="btn btn-primary btn-circle btnEntregar" data-toggle="modal"  id="btnEntregar"  ><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>&nbsp';	
-                                    echo 	 "</td>";
-
+                                    if(count($infoContenedores) != count($infoContenedoresEntregados)){
+                                        echo    '<td>';
+                                        echo    '<button  type="button" title="Entregar"  class="btn btn-primary btn-circle btnEntregar" data-toggle="modal"  id="btnEntregar"  ><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>&nbsp';	
+                                        echo 	 "</td>";
                                     }
                                 }
-                                
                             }
                         }else{
                             echo    '<td>';
@@ -116,12 +106,9 @@
                         
                         echo "<td>".$fila->valor."</td>";
                         echo "<td>".$fila->cantidad_acordada."</td>";	
-                        if($infoContenedoresEntregados)
-                        {   
-                            foreach($infoContenedoresEntregados as $a)
-                            {
-                                if($fila->valor == $a->valor )
-                                {	
+                        if($infoContenedoresEntregados){   
+                            foreach($infoContenedoresEntregados as $a){
+                                if($fila->valor == $a->valor ){	
                                     $aux = $fila->cantidad_acordada - $a->cant_entregados; 
                                     if($aux == 0)
                                     {echo "<td id='$id'>0</td>";}
@@ -129,9 +116,7 @@
                                         echo "<td id='$id'>".$aux."</td>";
                                     }
                                 }else{
-                                    
-                                    if(count($infoContenedores) != count($infoContenedoresEntregados))
-                                    {
+                                    if(count($infoContenedores) != count($infoContenedoresEntregados)){
                                         echo "<td id='$id'>".$fila->cantidad_acordada."</td>";
                                     }	
                                 }
@@ -217,7 +202,7 @@
 	<button class="btn btn-success estadoTarea" style="display:none" id="entrega" onclick="RealizarEntrega()">Realizar Entrega</button>
 </div>
 <div class="text-right">
-	<button class="btn btn-success" style="display:none" id="botonCerrar" onclick="CerrarTarea()">Cerrar Tarea</button>
+	<button class="btn btn-success" style="display:none" id="botonCerrar" onclick="finalizarTarea()">Cerrar Tarea</button>
 </div>
 
 <!---///////--- MODAL EDICION E INFORMACION ---///////---> 
@@ -237,7 +222,7 @@
 				<label for="cont">Contenedor:</label>
                         <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                    
                             <select class="form-control select2 select2-hidden-accesible" name="cont" id="cont_id">
-                                <option value="" disabled selected>-Seleccione opcion-</option>
+                                <option value="" disabled selected>-Seleccione opción-</option>
                                     <?php
                                         // foreach ($contenedores as $k) {
                                         //     echo '<option  value="'.$k->cont_id.'">'.$k->codigo.'</option>';
@@ -307,11 +292,13 @@ function ModalEntregar($dataJson){
                 for(var i = 0; i< cont.length; i++){
                     for(var j=0; j<cont[i].tipos_carga.tipoCarga.length; j++){
                         if(cont[i].tipos_carga.tipoCarga[j].tica_id == tica){
-                            $("#cont_id").append("<option selected value= '" + cont[i].cont_id + "'> " + cont[i].codigo +"</option>");
+                            $("#cont_id").append("<option selected value= '" + cont[i].cont_id + "'> " + cont[i].codigo + " - " + cont[i].descripcion +"</option>");
                         }
                     }
-                    
                 }
+                $("#modalEntregar").modal('show');
+            }else{
+                error("Error", "No se encontraron contenedores disponibles");
             }
 		},
 		complete: function(){
@@ -348,15 +335,11 @@ $(document).on("click",".fa-minus",function() {
 });
 
 // en modal contenedores guarda datos en tabla temporal y demas operaciones para enviar
-function OK()
-{
+function OK(){
 	$("#modalEntregar").modal('hide');
 	var camion = $("#camion_id").val(); 
-	if( camion == null)
-	{
-		
+	if( camion == null){
 		alert("ATENCION! debe seleccionar un Camion");
-
 	}else{
 		$("#entrega").removeAttr("style");
 		$("#tbl_contenedoresagregados").removeAttr("style");
@@ -430,7 +413,7 @@ function RealizarEntrega(){
                 success: function(respuesta) {
                     wc();
                     if(respuesta == 1){
-                        alertify.success("Contenedoes entregados exitosamente...");
+                        alertify.success("Contenedores entregados exitosamente.");
                         recargaBandejaEntrada();
                     }else{
                         alertify.error('Error en completar la Tarea...');
@@ -441,18 +424,16 @@ function RealizarEntrega(){
                 }
             });
         }
-        
     }
-	
 }
 
-function CerrarTarea(){
+function finalizarTarea(){
 	var opcion = 'acepta';
 	var taskId = $('#taskId').val();
-	var elegido = {opcion: opcion};	
+	var elegido = {opcion: opcion};
 	$.ajax({
         type: 'POST',
-        data:{ elegido },
+        data:{elegido},
         url: '<?php echo BPM ?>Proceso/cerrarTarea/' + taskId,
         success: function(result) {
             wc();

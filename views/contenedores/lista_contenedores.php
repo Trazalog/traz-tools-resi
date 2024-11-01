@@ -146,50 +146,43 @@
                                             <label for="esco_id">Estado:</label>
                                             <br>
                                             <select class="form-control select2 select2-hidden-accesible selectores" name="esco_id" id="Estados" style="width: 35rem;">
-                                                <option value="" disabled selected>-Seleccione opcion-</option>
+                                                <option value="" disabled selected>-Seleccione opción-</option>
                                                 <?php
-                                                        foreach ($estados as $i) {
-                                                            echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
-                                                                                 }
-                                                                                
+                                                foreach ($estados as $i) {
+                                                    echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
+                                                }
                                                 ?>
                                             </select>
                                             <input type="text" class="form-control ocultarInfo" name="" id="estadoInfo" style="display:none" style="width: 35rem;">
                                         </div>
                                         <br>
                                          <!--Habilitacion-->
-                                            <div class="form-group">
-                                              
-                                                 <label for="habilitacion" >Habilitacion:</label>
-                                                  <br>   
-                                                     
-                                                <select class="form-control select2 select2-hidden-accesible selectores" name="habilitacion" id="Habilitacion" style="39rem !important;">
-                                                    <option value="" disabled selected>-seleccione opcion-</option>
-                                                        <?php
-                                                            foreach ($habilitacion as $i) {
-                                                                echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
-                                                            }
-                                                        ?>
-                                                </select>
-                                                <input type="text" class="form-control ocultarInfo" name="" id="habilitacionInfo" style="display:none" style="width: 35rem;">
-                                            </div>    
-                                    
-                                    
+                                        <div class="form-group">
+                                            <label for="habilitacion" >Habilitación:</label>
+                                            <br>   
+                                            <select class="form-control select2 select2-hidden-accesible selectores" name="habilitacion" id="Habilitacion" style="39rem !important;">
+                                                <option value="" disabled selected>-Seleccione opción-</option>
+                                                    <?php
+                                                        foreach ($habilitacion as $i) {
+                                                            echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
+                                                        }
+                                                    ?>
+                                            </select>
+                                            <input type="text" class="form-control ocultarInfo" name="" id="habilitacionInfo" style="display:none" style="width: 35rem;">
+                                        </div>    
                                         <br>
                                         <div class="form-group ocultar ">
                                             <label for="ticaid">Tipo de residuo:</label>
                                             <br>
                                             <div class="input-group date">
-                                                <div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>
-                                                    <select class="form-control select3 habilitar  " multiple="multiple"  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="tic_id" name="ticaid">
-                                                   
-                  
-                                                    </select>
-                                                   
+                                                <div class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-check"></i>
+                                                </div>
+                                                <select class="form-control select3 habilitar  " multiple="multiple"  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="tic_id" name="ticaid">
+                                                </select>
                                                     <!-- <input type="text" class="form-control habilitar" name="" id="tic" multiple> -->
-                                            </div>  
-                                            
-                                        </div> 
+                                            </div>
+                                        </div>
                                         <br>
                                         <div class="form-group ocultar_Info " style="display:none">
                                             <label for="tipoResiduos">Tipo de residuo:</label>
@@ -197,13 +190,9 @@
                                             <div class="input-group date">
                                                 <div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>
                                                     <select class="form-control select3 habilitar  " multiple="multiple" disabled  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="tic_id_info">
-                                                   
-                  
                                                     </select>
-                                                   
                                                     <!-- <input type="text" class="form-control habilitar" name="" id="tic" multiple> -->
                                             </div>  
-                                            
                                         </div>  
                                         <br>
                                         <div class="form-group">

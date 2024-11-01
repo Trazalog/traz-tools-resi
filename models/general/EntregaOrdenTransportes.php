@@ -209,10 +209,8 @@ class EntregaOrdenTransportes extends CI_Model {
   * @param array info enviada de la vista
   * @return array contrato cierre
   */
-  function ContratoRegSalida($form)
-  {
-    log_message('INFO','#TRAZA|ENTREGAORDENTRANSPORTE|ContratoRegSalida($form) >> '); 
-    log_message('DEBUG','#TRAZA|ENTREGAORDENTRANSPORTE|ContratoRegSalida($form): $form >> '.json_encode($form));
+  function ContratoRegSalida($form){
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContratoRegSalida($form): $form >> '.json_encode($form));
     $contrato["quedanContenedores"] = $form['salida']['contrato']['quedanContenedores'];
     return $contrato;
   }
@@ -386,7 +384,7 @@ class EntregaOrdenTransportes extends CI_Model {
   }
 
   function CertificadoVuelco($data){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaContDescarga | CertificadoVuelco()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTransportes | CertificadoVuelco()');
     $dato[]['_put_contenedoresentregados_descargar'] = $data['_put_contenedoresEntregados_descargar'];
     $dato[]['_post_contenedoresentregados_descargar_recipiente'] = $data['_post_contenedoresEntregados_descargar_recipiente'];
 
@@ -433,16 +431,14 @@ class EntregaOrdenTransportes extends CI_Model {
     return $aux;
   }
 
-  function ContenedoresEntrSalida($form)
-  {
+  function ContenedoresEntrSalida($form){
     $dato=$form['salida'];
     $data['cont_id']= $dato['cont_id'];
     $data['ortr_id']= $dato['ortr_id'];
     $post['_put_contenedoresEntregados_salida']= $data;
-      log_message('INFO','#TRAZA|ENTREGAORDENTRANSPORTE|ContenedoresEntrSalida($data) >> '); 
-      log_message('DEBUG','#TRAZA|ENTREGAORDENTRANSPORTE|ContenedoresEntrSalida($post): $post >> '.json_encode($post));
-      $auxx = $this->rest->callAPI("PUT",REST_RESI."/contenedoresEntregados/salida",$post);
-      $aux =json_decode($auxx["status"]);
-      return $aux;
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContenedoresEntrSalida($post): $post >> '.json_encode($post));
+    $auxx = $this->rest->callAPI("PUT",REST_RESI."/contenedoresEntregados/salida",$post);
+    $aux =json_decode($auxx["status"]);
+    return $aux;
   }
 }

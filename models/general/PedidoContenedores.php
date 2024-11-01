@@ -56,32 +56,32 @@ class PedidoContenedores extends CI_Model{
     * @param array $tarea y $form con info para actualizar
     * @return array $contrato para cierre de tarea en BPM
     */
-    public function getContrato($tarea, $form)
-    {
-        switch ($tarea->nombreTarea) {
-            case 'Analizar Solicitud':
-                $response = $this->actualizarSolicitud($form);
-                if (isset($form['motivo'])) {												
-                  $respComentario = $this->motivoRechazo($form);
-                }
-                $contrato = $this->contratoAnalisisCont($form);
-                return $contrato;
+    public function getContrato($tarea, $form){
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | getContrato($tarea, $form) >> '.json_encode($tarea));
+      switch ($tarea->nombreTarea) {
+        case 'Analizar Solicitud':
+            $response = $this->actualizarSolicitud($form);
+            if (isset($form['motivo'])) {												
+              $respComentario = $this->motivoRechazo($form);
+            }
+            $contrato = $this->contratoAnalisisCont($form);
+            return $contrato;
+          break;
+
+        case 'Confirmar pedido modificado':
+            $contrato = $this->contratoConfirmaPedido($form);
+            return $contrato;        
+          break;  
+
+        case 'Entregar contenedores':
+            $contrato = $this->PedidoContenedores->contratoEntregaContenedor($form);           
+            return $contrato;
+          break;   
+              
+        default:
+              # code...
               break;
-
-            case 'Confirmar pedido modificado':
-                $contrato = $this->contratoConfirmaPedido($form);
-                return $contrato;        
-              break;  
-
-            case 'Entregar contenedores':
-                $contrato = $this->PedidoContenedores->contratoEntregaContenedor($form);           
-                return $contrato;
-              break;   
-                  
-            default:
-                  # code...
-                  break;
-        }
+      }
     }
 
     /**
@@ -208,8 +208,8 @@ class PedidoContenedores extends CI_Model{
 
     }
 
-    function contratoEntregaContenedor($form)
-    {
+    function contratoEntregaContenedor($form){
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | contratoEntregaContenedor($form) >> '.json_encode($form));
       $opcion = $form["elegido"]["opcion"]; //acepta o rechaza
       if ($opcion == 'acepta') {
         $ejecutar = false;

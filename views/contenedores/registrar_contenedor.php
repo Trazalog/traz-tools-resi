@@ -153,7 +153,7 @@
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
                         <select class="form-control select2 select2-hidden-accesible" name="tran_id" id="tran_id">
-                            <option value="" disabled selected>-Seleccione opcion-</option>
+                            <option value="" disabled selected>-Seleccione opción-</option>
                                 <?php
                                     foreach ($transportista as $k) {
                                         echo '<option  value="'.$k->tran_id.'">'.$k->razon_social.'</option>';
@@ -320,7 +320,7 @@ async function convertA(){
         datos = formToObject(datos);
         datos.imagen =  $("#input_aux_img").val();
         datos.usuario_app = "nachete"; //HARCODE - falta asignar funcion que asigne tipo usuario         
-        datos.tran_id = $("#tran_id").val();
+        datos.tran_id = $("#tran_id").val();// Se obtiene mediante usrIdTransportistaByNick() en el controlador
         datos.fec_alta = $("#fec_alta").val();
         datos.habilitacion = $("#habilitacion").val(); 
         datos.tara = $("#tara").val();

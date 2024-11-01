@@ -128,7 +128,7 @@
 	<button class="btn btn-success estadoTarea" id="acepta" onclick="cerrar()">Cerrar</button>
 </div>
 <!-- Modal incidencia-->
-	<div class="modal fade" id="modalIncidencia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"aria-hidden="true">
+	<div class="modal fade" id="modalIncidencia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header bg-blue">
@@ -150,9 +150,9 @@
                                     <select class="form-control select2 select2-hidden-accesible" id="tica_id" name="tica_id" required>
                                             <option value="" disabled selected>-Seleccione opción-</option>
                                             <?php
-                                                    foreach ($tipoCarga as $carga) {
-                                                            echo '<option value="'.$carga->tabl_id.'">'.$carga->valor.'</option>';
-                                                    }
+                                                foreach ($tipoCarga as $carga) {
+                                                    echo '<option value="'.$carga->tabl_id.'">'.$carga->valor.'</option>';
+                                                }
                                             ?>
                                     </select>
                                 </div>
@@ -182,9 +182,9 @@
                                                 <select class="form-control select2 select2-hidden-accesible" id="tiin_id" name="tiin_id" required>
                                                         <option value="" disabled selected>-Seleccione opción-</option>
                                                         <?php
-                                                                foreach ($tipoIncidencia as $tipo) {
-                                                                        echo '<option value="'.$tipo->tabl_id.'">'.$tipo->valor.'</option>';
-                                                                }
+                                                            foreach ($tipoIncidencia as $tipo) {
+                                                                echo '<option value="'.$tipo->tabl_id.'">'.$tipo->valor.'</option>';
+                                                            }
                                                         ?>
                                                 </select>				
                                                 

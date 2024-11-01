@@ -63,7 +63,7 @@ class SolicitudPedidos extends CI_Model{
     * @return array data
     */
     function obtener_Tipo_Carga(){
-        log_message('INFO','#TRAZA|SolicitudPedidos|obtener_Tipo_Carga() >> '); 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | obtener_Tipo_Carga()'); 
         $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/tipo_carga");
         $aux =json_decode($aux["data"]);
         return $aux->valores->valor;

@@ -58,7 +58,7 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return json resp
 	*/
 	function registrarSolicitud(){
-		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | registrarSolicitud()');
+		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_Pedido | registrarSolicitud()');
 		$usr = userNick();
 		$datos = $this->input->post('datos');
 		$datos['usuario_app'] = $usr;
@@ -83,7 +83,7 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return json tipos de residuos
 	*/  
 	function obtenerTipoResTodos(){
-		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | obtenerTipoResTodos()');
+		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_Pedido | obtenerTipoResTodos()');
 		$resp = $this->SolicitudPedidos->obtener_Tipo_Carga();
 		echo json_encode($resp);
 	}
