@@ -149,7 +149,7 @@ class Contenedores extends CI_Model
         return $aux;
     }
     function ObtenerContxTranid($tran_id){
-        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | obtener_transportista($tran_id)"); 
+        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | ObtenerContxTranid($tran_id)"); 
         $auxx = $this->rest->callAPI("GET",REST_RESI."/contenedores/transportista/$tran_id");
         $aux = json_decode($auxx["data"]);
         return $aux->contenedores->contenedor;

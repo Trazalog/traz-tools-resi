@@ -252,8 +252,8 @@ class EntregaOrdenTransportes extends CI_Model {
   * @return array con sectores de descarga
   */
   function obtenerDepositos(){ 
-    //FIXME: DESHARDCODEAR ESTABLECIMEINTO 1000
-    $esta_id = 1; //DEPOSITO_TRANSPORTE
+    //FIXME: DESHARDCODEAR ESTABLECIMEINTO 5000
+    $esta_id = 5000; //Establecimiento generico
     log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | EntregaOrdenTransportes | obtenerDepositos()");
     $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/depositos_establecimiento/".$esta_id);
     $aux = json_decode($aux["data"]);
