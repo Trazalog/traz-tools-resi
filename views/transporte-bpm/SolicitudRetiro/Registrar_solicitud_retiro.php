@@ -540,7 +540,7 @@
                 tran_id: tran_id
             },
             dataType: 'json',
-            url: "<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/obtener_Tipo_residuo",
+            url: "<?php echo RESI; ?>transporte-bpm/Solicitudretiro/obtener_Tipo_residuo",
             success: function(respuesta) {
                 if(respuesta != null){
                     var selector = $("#tica_id");
@@ -579,7 +579,7 @@
                 Tran_id: tran_id
             },
             dataType: 'json',
-            url: "<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/obtenerContenedor",
+            url: "<?php echo RESI; ?>transporte-bpm/Solicitudretiro/obtenerContenedor",
             success: function(respuesta) {
                 wc();
                 debugger;
@@ -712,7 +712,7 @@
         $.ajax({
         type: "POST",
         data: {datos},
-        url: "<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/Guardar_SolicitudRetiro",
+        url: "<?php echo RESI; ?>transporte-bpm/Solicitudretiro/Guardar_SolicitudRetiro",
         success: function(respuesta) {
             wc();
             console.log(respuesta);

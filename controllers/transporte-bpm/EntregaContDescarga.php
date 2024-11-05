@@ -4,7 +4,7 @@
 *
 * @autor
 */
-class EntregaContDescarga extends CI_Controller {
+class Entregacontdescarga extends CI_Controller {
   /**
   * Constructor de Clase
   * @param
@@ -12,7 +12,7 @@ class EntregaContDescarga extends CI_Controller {
   */
   function __construct(){
     parent::__construct();
-    $this->load->model('general/EntregaOrdenTransportes');  
+    $this->load->model('general/Entregaordentransportes');  
   }
 
   public function certificadoVuelco(){
@@ -21,8 +21,8 @@ class EntregaContDescarga extends CI_Controller {
     $reciEnt['usuario_app'] = userNick();
     $request_box['_put_contenedoresEntregados_descargar'] = $contEnt;
     $request_box['_post_contenedoresEntregados_descargar_recipiente'] = $reciEnt;
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaContDescarga | certificadoVuelco() | $request_box: >> '.json_encode($request_box));
-    $resp = $this->EntregaOrdenTransportes->CertificadoVuelco($request_box);
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregacontdescarga | certificadoVuelco() | $request_box: >> '.json_encode($request_box));
+    $resp = $this->Entregaordentransportes->CertificadoVuelco($request_box);
 
     echo 'ok';
   }
@@ -30,7 +30,7 @@ class EntregaContDescarga extends CI_Controller {
     $reciMov = $this->input->post('recipmov');
     $reciMov['usuario_app'] = userNick();
     $post['_put_lote_recipiente_mover'] = $reciMov;
-    $resp = $this->EntregaOrdenTransportes->MoverRecipiente($post);
+    $resp = $this->Entregaordentransportes->MoverRecipiente($post);
     if($resp == 1){
         echo 'ok';
     }else{
@@ -39,10 +39,10 @@ class EntregaContDescarga extends CI_Controller {
   }
 
   public function RedireccionarRecipiente(){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaContDescarga | RedireccionarRecipiente()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregacontdescarga | RedireccionarRecipiente()');
     $redireccionar = $this->input->post('redirecc');
     $post['_post_contenedoresEntregados_redireccionar'] = $redireccionar;
-    $resp = $this->EntregaOrdenTransportes->RedireccionarReci($post);
+    $resp = $this->Entregaordentransportes->RedireccionarReci($post);
     if($resp == 1){
       echo 'ok';
     }else{

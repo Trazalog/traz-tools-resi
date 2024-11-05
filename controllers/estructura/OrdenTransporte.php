@@ -1,30 +1,30 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class OrdenTransporte extends CI_Controller {
+class Ordentransporte extends CI_Controller {
 
   function __construct(){
     parent::__construct();
-    $this->load->model('Estructura/OrdenTransportes');
+    $this->load->model('estructura/Ordentransportes');
   }
   // ---------------- Funcion Cargar vista Orden de transporte y Datos
   function templateOrdentransporte(){
-    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransporte | templateOrdentransporte()');
+    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | templateOrdentransporte()');
 
-    $data['Tiporesiduo'] = $this->OrdenTransportes->obtener_Tipo_residuo();
-    $data['numero'] = $this->OrdenTransportes->obtener_numero_orden();
-    $data['chofer'] = $this->OrdenTransportes->obtenerChofer();
-    $data['dispfinal'] = $this->OrdenTransportes->obtenerdispfinal();
-    // $data['equipo'] = $this->OrdenTransportes->obtenerEquipo();
+    $data['Tiporesiduo'] = $this->Ordentransportes->obtener_Tipo_residuo();
+    $data['numero'] = $this->Ordentransportes->obtener_numero_orden();
+    $data['chofer'] = $this->Ordentransportes->obtenerChofer();
+    $data['dispfinal'] = $this->Ordentransportes->obtenerdispfinal();
+    // $data['equipo'] = $this->Ordentransportes->obtenerEquipo();
 
     //SELECCION DE EQUIPOS QUE SI POSEEN CONTENEDORES ASOCIADOS
     $arregloEq = array();
-    $equipos = $this->OrdenTransportes->obtenerEquipo();
+    $equipos = $this->Ordentransportes->obtenerEquipo();
     $cont = count($equipos);
     if($cont != null){
       for($i=0; $i < $cont; $i++){
         $auxiliar = $equipos[$i];
         $dom = $auxiliar->dominio;
-        $resp = $this->OrdenTransportes->ObtenerOTpordominio($dom);
+        $resp = $this->Ordentransportes->ObtenerOTpordominio($dom);
         $vehiAsignado = $resp->vehiculoAsignadoARetiro;
         $contador = $vehiAsignado->contenedores->contenedor ? count($vehiAsignado->contenedores->contenedor) : 0;
         if($contador != 0){
@@ -34,14 +34,14 @@ class OrdenTransporte extends CI_Controller {
     }
     $data['equipo'] = $arregloEq;
     //FIN SELECCION
-    $data['contenedores'] = $this->OrdenTransportes->obtenerContenedores();
-    $data['sotrid'] = $this->OrdenTransportes->obtenerSotrid();
+    $data['contenedores'] = $this->Ordentransportes->obtenerContenedores();
+    $data['sotrid'] = $this->Ordentransportes->obtenerSotrid();
     $this->load->view('ordenes/orden_transporte',$data);  
   }
   
-  // ---------------- Funcion Listar OrdenTransporte
+  // ---------------- Funcion Listar Ordentransporte
   function Listar_OrdenTransporte(){
-    $data['ordenes'] = $this->OrdenTransportes->Listar_ordenes_transporte();
+    $data['ordenes'] = $this->Ordentransportes->Listar_ordenes_transporte();
     $this->load->view('layout/Ordenes/lista_orden_transporte',$data); 
       
   }
@@ -51,8 +51,8 @@ class OrdenTransporte extends CI_Controller {
   }
 
   function Guardar_ordentransporte(){
-    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransporte | Guardar_ordentransporte()');
-    $resp = $this->OrdenTransportes->Guardar_ordenTransportes($this->input->post('datos'));
+    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | Guardar_ordentransporte()');
+    $resp = $this->Ordentransportes->Guardar_ordenTransportes($this->input->post('datos'));
     if($resp){
       echo "ok";
     }else{
@@ -62,19 +62,19 @@ class OrdenTransporte extends CI_Controller {
   }
 
   function ObtenerinfoOt(){
-    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransporte | ObtenerinfoOt()');
-    $resp = $this->OrdenTransportes->ObtenerOTpordominio($this->input->post('dom_id'));
+    log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | ObtenerinfoOt()');
+    $resp = $this->Ordentransportes->ObtenerOTpordominio($this->input->post('dom_id'));
     echo json_encode($resp);
   }
     
   function GetChoferyTransportista(){
-    $resp['chofer'] = $this->OrdenTransportes->Obtenerchofertran_id($this->input->post('tran_id'));
-    $resp['transp'] = $this->OrdenTransportes->Obtenertranspo_id($this->input->post('tran_id'));
+    $resp['chofer'] = $this->Ordentransportes->Obtenerchofertran_id($this->input->post('tran_id'));
+    $resp['transp'] = $this->Ordentransportes->Obtenertranspo_id($this->input->post('tran_id'));
     echo json_encode($resp);
   }
 
   function Obtenerteot(){
-    $resp = $this->OrdenTransportes->ObtenerTeot($this->input->post('sotr_id'));
+    $resp = $this->Ordentransportes->ObtenerTeot($this->input->post('sotr_id'));
     echo json_encode($resp);
   }
 }

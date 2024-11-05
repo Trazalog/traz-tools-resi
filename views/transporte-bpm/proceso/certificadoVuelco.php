@@ -530,7 +530,7 @@ function GuardaReDirecciona(){
     $.ajax({
         type: 'POST',
         data:{ redirecc},
-            url: '<?php echo RESI; ?>transporte-bpm/EntregaContDescarga/RedireccionarRecipiente',
+            url: '<?php echo RESI; ?>transporte-bpm/Entregacontdescarga/RedireccionarRecipiente',
         success: function(result) {
         },
         error: function(error) {
@@ -790,7 +790,7 @@ function Certificado(){
     $.ajax({
         type: "POST",
         data: {contEntDesc, contEntReci },
-        url: "<?php echo RESI; ?>transporte-bpm/EntregaContDescarga/certificadoVuelco",
+        url: "<?php echo RESI; ?>transporte-bpm/Entregacontdescarga/certificadoVuelco",
         success: function (response) {
             // TODO: REVISAR DE ACUERDO AL RESULTADO DEL SERVICIO
             cerrarTarea();// CIERRA TAREA EN BPM NO CONFNDIR CON LA DE VISTA BAND DE ENTRADA
@@ -957,7 +957,7 @@ $("#btnsavemodalmov").click(function(){
     $.ajax({
         type: 'POST',
         data:{ recipmov},
-        url: 'general/transporte-bpm/EntregaContDescarga/MoverRecipiente',
+        url: 'general/transporte-bpm/Entregacontdescarga/MoverRecipiente',
         success: function(result) {
         
         }

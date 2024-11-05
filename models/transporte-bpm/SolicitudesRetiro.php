@@ -4,10 +4,10 @@
 *
 * @autor Hugo Gallardo
 */
-class SolicitudesRetiro extends CI_Model {
+class Solicitudesretiro extends CI_Model {
   
   /**
-  * constructor de clase SolicitudRetiro
+  * constructor de clase Solicitudretiro
   * @param 
   * @return 
   */
@@ -23,7 +23,7 @@ class SolicitudesRetiro extends CI_Model {
   * @return int nuevo_sore_id
   */
   function solicitudRetiroProx(){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | solicitudRetiroProx()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | solicitudRetiroProx()');
 		$aux = $this->rest->callAPI("GET",REST_RESI."/solicitudRetiro/prox");
 		$aux =json_decode($aux["data"]);   
 		return $aux->respuesta->nuevo_sore_id;
@@ -35,7 +35,7 @@ class SolicitudesRetiro extends CI_Model {
   * @return array datos de todos los transportistas
   */  
   function obtener_Transportista(){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | obtener_Transportista()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | obtener_Transportista()');
     $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas");
     $aux =json_decode($aux["data"]);
     return $aux->transportistas->transportista;
@@ -47,7 +47,7 @@ class SolicitudesRetiro extends CI_Model {
   * @return array con tipos de carga
   */
   public function obtener_Tipo_residuo($tran_id){
-    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | obtener_Tipo_residuo($tran_id)");
+    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | obtener_Tipo_residuo($tran_id)");
     $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas/".$tran_id."/tipo/carga");
     $aux =json_decode($aux["data"]);
     return $aux->tiposCarga->cargas;				
@@ -59,7 +59,7 @@ class SolicitudesRetiro extends CI_Model {
   * @return array con info contenedores a entregar
   */
   function obtenerContenedor($tica_id, $usernick, $tran_id){
-    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | obtenerContenedor($tica_id, $usernick, $tran_id)");
+    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | obtenerContenedor($tica_id, $usernick, $tran_id)");
     $carga = urlencode($tica_id); // saca los espacios del string de tipo de carga
     $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/tipocarga/".$carga."/user/".$usernick."/".$tran_id);
     $aux =json_decode($aux["data"]);
@@ -71,7 +71,7 @@ class SolicitudesRetiro extends CI_Model {
   * @return string estado de respuesta del servicio
   */
   function Guardar_solicitudRetiro($data){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | Guardar_solicitudRetiro()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | Guardar_solicitudRetiro()');
     $post["solicitudRetiroContenedores"] = $data;      
     $aux = $this->rest->callAPI("POST",API_URL."/solicitudRetiroContenedores",$post);
     $aux = json_decode($aux['status']);
@@ -79,7 +79,7 @@ class SolicitudesRetiro extends CI_Model {
   }
 
   function obtenerContenedorCont_id($cont_id){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudesRetiro | obtenerContenedorCont_id()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudesretiro | obtenerContenedorCont_id()');
     $aux = $this->rest->callAPI("GET",REST_RESI."/contenedores/$cont_id");
     $aux = json_decode($aux["data"]);
     return $aux->contenedor;

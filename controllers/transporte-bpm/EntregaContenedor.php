@@ -4,7 +4,7 @@
 *
 * @autor
 */
-class EntregaContenedor extends CI_Controller {
+class Entregacontenedor extends CI_Controller {
     /**
      * Constructor de Clase
     * @param
@@ -12,17 +12,17 @@ class EntregaContenedor extends CI_Controller {
     */
     function __construct(){
     parent::__construct();  
-        $this->load->model('general/PedidoContenedores');
+        $this->load->model('general/Pedidocontenedores');
     }
 
     public function GuardaContEntregado(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaContenedor | GuardaContEntregado()');
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregacontenedor | GuardaContEntregado()');
         $datos_contenedores =  $this->input->post('cont_entregados_listo');
         $usuario_app = userNick(); //para q en la iteracion sea mas optima
         foreach ($datos_contenedores as $key => $value) {
             $datos_contenedores[$key]['usuario_app'] = $usuario_app;
         }
-        $resp = $this->PedidoContenedores->GuardarContEntregados($datos_contenedores);
+        $resp = $this->Pedidocontenedores->GuardarContEntregados($datos_contenedores);
         if($resp == 1){
             echo 1;
         }else{
@@ -31,8 +31,8 @@ class EntregaContenedor extends CI_Controller {
 
     }
     public function obtenerContenedores(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaContenedor | obtenerContenedores()');
-        $resp = $this->PedidoContenedores->ObtenerContenedores();
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregacontenedor | obtenerContenedores()');
+        $resp = $this->Pedidocontenedores->ObtenerContenedores();
         echo json_encode($resp);
     }   
 }

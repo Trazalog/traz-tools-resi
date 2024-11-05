@@ -4,7 +4,7 @@
 *
 * @autor SLedesma
 */
-class Solicitud_Pedido extends CI_Controller {
+class Solicitud_pedido extends CI_Controller {
 	/**
 	* Constructor de Clase
 	* @param
@@ -12,18 +12,18 @@ class Solicitud_Pedido extends CI_Controller {
 	*/
 	function __construct(){
 		parent::__construct();      
-		$this->load->model('transporte-bpm/SolicitudPedidos');
+		$this->load->model('transporte-bpm/Solicitudpedidos');
 	}
    
 	/**
-	* carga pantalla solicitud_Pedido
+	* carga pantalla Solicitud_pedido
 	* @param 
-	* @return view Lista solicitud_pedido
+	* @return view Lista Solicitud_pedido
 	*/
 	function templateSolicitudPedidos(){
 		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | templateSolicitudPedidos()');
-		$data['transportista'] = $this->SolicitudPedidos->obtenerTransportista();
-		$data['tipocarga'] = $this->SolicitudPedidos->obtener_Tipo_Carga();
+		$data['transportista'] = $this->Solicitudpedidos->obtenerTransportista();
+		$data['tipocarga'] = $this->Solicitudpedidos->obtener_Tipo_Carga();
 		$this->load->view('transporte-bpm/solicitud-pedidos/solicitud_pedido',$data);
 
 	}
@@ -34,9 +34,9 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return json tipos de residuos
 	*/        
 	function obtenerTipoRes(){
-		log_message('INFO','#TRAZA |Solicitud_Pedido|obtenerTipoRes() >> '); 
+		log_message('INFO','#TRAZA |Solicitud_pedido|obtenerTipoRes() >> '); 
 		$tran_id = $this->input->post('id_transportista');
-		$resp = $this->SolicitudPedidos->obtenerTipoResiduos($tran_id);
+		$resp = $this->Solicitudpedidos->obtenerTipoResiduos($tran_id);
 		echo json_encode($resp);
 	}
 
@@ -46,9 +46,9 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return view Lista_solicitudes_pedidos
 	*/  
 	function Listar_SolicitudesPedido(){
-		log_message('INFO','#TRAZA |Solicitud_Pedido|Listar_SolicitudesPedido() >> '); 
-		$data['transportista'] = $this->SolicitudPedidos->obtenerTransportista();
-		$data["solicitudes"] = $this->SolicitudPedidos->Listar_Solicitudes_pedido();
+		log_message('INFO','#TRAZA |Solicitud_pedido|Listar_SolicitudesPedido() >> '); 
+		$data['transportista'] = $this->Solicitudpedidos->obtenerTransportista();
+		$data["solicitudes"] = $this->Solicitudpedidos->Listar_Solicitudes_pedido();
 		$this->load->view('transporte-bpm/solicitud-pedidos/Lista_solicitudes_pedidos',$data);
 	}
 
@@ -58,7 +58,7 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return json resp
 	*/
 	function registrarSolicitud(){
-		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_Pedido | registrarSolicitud()');
+		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_pedido | registrarSolicitud()');
 		$usr = userNick();
 		$datos = $this->input->post('datos');
 		$datos['usuario_app'] = $usr;
@@ -67,7 +67,7 @@ class Solicitud_Pedido extends CI_Controller {
 			$datos['contenedores'][$i]['usuario_app'] = $usr;
 		}
 
-		$resp = $this->SolicitudPedidos->RegistrarPedidoContenedor($datos);
+		$resp = $this->Solicitudpedidos->RegistrarPedidoContenedor($datos);
 		if($resp == 1){
 			echo 'ok';
 		}
@@ -83,16 +83,16 @@ class Solicitud_Pedido extends CI_Controller {
 	* @return json tipos de residuos
 	*/  
 	function obtenerTipoResTodos(){
-		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_Pedido | obtenerTipoResTodos()');
-		$resp = $this->SolicitudPedidos->obtener_Tipo_Carga();
+		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_pedido | obtenerTipoResTodos()');
+		$resp = $this->Solicitudpedidos->obtener_Tipo_Carga();
 		echo json_encode($resp);
 	}
 
 	function obtenersolitransp(){
-		log_message('INFO','#TRAZA |Solicitud_Pedido|obtenersolitransp() >> '); 
-		$resp = $this->SolicitudPedidos->Obtenersoltransp($this->input->post('user'));
+		log_message('INFO','#TRAZA |Solicitud_pedido|obtenersolitransp() >> '); 
+		$resp = $this->Solicitudpedidos->Obtenersoltransp($this->input->post('user'));
 		// $usuario = userNick(); colocar estas dos lineas cuando userNick funcione bien y borrar la anterior por el momento esta harckodeado con HugoDS
-		// $resp = $this->SolicitudPedidos->Obtenersoltransp($usuario);
+		// $resp = $this->Solicitudpedidos->Obtenersoltransp($usuario);
 		if(!$resp){
 				echo json_encode($resp);
 		}

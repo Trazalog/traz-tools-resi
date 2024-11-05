@@ -4,7 +4,7 @@
 *
 * @autor Hugo Gallardo
 */
-class RegistraSalida extends CI_Controller {
+class Registrasalida extends CI_Controller {
     /**
      * Constructor de Clase
     * @param 
@@ -12,13 +12,13 @@ class RegistraSalida extends CI_Controller {
     */
     function __construct(){
         parent::__construct();  
-        $this->load->model('general/EntregaOrdenTransportes');  
+        $this->load->model('general/Entregaordentransportes');  
     }
     
   function GetImagen(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | RegistraSalida | GetImagen()');
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Registrasalida | GetImagen()');
         $id = $this->input->post("cont_id");
-        $dato= $this->EntregaOrdenTransportes->obtenerImagen_Cont_Id($id);  
+        $dato= $this->Entregaordentransportes->obtenerImagen_Cont_Id($id);
         echo json_encode($dato);
     }
 }

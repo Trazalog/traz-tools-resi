@@ -353,7 +353,7 @@
             $.ajax({
                 type: 'POST',
                 data:{coen},
-                url: '<?php echo RESI; ?>transporte-bpm/EntregaOrdenTransporte/obtenerImagenContenedor',
+                url: '<?php echo RESI; ?>transporte-bpm/Entregaordentransporte/obtenerImagenContenedor',
                 success: function(result) {
                     $(".fa-spinner").hide();
                     var img = JSON.parse(result);							

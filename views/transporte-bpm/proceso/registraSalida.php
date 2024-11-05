@@ -234,7 +234,7 @@ function GetImagen($cont_id){
     $.ajax({
         type: "POST",
         data: {cont_id: $cont_id},
-        url: '<?php echo RESI; ?>transporte-bpm/RegistraSalida/GetImagen',
+        url: '<?php echo RESI; ?>transporte-bpm/Registrasalida/GetImagen',
         success: function ($dato) {
             
             $(".fa-spinner").hide();
