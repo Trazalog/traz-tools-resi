@@ -4,7 +4,7 @@
 *
 * @autor Hugo Gallardo
 */
-class RetiroContenedores extends CI_Model {
+class Retirocontenedores extends CI_Model {
   /**
   * Constructor de Clase
   * @param 
@@ -81,7 +81,7 @@ class RetiroContenedores extends CI_Model {
   function desplegarVista($tarea){           
     switch ($tarea->nombreTarea) {
       case 'Retira contenedores':
-        log_message('INFO','#TRAZA | TRAZ-TOOLS-RESIDUOS | RetiroContenedores | desplegarVista(Retira contenedores): $tarea >> '.json_encode($tarea));
+        log_message('INFO','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | desplegarVista(Retira contenedores): $tarea >> '.json_encode($tarea));
         $data['contenedores'] = $this->obtenerContenedoresARetirar($tarea->caseId);
         $data['vehiculos'] = $this->obtenerVehiculos();
         
@@ -101,7 +101,7 @@ class RetiroContenedores extends CI_Model {
   * @return string status de respuesta del servicio
   */
   function actualizarContenedores($form){     
-    log_message('INFO','#TRAZA | TRAZ-TOOLS-RESIDUOS | RetiroContenedores | actualizarContenedores($form) >> ');
+    log_message('INFO','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | actualizarContenedores($form) >> ');
   
     $temp["_put_contenedoresentregados_vehiculo"] = $form['contAsign'];
     $data["_put_contenedoresentregados_vehiculo_batch_req"] = $temp;
@@ -117,7 +117,7 @@ class RetiroContenedores extends CI_Model {
   * @return array contrato de cierre de tareas
   */
   function contratoRetiro($form){     
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | RetiroContenedores | contratoRetiro($form)');    
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | contratoRetiro($form)');    
     $contrato = $form['retiro'];
     return $contrato;
   }
@@ -131,7 +131,7 @@ class RetiroContenedores extends CI_Model {
   * @return array contenedores entregados
   */
   function obtenerContenedoresARetirar($case_id){     
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | RetiroContenedores | obtenerContenedoresARetirar()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | obtenerContenedoresARetirar()');
     $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/case/".$case_id);
     $aux =json_decode($aux["data"]);
     return $aux->contenedoresEntregados->contenedor;    
@@ -143,7 +143,7 @@ class RetiroContenedores extends CI_Model {
   * @return array listado decamiones de un transportista
   */
   function obtenerVehiculos(){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | RetiroContenedores | obtenerVehiculos()');
+    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | obtenerVehiculos()');
     $tran_id = usrIdTransportistaByNick();
     $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculos/transp/".$tran_id);
     $aux = json_decode($aux["data"]);

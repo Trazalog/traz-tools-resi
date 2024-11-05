@@ -285,7 +285,7 @@ function ModalEntregar($dataJson){
 	$.ajax({
 		type: "POST",
 		data: {},
-		url: "<?php echo RESI; ?>transporte-bpm/EntregaContenedor/obtenerContenedores",
+		url: "<?php echo RESI; ?>transporte-bpm/Entregacontenedor/obtenerContenedores",
 		success: function ($resp) {
 			if($resp != "null"){
                 var cont = JSON.parse($resp);
@@ -409,7 +409,7 @@ function RealizarEntrega(){
             $.ajax({
                 type: "POST",
                 data: {cont_entregados_listo},
-                url: "<?php echo RESI;?>transporte-bpm/EntregaContenedor/GuardaContEntregado",
+                url: "<?php echo RESI;?>transporte-bpm/Entregacontenedor/GuardaContEntregado",
                 success: function(respuesta) {
                     wc();
                     if(respuesta == 1){

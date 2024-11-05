@@ -306,7 +306,7 @@ function  obtenerTemplateOT(){
       type: "POST",
       data: {sotr_id: sotrid},
       dataType: 'json',
-      url: "<?php echo RESI; ?>Estructura/OrdenTransporte/Obtenerteot",
+      url: "<?php echo RESI; ?>Estructura/Ordentransporte/Obtenerteot",
       success: function($respuesta) {
         var resp = $respuesta;
       }
@@ -350,7 +350,7 @@ function AgregarCont($datos) {
             $.ajax({
                 type: 'POST',
                 data:{cont_id},
-                url: '<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/ObtenerContenedorCont_id',
+                url: '<?php echo RESI; ?>transporte-bpm/Solicitudretiro/ObtenerContenedorCont_id',
                 success: function(result) {
                     var cont = JSON.parse(result);
                     // dibujar tabla temporal
@@ -385,7 +385,7 @@ function obtenerchoftran($aux)
 				type: "POST",
 				data: {tran_id: $aux},
 				dataType: 'json',
-				url: "<?php echo RESI; ?>Estructura/OrdenTransporte/GetChoferyTransportista",
+				url: "<?php echo RESI; ?>Estructura/Ordentransporte/GetChoferyTransportista",
 				success: function($datos) {
 						$("#chofer").removeAttr('readonly');
 						var res = $datos;
@@ -426,7 +426,7 @@ $("#equipo").change(function(){
         type: "POST",
         data: {dom_id: dominio_equipo},
         dataType: 'json',
-        url: "<?php echo RESI; ?>Estructura/OrdenTransporte/ObtenerinfoOt",
+        url: "<?php echo RESI; ?>Estructura/Ordentransporte/ObtenerinfoOt",
         success: function($respuesta) {
             debugger;
             var resp = $respuesta;
@@ -535,7 +535,7 @@ function Guardar_Orden_transporte(){
             $.ajax({
             type: "POST",
             data: {datos},
-            url: "<?php echo RESI; ?>Estructura/OrdenTransporte/Guardar_ordentransporte",
+            url: "<?php echo RESI; ?>Estructura/Ordentransporte/Guardar_ordentransporte",
             success: function(respuesta) {
                 debugger;
                 console.log(respuesta);
@@ -567,7 +567,7 @@ function Guardar_Orden_transporte(){
         alert("ATENCION!!! no se puede generar la orden de trabajo sin contenedores asignados");
     }
 }
-$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/OrdenTransporte/lista_orden_transporte");
+$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Ordentransporte/lista_orden_transporte");
 </script>
 
 

@@ -4,7 +4,7 @@
 *
 * @autor Hugo Gallardo
 */
-class EntregaOrdenTransporte extends CI_Controller {
+class Entregaordentransporte extends CI_Controller {
     /**
      * Constructor de Clase
     * @param 
@@ -12,13 +12,13 @@ class EntregaOrdenTransporte extends CI_Controller {
     */
     function __construct(){
         parent::__construct();  
-        $this->load->model('general/EntregaOrdenTransportes');  
+        $this->load->model('general/Entregaordentransportes');  
     }
 
     public function obtenerImagenContenedor(){
-        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | EntregaOrdenTransporte | obtenerImagenContenedor()');
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransporte | obtenerImagenContenedor()');
         $coen_id = $this->input->post('coen');
-        $img = $this->EntregaOrdenTransportes->obtenerImagenContenedor($coen_id['coen_id']);
+        $img = $this->Entregaordentransportes->obtenerImagenContenedor($coen_id['coen_id']);
         echo json_encode($img);
     }
 }

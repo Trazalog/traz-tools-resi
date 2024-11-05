@@ -111,7 +111,7 @@ function agregar(){
             $.ajax({
                 type: 'POST',
                 data:{cont_id},
-                url: '<?php echo RESI; ?>transporte-bpm/SolicitudRetiro/ObtenerContenedorCont_id',
+                url: '<?php echo RESI; ?>transporte-bpm/Solicitudretiro/ObtenerContenedorCont_id',
                 success: function(result) {
                     var cont = JSON.parse(result);
                     // dibujar tabla temporal

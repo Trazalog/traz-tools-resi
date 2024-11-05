@@ -4,7 +4,7 @@
 *
 * @autor Hugo Gallardo
 */
-class PedidoContenedores extends CI_Model{
+class Pedidocontenedores extends CI_Model{
     /**
     * Constructor de Clase
     * @param 
@@ -57,7 +57,7 @@ class PedidoContenedores extends CI_Model{
     * @return array $contrato para cierre de tarea en BPM
     */
     public function getContrato($tarea, $form){
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | getContrato($tarea, $form) >> '.json_encode($tarea));
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | getContrato($tarea, $form) >> '.json_encode($tarea));
       switch ($tarea->nombreTarea) {
         case 'Analizar Solicitud':
             $response = $this->actualizarSolicitud($form);
@@ -74,7 +74,7 @@ class PedidoContenedores extends CI_Model{
           break;  
 
         case 'Entregar contenedores':
-            $contrato = $this->PedidoContenedores->contratoEntregaContenedor($form);           
+            $contrato = $this->Pedidocontenedores->contratoEntregaContenedor($form);           
             return $contrato;
           break;   
               
@@ -92,7 +92,7 @@ class PedidoContenedores extends CI_Model{
     function desplegarVista($tarea){
       switch ($tarea->nombreTarea) {
         case 'Analizar Solicitud':
-          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | desplegarVista(Analizar Solicitud): $tarea >> '.json_encode($tarea));
+          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | desplegarVista(Analizar Solicitud): $tarea >> '.json_encode($tarea));
           $tarea->infoSolicitud = $this->obtenerInFoSolicitud($tarea->caseId);
           $tarea->infoContenedores = $this->obtenerContSolicitados($tarea->caseId);
           $info_proceso = $this->obtenerInfoSolContenedores($tarea);
@@ -101,7 +101,7 @@ class PedidoContenedores extends CI_Model{
         break;
 
         case 'Confirmar pedido modificado':
-          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | desplegarVista(Confirmar pedido modificado): $tarea >> '.json_encode($tarea));
+          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | desplegarVista(Confirmar pedido modificado): $tarea >> '.json_encode($tarea));
           $tarea->infoSolicitud = $this->obtenerInFoSolicitud($tarea->caseId);
           $soco_id = $tarea->infoSolicitud->soco_id; 
           $tarea->infoContenedores = $this->obtenerContSolicitadosConfirma($soco_id);
@@ -110,7 +110,7 @@ class PedidoContenedores extends CI_Model{
         break;
 
         case 'Entregar contenedores':
-          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | desplegarVista(Entregar contenedores): $tarea >> '.json_encode($tarea));
+          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | desplegarVista(Entregar contenedores): $tarea >> '.json_encode($tarea));
           $tarea->infoSolicitud = $this->obtenerInFoSolicitud($tarea->caseId);
           $soco_id= $tarea->infoSolicitud->soco_id;
           $tarea->infoContenedores = $this->obtenerContSolicitadosConfirma($soco_id);
@@ -122,14 +122,14 @@ class PedidoContenedores extends CI_Model{
         break;
 
         case 'Notificar no aceptación del pedido':
-          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | desplegarVista(Notificar no aceptación del pedido): $tarea >> '.json_encode($tarea));
+          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | desplegarVista(Notificar no aceptación del pedido): $tarea >> '.json_encode($tarea));
           $infocontsolicitados = $this->obtenerContSolicitados($tarea->caseId);
           $tarea->motivo_rechazo = $infocontsolicitados[0]->motivo_rechazo;
           return $this->load->view(RESI . 'transporte-bpm/proceso/notificacion', $tarea, true);
         break;
 
         case 'Recibir notificación de Rechazo de Pedido':
-          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | desplegarVista(Recibir notificación de Rechazo de Pedido): $tarea >> '.json_encode($tarea));
+          log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | desplegarVista(Recibir notificación de Rechazo de Pedido): $tarea >> '.json_encode($tarea));
           $infocontsolicitados = $this->obtenerContSolicitados($tarea->caseId);
           $tarea->motivo_rechazo = $infocontsolicitados[0]->motivo_rechazo ? $infocontsolicitados[0]->motivo_rechazo : 'El solicitante rechazo la solicitud';
           return $this->load->view(RESI . 'transporte-bpm/proceso/notificacion', $tarea, true);
@@ -147,12 +147,12 @@ class PedidoContenedores extends CI_Model{
     * @return string resp servicio de actualizacion
     */
     function actualizarSolicitud($form){     
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | actualizarSolicitud()');
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | actualizarSolicitud()');
       
       $temp['_put_contenedoressolicitados_cantidad'] =  $form["contAcordados"];
       $data['_put_contenedoressolicitados_cantidad_batch_req'] = $temp;
       
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | actualizarSolicitud($cont_prop): $data >> '.json_encode($data));
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | actualizarSolicitud($cont_prop): $data >> '.json_encode($data));
       
       $aux = $this->rest->callAPI("PUT",REST_RESI."/_put_contenedoressolicitados_cantidad_batch_req", $data);
       $aux = json_decode($aux["status"]);
@@ -165,7 +165,7 @@ class PedidoContenedores extends CI_Model{
     * @return array contrato respuesta a tarea anaisis de solicitud contenedor
     */
     function contratoAnalisisCont($form){     
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | contratoAnalisisCont($form) >> ');
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | contratoAnalisisCont($form) >> ');
       $opcion = $form["elegido"]["opcion"]; //acepta o rechaza
       $igualCant = $form["coincideCant"]["cantIguales"]; // 1 o 0      
             
@@ -209,7 +209,7 @@ class PedidoContenedores extends CI_Model{
     }
 
     function contratoEntregaContenedor($form){
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | contratoEntregaContenedor($form) >> '.json_encode($form));
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | contratoEntregaContenedor($form) >> '.json_encode($form));
       $opcion = $form["elegido"]["opcion"]; //acepta o rechaza
       if ($opcion == 'acepta') {
         $ejecutar = false;
@@ -225,7 +225,7 @@ class PedidoContenedores extends CI_Model{
     * @return 
     */
     function motivoRechazo($form){     
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | motivoRechazo($form) >> ' . json_encode($form));
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | motivoRechazo($form) >> ' . json_encode($form));
 
       $temp["motivo_rechazo"] = $form["motivo"]["motivo"]; 
       $temp["soco_id"] = $form["contAcordados"][0]["soco_id"]; 
@@ -245,7 +245,7 @@ class PedidoContenedores extends CI_Model{
     * @return array con informacion de todos los contenedores pedidos
     */
     function obtenerContSolicitados($case_id){          
-      log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | obtenerContSolicitados(case_id : $case_id)");
+      log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | obtenerContSolicitados(case_id : $case_id)");
       $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresSolicitados/case/".$case_id);
       $aux = json_decode($aux["data"]);
       return $aux->contenedores->contenedor;
@@ -257,7 +257,7 @@ class PedidoContenedores extends CI_Model{
     * @return array informacion de solicitud de contenedores
     */
     function obtenerInFoSolicitud($case_id){
-        log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | obtenerInFoSolicitud(case_id: $case_id)");
+        log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | obtenerInFoSolicitud(case_id: $case_id)");
         $aux = $this->rest->callAPI("GET",REST_RESI."/solicitudContenedores/info/".$case_id);
         $aux = json_decode($aux["data"]);
         return $aux->solicitud;
@@ -310,7 +310,7 @@ class PedidoContenedores extends CI_Model{
     */
     function ObtenerContenedores(){
       $tran_id = usrIdTransportistaByNick();
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | ObtenerContenedores(): $tran_id >> '.json_encode($tran_id));
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | ObtenerContenedores(): $tran_id >> '.json_encode($tran_id));
       $aux = $this->rest->callAPI("GET",REST_RESI."/contenedores/disponibles/transportista/".$tran_id);
       $aux = json_decode($aux["data"]);
       return $aux->contenedores->contenedor;
@@ -322,7 +322,7 @@ class PedidoContenedores extends CI_Model{
     * @return json status
     */
     function GuardarContEntregados($datos){
-      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | GuardarContEntregados()');
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | GuardarContEntregados()');
       $data["_post_contenedores_entregados_entregar"] = $datos;
       $dato["_post_contenedores_entregados_entregar_batch_req"] = $data;
       $aux = $this->rest->callAPI("POST",REST_RESI."/_post_contenedores_entregados_entregar_batch_req", $dato);
@@ -339,7 +339,7 @@ class PedidoContenedores extends CI_Model{
     * @return array con info de solicitud de transporte
     */
     function obtenerInfoSolContenedores($tarea){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | PedidoContenedores | obtenerInfoSolContenedores() tarea >>' .json_encode($tarea));
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | obtenerInfoSolContenedores() tarea >>' .json_encode($tarea));
         $case_id = $tarea->caseId;     
         $aux_sol_cont = $this->rest->callAPI("GET",REST_RESI."/solicitudContenedores/info/".$case_id);
         $aux_sol_cont =json_decode($aux_sol_cont["data"]);

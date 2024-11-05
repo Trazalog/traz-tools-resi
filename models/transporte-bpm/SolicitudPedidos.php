@@ -1,10 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* Representa a la Entidad SolicitudPedidos
+* Representa a la Entidad Solicitudpedidos
 *
 * @autor SLedesma
 */
-class SolicitudPedidos extends CI_Model{   
+class Solicitudpedidos extends CI_Model{   
     /**
     * Constructor de Clase
     * @param 
@@ -22,8 +22,8 @@ class SolicitudPedidos extends CI_Model{
     function Listar_Solicitudes_pedido(){   
         $data = userNick();
         // $aux = $this->rest->callAPI("GET",REST."/solicitudContenedores/$data"); // servicio que usaria 
-        log_message('INFO','#TRAZA|SolicitudPedidos|Listar_Solicitudes_pedido() >> ');
-        log_message('DEBUG','#SolicitudPedidos/Listar_Solicitudes_pedido: '.json_encode($data));
+        log_message('INFO','#TRAZA|Solicitudpedidos|Listar_Solicitudes_pedido() >> ');
+        log_message('DEBUG','#Solicitudpedidos/Listar_Solicitudes_pedido: '.json_encode($data));
         $aux = $this->rest->callAPI("GET",REST_RESI."/solicitudContenedor/$data");
         $aux =json_decode($aux["data"]);       
         return $aux; 
@@ -36,9 +36,9 @@ class SolicitudPedidos extends CI_Model{
     */
     function Guardar_Solicitud_pedido($data)
     {   
-        log_message('INFO','#TRAZA|SolicitudPedidos|Guardar_Solicitud_pedido() >> '); 
+        log_message('INFO','#TRAZA|Solicitudpedidos|Guardar_Solicitud_pedido() >> '); 
         $post["post_solicitud"] = $data;
-        log_message('DEBUG','#SolicitudPedidos/Guardar_Solicitud_pedido: '.json_encode($post));
+        log_message('DEBUG','#Solicitudpedidos/Guardar_Solicitud_pedido: '.json_encode($post));
         $aux = $this->rest->callAPI("POST",REST_RESI."/RECURSO", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
@@ -51,7 +51,7 @@ class SolicitudPedidos extends CI_Model{
     */
     function obtenerTransportista(){
 
-        log_message('INFO','#TRAZA|SolicitudPedidos|obtenerTransportista() >> ');
+        log_message('INFO','#TRAZA|Solicitudpedidos|obtenerTransportista() >> ');
         $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas");
         $aux =json_decode($aux["data"]);
         return $aux->transportistas->transportista;
@@ -75,8 +75,8 @@ class SolicitudPedidos extends CI_Model{
     * @return array data
     */
     function obtenerTipoResiduos($tran_id){
-        log_message('INFO','#TRAZA|SolicitudPedidos|obtenerTipoResiduos() >> '); 
-        log_message('DEBUG','#SolicitudPedidos/obtenerTipoResiduos: '.json_encode($tran_id));
+        log_message('INFO','#TRAZA|Solicitudpedidos|obtenerTipoResiduos() >> '); 
+        log_message('DEBUG','#Solicitudpedidos/obtenerTipoResiduos: '.json_encode($tran_id));
         $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas/$tran_id/tipo/carga");
         $aux =json_decode($aux["data"]);
         return $aux->tiposCarga->cargas;

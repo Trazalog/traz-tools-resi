@@ -4,7 +4,7 @@
 *
 * @autor Hugo Gallardo
 */
-class SolicitudRetiro extends CI_Controller {
+class Solicitudretiro extends CI_Controller {
     /**
      * Constructor de Clase
     * @param 
@@ -12,7 +12,7 @@ class SolicitudRetiro extends CI_Controller {
     */
     function __construct(){
         parent::__construct();
-        $this->load->model('transporte-bpm/SolicitudesRetiro');
+        $this->load->model('transporte-bpm/Solicitudesretiro');
     }
 
     /**
@@ -21,26 +21,26 @@ class SolicitudRetiro extends CI_Controller {
     * @return 
     */
     function templateSolicitudRetiro(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudRetiro | templateSolicitudRetiro()');
-        $data['transportista'] = $this->SolicitudesRetiro->obtener_Transportista();
-        $data['nuevo_sore_id'] = $this->SolicitudesRetiro->solicitudRetiroProx();
-        //$data['contenedores'] =  $this->SolicitudesRetiro->obtenerContenedor();
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudretiro | templateSolicitudRetiro()');
+        $data['transportista'] = $this->Solicitudesretiro->obtener_Transportista();
+        $data['nuevo_sore_id'] = $this->Solicitudesretiro->solicitudRetiroProx();
+        //$data['contenedores'] =  $this->Solicitudesretiro->obtenerContenedor();
         $this->load->view('transporte-bpm/SolicitudRetiro/Registrar_solicitud_retiro', $data);
     }
     
     
     function Guardar_SolicitudRetiro(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudRetiro | Guardar_SolicitudRetiro()');
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudretiro | Guardar_SolicitudRetiro()');
         $solicitud = $this->input->post('datos');
 
         $solicitud['usuario_app'] = userNick();
         $solicitud['sotr_id'] = usrIdGeneradorByNick();
 
-        $resp = $this->SolicitudesRetiro->Guardar_solicitudRetiro($solicitud);
+        $resp = $this->Solicitudesretiro->Guardar_solicitudRetiro($solicitud);
         if($resp){
             echo "ok";
         }else{
-            log_message('ERROR','#TRAZA|SOLICITUDRETIRO|Guardar_SolicitudRetiro() >> $resp: '.$resp);
+            log_message('ERROR','#TRAZA|Solicitudretiro|Guardar_SolicitudRetiro() >> $resp: '.$resp);
             echo 'error';
         }
     }
@@ -60,8 +60,8 @@ class SolicitudRetiro extends CI_Controller {
     * @return array tipos de carga autorizados de un transportista
     */
     function obtener_Tipo_residuo(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudRetiro | obtener_Tipo_residuo()');
-        $response = $this->SolicitudesRetiro->obtener_Tipo_residuo($this->input->post('tran_id'));
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudretiro | obtener_Tipo_residuo()');
+        $response = $this->Solicitudesretiro->obtener_Tipo_residuo($this->input->post('tran_id'));
         echo json_encode($response);
     }
 
@@ -71,17 +71,17 @@ class SolicitudRetiro extends CI_Controller {
     * @return array coninfo contenedores a entregar
     */
     function obtenerContenedor(){     
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudRetiro | obtenerContenedor()');
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudretiro | obtenerContenedor()');
         $tica_id = $this->input->post('tica_id');
         $tran_id = $this->input->post('Tran_id');
         $usernick = userNick();
-        $resp =$this->SolicitudesRetiro->obtenerContenedor($tica_id, $usernick, $tran_id);
+        $resp =$this->Solicitudesretiro->obtenerContenedor($tica_id, $usernick, $tran_id);
         echo json_encode($resp);
     }
     function ObtenerContenedorCont_id(){
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | SolicitudRetiro | ObtenerContenedorCont_id()');
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitudretiro | ObtenerContenedorCont_id()');
         $cont_id = $this->input->post('cont_id');
-        $resp =$this->SolicitudesRetiro->obtenerContenedorCont_id($cont_id);
+        $resp =$this->Solicitudesretiro->obtenerContenedorCont_id($cont_id);
         echo json_encode($resp);
     }
 }

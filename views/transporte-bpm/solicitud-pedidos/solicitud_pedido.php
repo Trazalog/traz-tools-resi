@@ -191,7 +191,7 @@
         $.ajax({
             type: "POST",
             data: {},
-            url: "<?php echo RESI; ?>transporte-bpm/Solicitud_Pedido/obtenerTipoResTodos",
+            url: "<?php echo RESI; ?>transporte-bpm/Solicitud_pedido/obtenerTipoResTodos",
             success: function($r){
                 var res = JSON.parse($r);
                 console.table(res);
@@ -253,7 +253,7 @@
                 $.ajax({
                     type: "POST",
                     data: {datos},
-                    url: "<?php echo RESI; ?>transporte-bpm/Solicitud_Pedido/registrarSolicitud",
+                    url: "<?php echo RESI; ?>transporte-bpm/Solicitud_pedido/registrarSolicitud",
                     success: function(r) {
                         console.log(r);
                         if (r == 'ok') {
