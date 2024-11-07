@@ -74,7 +74,7 @@ class Pedidocontenedores extends CI_Model{
           break;  
 
         case 'Entregar contenedores':
-            $contrato = $this->Pedidocontenedores->contratoEntregaContenedor($form);           
+            $contrato = $this->contratoEntregaContenedor($form);           
             return $contrato;
           break;   
               
