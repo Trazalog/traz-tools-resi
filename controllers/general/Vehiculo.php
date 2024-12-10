@@ -104,13 +104,13 @@
     * @return string "ok, error"
     */
     function Borrar_Vehiculo(){
-        log_message('INFO','#TRAZA|Vehiculo|Borrar_Vehiculo() >>');
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | Borrar_Vehiculo()');
         $resp = $this->Vehiculos->Borrar_vehiculo($this->input->post('eliminar'));
         if($resp == 1){
-                echo 'ok';
+            echo 'ok';
         }else{
-                log_message('ERROR','#TRAZA|Contenedor|Borrar_Contenedor() >> $resp: '.$resp); 
-                echo 'error';
+            log_message('ERROR','#TRAZA|Contenedor|Borrar_Contenedor() >> $resp: '.$resp);
+            echo 'error';
         }
     }
 
@@ -120,14 +120,14 @@
     * @return string "ok, error"
     */    
     function Actualizar_Vehiculo(){
-        log_message('INFO','#TRAZA|Vehiculo|Actualizar_Vehiculo() >>');
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | Actualizar_Vehiculo()');
         $datos =  $this->input->post('vehiculo');
         $resp = $this->Vehiculos->actualizar_Vehiculo($datos);
         if($resp){
-                echo 'ok';
+            echo 'ok';
         }else{
-        log_message('ERROR','#TRAZA|Vehiculo|Actualizar_Vehiculo() >> $resp: '.$resp);
-        echo 'error';
+            log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | Actualizar_Vehiculo() >> $resp: '.json_encode($resp));
+            echo 'error';
         }
 
     }

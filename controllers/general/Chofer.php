@@ -66,9 +66,8 @@ class Chofer extends CI_Controller {
     * @param array datos choferes
     * @return string "error, ok"
     */
-    function Modificar_Chofer()
-    {
-        log_message('INFO','#TRAZA|CHOFER|Modificar_Chofer() >> ');
+    function Modificar_Chofer(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Modificar_Chofer()');
         $chofer = $this->input->post('chofer');
         $chofer['usuario_app'] = userNick();                 
         
@@ -89,17 +88,15 @@ class Chofer extends CI_Controller {
     * @param string id de chofer
     * @return json status servicio
     */
-    function Borrar_Chofer()
-    {
-        log_message('INFO','#TRAZA|Chofer|Borrar_Chofer() >>');
+    function Borrar_Chofer(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer()');
        
         $resp = $this->Choferes->Borrar_Chofer($this->input->post('chof_id'));
         $chof_id = $this->input->post('chof_id');
-        var_dump();
         if($resp){
           echo "ok";
         }else{
-          log_message('ERROR','#TRAZA|Chofer|Borrar_Chofer() >> $resp: '.$resp);
+          log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer() >> $resp: '.$resp);
           echo "error";
         }
     }
@@ -111,7 +108,7 @@ class Chofer extends CI_Controller {
     * @return bynary imagen
     */    
     function obtener_Imagen(){
-      log_message('INFO','#TRAZA|CIRCUITO|obtener_Imagen() >> ');
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | obtener_Imagen()');
       $resp = $this->Choferes->obtener_Imagen($this->input->post('chof_id'));
       echo json_encode($resp);
     }

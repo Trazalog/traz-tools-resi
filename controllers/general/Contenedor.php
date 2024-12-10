@@ -66,7 +66,7 @@ class Contenedor extends CI_Controller {
       * @return string "error, ok, tipo de carga no asociado"
       */
     function Actualizar_Contenedor(){
-      log_message('INFO','#TRAZA|Contenedor|Actualizar_Contenedor() >>'); 
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Actualizar_Contenedor()'); 
       $datos =  $this->input->post('datos');
       $deletetipo = $this->input->post('deletetipo');
       $carga_tipo = $this->input->post('datos_tipo_carga');
@@ -76,18 +76,18 @@ class Contenedor extends CI_Controller {
       foreach ($carga_tipo as $key => $carga) {
         $tipocarga[$key]['cont_id'] = $cont_id;
         $tipocarga[$key]['tica_id'] = $carga;
-        }
+      }
       $resptipo = $this->Contenedores->Guardar_tipo_carga($tipocarga);
       if (!$resptipo['status']) {
-        log_message('ERROR','#TRAZA|Contenedor|Actualizar_Contenedor() >> $resptipo: '.$resptipo);
+        log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Actualizar_Contenedor() >> $resptipo: '.$resptipo);
         echo "tipo carga no asociado";return;
       } 
-       if($respcont['status']){
-         echo 'ok';
-        } 
-        else{
-          log_message('ERROR','#TRAZA|Contenedor|Actualizar_Contenedor() >> $respcont: '.$respcont);
-          echo 'error';}
+      if($respcont['status']){
+        echo 'ok';
+      }else{
+        log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Actualizar_Contenedor() >> $respcont: '.$respcont);
+        echo 'error';
+      }
     }
     /**
       * Tabla con listado de todos los conteneodres
@@ -124,7 +124,7 @@ class Contenedor extends CI_Controller {
       * @return view Lista_contenedores_Tabla
       */
     function Listar_Contenedor_Tabla(){
-      log_message('INFO','#TRAZA|Contenedor|Listar_Contenedor_Tabla() >>');
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Listar_Contenedor_Tabla()');
        //CODIGO PARA FILTRAR POR TRANSPORTISTA
        $tran_id = usrIdTransportistaByNick();
        $conte =  $this->Contenedores->ObtenerContxTranid($tran_id);

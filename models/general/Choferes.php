@@ -46,14 +46,13 @@ class Choferes extends CI_Model{
     * @param array datos de chofer
     * @return string status del servicio
     */
-    function Modificar_Chofer($chofer)
-    {
-            log_message('INFO','#TRAZA|CHOFERES|Modificar_Chofer() >> ');
-            $data['_put_choferes'] = $chofer;			
-            log_message('DEBUG','#CHOFERES/Modificar_Chofer (datos choferes): '.json_encode($data));		
-            $aux = $this->rest->callAPI("PUT",REST_RESI."/choferes", $data);
-            $aux =json_decode($aux["status"]);
-            return $aux;
+    function Modificar_Chofer($chofer){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Choferes | Modificar_Chofer()');
+        $data['_put_choferes'] = $chofer;			
+        log_message('DEBUG','#CHOFERES/Modificar_Chofer (datos choferes): '.json_encode($data));		
+        $aux = $this->rest->callAPI("PUT",REST_RESI."/choferes", $data);
+        $aux =json_decode($aux["status"]);
+        return $aux;
     }
 
     /**
@@ -61,15 +60,14 @@ class Choferes extends CI_Model{
     * @param int id de chofer
     * @return string status del servicio
     */
-    function Borrar_Chofer($data)
-    {
-            log_message('INFO','#TRAZA|Choferes|Borrar_Chofer() >> ');
-            $chofer['chof_id'] = $data;
-            $post["_delete_choferes"] = $chofer;
-            log_message('DEBUG','#CHOFERES/#Borrar_Chofer: '.json_encode($post));
-            $aux = $this->rest->callAPI("DELETE",REST_RESI."/choferes", $post);
-            $aux =json_decode($aux["status"]);
-            return $aux;	
+    function Borrar_Chofer($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Choferes | Borrar_Chofer()');
+        $chofer['chof_id'] = $data;
+        $post["_delete_choferes"] = $chofer;
+        log_message('DEBUG','#CHOFERES/#Borrar_Chofer: '.json_encode($post));
+        $aux = $this->rest->callAPI("DELETE",REST_RESI."/choferes", $post);
+        $aux =json_decode($aux["status"]);
+        return $aux;	
     }
 
     // ___________________________FUNCIONES OBTENER______________________________
@@ -115,12 +113,10 @@ class Choferes extends CI_Model{
     * @param int chof_id
     * @return bynay imagen
     */
-    function obtener_Imagen($chof_id)
-    {     
-            log_message('INFO','#TRAZA|CHOFERES|obtener_Imagen() >> ');
-            log_message('DEBUG','#TRAZA|CHOFERES|obtener_Imagen(): $chof_id >> '.json_encode($chof_id));
-            $aux = $this->rest->callAPI("GET",REST_RESI."/choferes/imagen/".$chof_id);
-            $aux =json_decode($aux["data"]);
-            return $aux->choferes->imagen;
+    function obtener_Imagen($chof_id){     
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | obtener_Imagen() | $chof_id >> '.json_encode($chof_id));
+        $aux = $this->rest->callAPI("GET",REST_RESI."/choferes/imagen/".$chof_id);
+        $aux =json_decode($aux["data"]);
+        return $aux->choferes->imagen;
     }
 }

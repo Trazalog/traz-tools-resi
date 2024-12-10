@@ -58,7 +58,7 @@ class Contenedores extends CI_Model
     * @return array contendor
     */
     function actualizar_Contenedor($data){
-        log_message('INFO','#TRAZA|Contenedores|actualizar_Contenedor() >> '); 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | actualizar_Contenedor() >> '); 
         $usuario = userNick();
         $data["usuario_app"] = $usuario;
         $post["put_contenedor"]= $data;
@@ -72,7 +72,7 @@ class Contenedores extends CI_Model
     * @return string estatus del servicio
     */
     function eliminar_Contenedor($data){
-        log_message('INFO','#TRAZA|Contenedores|eliminar_Contenedor() >> '); 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | eliminar_Contenedor() >> '); 
         $post["_put_contenedores_estado"] = $data;
         $post2["_put_contenedores_tipocarga_estado"] = $data;
         log_message('DEBUG','#Contenedores/#eliminar_Contenedor: '.json_encode($post));
@@ -88,7 +88,6 @@ class Contenedores extends CI_Model
     * @return string estatus del servicio
     */    
     function borrar_tipo_Carga($data){
-        log_message('INFO','#TRAZA|Contenedores|borrar_tipo_Carga() >> '); 
         $post2["_put_contenedores_tipocarga_estado"] = $data;
         log_message('DEBUG','#Contenedores/#eliminar_Contenedor_tipocarga: '.json_encode($post2));
         $aux2= $this->rest->callAPI("PUT",REST_RESI."/contenedores/tipoCarga/estado", $post2);

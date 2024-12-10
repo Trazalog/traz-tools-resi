@@ -69,8 +69,7 @@
 </div>			
 <!--- FIN TABLA --->
 <!---///////--- MODAL EDITAR ---///////--->
-	<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+	<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-blue">
@@ -94,14 +93,12 @@
 							<input type="text" class="form-control habilitar" id="nombre_edit" name="nombre">
 						</div>
 						<!--_____________________________________________________________-->
-
 						<!--Apellido-->
 						<div class="form-group">
 							<label for="Apellido">Apellido:</label>
 							<input type="text" class="form-control habilitar" id="apellido_edit" name="apellido">
 						</div>
 						<!--_____________________________________________________________-->
-
 						<!--DNI-->
 						<div class="form-group">
 							<label for="DNI">DNI:</label>
@@ -121,7 +118,7 @@
 						<!--_____________________________________________________________-->
 						<!--Direccion-->
 						<div class="form-group">
-							<label for="Direccion">Direccion:</label>
+							<label for="Direccion">Dirección:</label>
 							<input type="text" class="form-control habilitar" id="direccion_edit" name="direccion">
 						</div>
 						<!--_____________________________________________________________-->
@@ -136,7 +133,7 @@
 					<div class="col-md-6 col-sm-6 col-xs-12">
 						<!--Codigo-->
 						<div class="form-group">
-							<label for="Codigo">Codigo:</label>
+							<label for="Codigo">Código:</label>
 							<input type="text" class="form-control habilitar" id="codigo_edit" name="codigo">
 						</div>
 						<!--_____________________________________________________________-->
@@ -144,7 +141,7 @@
 						<div class="form-group">
 							<label for="Empresa">Empresa:</label>
 							<select class="form-control select2 selec_habilitar select2-hidden-accesible " id="tran_id_edit" name="tran_id">
-								<option value="" disabled selected>-Seleccione opcion-</option>
+								<option value="" disabled selected>-Seleccione opción-</option>
 								<?php
                                     foreach ($empresa as $emp) {												
                                         echo '<option value="'.$emp->tran_id.'">'.$emp->razon_social.'</option>';
@@ -157,7 +154,7 @@
 						<div class="form-group">
 							<label for="Carnet">Carnet:</label>
 							<select class="form-control select2 selec_habilitar select2-hidden-accesible" id="carnet_edit" name="carnet">
-								<option value="" disabled selected>-Seleccione opcion-</option>
+								<option value="" disabled selected>-Seleccione opción-</option>
 								<?php
                                     foreach ($carnet as $carn) {											
                                         echo '<option value="'.$carn->tabl_id.'">'.$carn->valor.'</option>';
@@ -166,12 +163,11 @@
 							</select>
 						</div>
 						<!--_____________________________________________________________-->
-
 						<!--Categoria-->
 						<div class="form-group">
-							<label for="Categoria">Categoria:</label>
+							<label for="Categoria">Categoría:</label>
 							<select class="form-control select2 selec_habilitar select2-hidden-accesible" id="cach_id_edit" name="cach_id">
-								<option value="" disabled selected>-Seleccione opcion-</option>
+								<option value="" disabled selected>-Seleccione opción-</option>
 								<?php
                                     foreach ($categoria as $c) {
                                         echo '<option value="'.$c->tabl_id.'">'.$c->valor.'</option>';
@@ -180,7 +176,6 @@
 							</select>
 						</div>
 						<!--_____________________________________________________________-->
-
 						<!--Vencimiento-->
 						<div class="form-group">
 							<label for="Vencimiento">Vencimiento:</label>
@@ -196,7 +191,7 @@
 
 						<!--Habilitacion-->
 						<div class="form-group">
-							<label for="Habilitacion">Habilitacion:</label>
+							<label for="Habilitacion">Habilitación:</label>
 							<input type="text" class="form-control habilitar" id="habilitacion_edit" name="habilitacion">
 						</div>
 						<!--_____________________________________________________________-->
@@ -234,14 +229,10 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-blue">
-				
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h5 class="modal-title" id="exampleModalLabel"> Eliminar Chofer</h5>
-
-				
-               						
+				<h5 class="modal-title" id="exampleModalLabel"> Eliminar Chofer</h5>  						
 			</div>
 			<input id="chof_delete" style="display: none;">
 			<div class="modal-body">
@@ -261,7 +252,6 @@
 	</div>
 </div>
 <!---///////--- FIN MODAL AVISO ---///////--->
-
 <script>
 $(document).ready(function(){		
     var aux= "";	
@@ -438,7 +428,7 @@ $("#btnsave").on("click", function() {
 							} else {
 								wc();
 								$("#cargar_tabla").load(
-									"<?php echo base_url(); ?>index.php/general/Estructura/Chofer/Listar_Chofer");
+									"<?php echo RESI; ?>general/Chofer/Listar_Chofer");
 								$("#modalEdit").modal('hide');
 								alertify.success("Chofer Actualizado con exito");
 							}

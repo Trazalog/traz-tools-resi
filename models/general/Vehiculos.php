@@ -54,27 +54,26 @@ class Vehiculos extends CI_Model
         return $aux->transportistas->transportista;
 	}
 
-		/**
+	/**
 	* Elimina un vehiculo dado su id
 	* @param  string equi_id , numero
 	* @return string status
 	*/
 	function Borrar_vehiculo($data){
-			log_message('INFO','#TRAZA|Vehiculos|Borrar_vehiculo() >> '); 
-			$post["_delete_vehiculos"]= $data;
-			log_message('DEBUG','#Vehiculos/#Borrar_vehiculo: '.json_encode($post));
-			$aux = $this->rest->callAPI("DELETE",REST_RESI."/vehiculos", $post);
-			$aux =json_decode($aux["status"]);
-			return $aux;
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculos | Borrar_Vehiculo()');
+		$post["_delete_vehiculos"]= $data;
+		log_message('DEBUG','#Vehiculos/#Borrar_vehiculo: '.json_encode($post));
+		$aux = $this->rest->callAPI("DELETE",REST_RESI."/vehiculos", $post);
+		$aux =json_decode($aux["status"]);
+		return $aux;
 	}
 
 	function actualizar_Vehiculo($data){
-			log_message('INFO','#TRAZA|Vehiculos|Actualizar_Vehiculo() >> ');   
-			$post["_put_vehiculos"] = $data;
-			log_message('DEBUG','#Vehiculos/Actualizar_Vehiculo: '.json_encode($post));
-			$aux = $this->rest->callAPI("PUT",REST_RESI."/vehiculos", $post);
-			$aux =json_decode($aux["status"]);
-			return $aux;
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculos | actualizar_Vehiculo()');  
+		$post["_put_vehiculos"] = $data;
+		$aux = $this->rest->callAPI("PUT",REST_RESI."/vehiculos", $post);
+		$aux =json_decode($aux["status"]);
+		return $aux;
 	}
 	function obtenerImagen_Vehi_Id($equi_id)
 	{
