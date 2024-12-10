@@ -771,77 +771,55 @@ $(".opcionTolva").change(function(){
         console.table(vehiculo);
         //faltaria la ubicaion, el codigo y tran_id
         var aux =0; 
-        if(vehiculo.descripcion != "")
-        {
-            if(vehiculo.dominio != "")
-            {
-                if(vehiculo.tara != "")
-                {
-                    if(vehiculo.marca != "")
-                    {
-                        if(vehiculo.ubicacion != "")
-                        {
-                            if(vehiculo.codigo != "")
-                            {
-                                if(vehiculo.tran_id != "")
-                                {
-                                    if(vehiculo.fecha_ingreso != "")
-                                    {
+        if(vehiculo.descripcion != ""){
+            if(vehiculo.dominio != ""){
+                if(vehiculo.tara != ""){
+                    if(vehiculo.marca != ""){
+                        if(vehiculo.ubicacion != ""){
+                            if(vehiculo.codigo != ""){
+                                if(vehiculo.tran_id != ""){
+                                    if(vehiculo.fecha_ingreso != ""){
                                         aux = 1;
-                    
                                     }
-                    
                                 }
-                    
                             }
-                    
                         }
-                    
                     }
-                    
                 }
             }
-        
         }
-        if(aux == 1)
-        {
-            if( vehiculo.imagen != "")
-            {
-                    wo();
-                    $.ajax({
-                        type: "POST",
-                        data: {vehiculo},
-                        url: "general/Estructura/Vehiculo/Actualizar_Vehiculo",
-                        success: function (r) {
-                            
-                            console.table(r);
-                            if (r == "ok") {
-                                wc();
-                                $("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Vehiculo/Listar_Vehiculo");
-                                alertify.success("Vehiculo Actualizado con exito");
-                                $("#formVehiculoEdit").data('bootstrapValidator').resetForm();
-                                $("#modalEdit").modal('hide');
-                                $("#modalEdit").modal("hide"); 
-                                $(".esconder").attr("style","left: 38rem; top: -2rem; "); 
-
-                            
-
-                            } else {
-                                wc();
-                                alertify.error("Error al actualizar Vehiculo");
-                                $("#formVehiculoEdit").data('bootstrapValidator').resetForm();
-                                $("#modalEdit").modal("hide"); 
-                                $(".esconder").attr("style","left: 38rem; top: -2rem; "); 
-                            }
+        if(aux == 1){
+            if( vehiculo.imagen != ""){
+                wo();
+                $.ajax({
+                    type: "POST",
+                    data: {vehiculo},
+                    url: "<?php echo RESI; ?>general/Vehiculo/Actualizar_Vehiculo",
+                    success: function (r) {
+                        console.table(r);
+                        if (r == "ok") {
+                            wc();
+                            $("#cargar_tabla").load("<?php echo RESI; ?>general/Vehiculo/Listar_Vehiculo");
+                            alertify.success("Vehiculo Actualizado con exito");
+                            $("#formVehiculoEdit").data('bootstrapValidator').resetForm();
+                            $("#modalEdit").modal('hide');
+                            $("#modalEdit").modal("hide"); 
+                            $(".esconder").attr("style","left: 38rem; top: -2rem; "); 
+                        } else {
+                            wc();
+                            alertify.error("Error al actualizar Vehiculo");
+                            $("#formVehiculoEdit").data('bootstrapValidator').resetForm();
+                            $("#modalEdit").modal("hide"); 
+                            $(".esconder").attr("style","left: 38rem; top: -2rem; "); 
                         }
-                    });
+                    }
+                });
             }else{
                 alert("Atencion!!! No ha cargado una imagen");
             }
         }else{
-                alert("Atencion!!! hay un campo que esta vacio");
+            alert("Atencion!!! hay un campo que esta vacio");
         }
-
     });
 
 //Funcion Eliminar Vehiculo
@@ -855,13 +833,13 @@ $(".opcionTolva").change(function(){
         $.ajax({
                 type: "POST",
                 data: {eliminar},
-                url: "general/Estructura/Vehiculo/Borrar_Vehiculo",
+                url: "<?php echo RESI; ?>general/Vehiculo/Borrar_Vehiculo",
                 success: function (r) {
                     console.table(r);
                     if(r == "ok") {
                         wc();
                         $('#btndelete').hide();
-                        $("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Vehiculo/Listar_Vehiculo");
+                        $("#cargar_tabla").load("<?php echo RESI; ?>general/Vehiculo/Listar_Vehiculo");
                          alertify.success("Vehiculo Eliminado con exito");
                          $("#modalBorrar").modal('hide');
                     } else {          

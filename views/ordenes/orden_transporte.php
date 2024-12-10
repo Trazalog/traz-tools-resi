@@ -306,7 +306,7 @@ function  obtenerTemplateOT(){
       type: "POST",
       data: {sotr_id: sotrid},
       dataType: 'json',
-      url: "<?php echo RESI; ?>Estructura/Ordentransporte/Obtenerteot",
+      url: "<?php echo RESI; ?>estructura/Ordentransporte/Obtenerteot",
       success: function($respuesta) {
         var resp = $respuesta;
       }
@@ -385,7 +385,7 @@ function obtenerchoftran($aux)
 				type: "POST",
 				data: {tran_id: $aux},
 				dataType: 'json',
-				url: "<?php echo RESI; ?>Estructura/Ordentransporte/GetChoferyTransportista",
+				url: "<?php echo RESI; ?>estructura/Ordentransporte/GetChoferyTransportista",
 				success: function($datos) {
 						$("#chofer").removeAttr('readonly');
 						var res = $datos;
@@ -426,7 +426,7 @@ $("#equipo").change(function(){
         type: "POST",
         data: {dom_id: dominio_equipo},
         dataType: 'json',
-        url: "<?php echo RESI; ?>Estructura/Ordentransporte/ObtenerinfoOt",
+        url: "<?php echo RESI; ?>estructura/Ordentransporte/ObtenerinfoOt",
         success: function($respuesta) {
             debugger;
             var resp = $respuesta;
@@ -535,7 +535,7 @@ function Guardar_Orden_transporte(){
             $.ajax({
             type: "POST",
             data: {datos},
-            url: "<?php echo RESI; ?>Estructura/Ordentransporte/Guardar_ordentransporte",
+            url: "<?php echo RESI; ?>estructura/Ordentransporte/Guardar_ordentransporte",
             success: function(respuesta) {
                 debugger;
                 console.log(respuesta);

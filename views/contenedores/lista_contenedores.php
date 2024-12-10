@@ -592,8 +592,6 @@ $("#btnsave").click(function(e){
     deletetipo.eliminado = 1;
     ///////lor tipos a guardar paso 3
     var datos_tipo_carga= $("#tic_id").val(); 
-
-   
     /////////////los datos del contenedor
     var datos = new FormData();
     datos = formToObject(datos);
@@ -607,16 +605,12 @@ $("#btnsave").click(function(e){
     datos.usuario_app = "hugoDS"; 
     datos.imagen = $("#input_aux_img64").val();
     var cont_id = $("#cont_id").val();
-    if($("#Estados").val() != null)
-    {   
+    if($("#Estados").val() != null){   
         console.table($("#Estados").val());
         datos.esco_id = $("#Estados").val();
-      
-
     }else{
         console.table($("#Estados")[0][0].value);
         datos.esco_id = $("#Estados")[0][0].value;
-      
     }
     
     if($("#Habilitacion").val() != null){
@@ -628,24 +622,16 @@ $("#btnsave").click(function(e){
     }
     
     var aux=0;
-    if($("#Codigo").val()!="")
-    {
-        if($("#Descripcion").val()!="")
-        {
-            if($("#Capacidad").val()!="")
-            {
-                if($("#fec_elab_edit").val()!="")
-                {
-                    if($("#Tara").val()!="")
-                    {
-                        if($("#tic_id").val()!="")
-                        {
-                            if($("#Habilitacion").val()!="")
-                            {
-                                if($("#Estados").val()!="")
-                                    {
-                                        aux = 1;
-                                    }
+    if($("#Codigo").val()!=""){
+        if($("#Descripcion").val()!=""){
+            if($("#Capacidad").val()!=""){
+                if($("#fec_elab_edit").val()!=""){
+                    if($("#Tara").val()!=""){
+                        if($("#tic_id").val()!=""){
+                            if($("#Habilitacion").val()!=""){
+                                if($("#Estados").val()!=""){
+                                    aux = 1;
+                                }
                             }
                         }
                     }
@@ -654,74 +640,65 @@ $("#btnsave").click(function(e){
         }
     }
    
-    if (aux==1) 
-    {
-
-        if($("#input_aux_img64").val()!="") 
-        {
+    if (aux==1){
+        if($("#input_aux_img64").val()!=""){
             wo();
             $.ajax({
-                        type: "POST",
-                        data: {datos, deletetipo, datos_tipo_carga, cont_id },
-                        url: "general/Estructura/Contenedor/Actualizar_Contenedor",
-                        success: function (r) {
-                            wc();
-                            console.table(r);
-                            if (r == "ok") {
-                                $("#tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Contenedor/Listar_Contenedor_Tabla");
-                                alertify.success("Contenedor Actualizado con exito");
-                                $("#modalEdit").modal('hide');
-                                $('#formContenedoresedit').data('bootstrapValidator').resetForm();
-                                $(".esconder").attr("style","left: 0rem; top: 1rem; ");
-
-                            
-
-                            } else {
-                                wc();
-                                alertify.error("Error al Actualizar Contenedor");
-                                $('#formContenedoresedit').data('bootstrapValidator').resetForm();
-                                $("#modalEdit").modal('hide');
-                                $(".esconder").attr("style","left: 0rem; top: 1rem; ");
-                            }
-                        }
-                    });
+                type: "POST",
+                data: {datos, deletetipo, datos_tipo_carga, cont_id },
+                url: "<?php echo RESI; ?>general/Contenedor/Actualizar_Contenedor",
+                success: function (r) {
+                    wc();
+                    console.table(r);
+                    if (r == "ok") {
+                        $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
+                        alertify.success("Contenedor Actualizado con exito");
+                        $("#modalEdit").modal('hide');
+                        $('#formContenedoresedit').data('bootstrapValidator').resetForm();
+                        $(".esconder").attr("style","left: 0rem; top: 1rem; ");
+                    } else {
+                        wc();
+                        alertify.error("Error al Actualizar Contenedor");
+                        $('#formContenedoresedit').data('bootstrapValidator').resetForm();
+                        $("#modalEdit").modal('hide');
+                        $(".esconder").attr("style","left: 0rem; top: 1rem; ");
+                    }
+                }
+            });
         }else{
             alert("ATENCION!!! No cargo imagen ");
         }
     }else{
         alert("ATENCION!!! Hay Campos Vacios o ingresados incorrectamente");
     }
-
 });
 
 $("#btndelete").click(function(e){
-    
     var datos = new FormData();
     datos = formToObject(datos);
     datos.cont_id = $("#id_contenedor").val();
     datos.eliminado = 1;
     console.table(datos);
     wo();
-            $.ajax({
-                type: "POST",
-                data: {datos},
-                url: "general/Estructura/Contenedor/Borrar_Contenedor",
-                success: function (r) {
-                    console.table(r);
-                    if(r == "ok") {
-                        wc();
-                        $('#btndelete').hide();
-                        $("#tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Contenedor/Listar_Contenedor_Tabla");
-                         alertify.success("Contenedor Eliminado con exito");
-                         $("#modalBorrar").modal('hide');
-                    } else {              
-                        wc();          
-                        alertify.error("Error al Eliminar Contenedor");
-                        
-                    }
-                }
-            });
-
+    $.ajax({
+        type: "POST",
+        data: {datos},
+        url: "<?php echo RESI; ?>general/Contenedor/Borrar_Contenedor",
+        success: function (r) {
+            console.table(r);
+            if(r == "ok") {
+                wc();
+                $('#btndelete').hide();
+                $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
+                    alertify.success("Contenedor Eliminado con exito");
+                    $("#modalBorrar").modal('hide');
+            } else {              
+                wc();          
+                alertify.error("Error al Eliminar Contenedor");
+                
+            }
+        }
+    });
 });
 
 function ampliarDesc () 

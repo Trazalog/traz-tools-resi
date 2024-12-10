@@ -6,76 +6,61 @@
         <th>Descripcion</th>
         <th>Marca</th>
         </thead>
-
         <!--__________________BODY TABLA___________________________-->
-
         <tbody>
         <?php
-        if($vehiculos)
-        {
-            foreach($vehiculos as $fila)
-            {
-            echo "<tr data-json='".json_encode($fila)."'>";
-            echo    '<td>';
-            echo    '<button type="button" title="Editar" class="btn btn-primary btn-circle btnEditar" data-toggle="modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp
-                    <button type="button" title="Info" class="btn btn-primary btn-circle btnInfo" data-toggle="modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>&nbsp 
-                    <button type="button" title="eliminar" class="btn btn-primary btn-circle btnEliminar" data-toggle="modal" data-target="#modalBorrar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp';
-                
-            echo   '</td>';
-            echo    '<td>'.$fila->dominio.'</td>';
-            echo    '<td>'.$fila->descripcion.'</td>';                       
-            echo    '<td>'.$fila->marca.'</td>';                        
-            echo   '</tr>';
-        }
+        if($vehiculos){
+            foreach($vehiculos as $fila){
+                echo "<tr data-json='".json_encode($fila)."'>";
+                echo    '<td>';
+                echo    '<button type="button" title="Editar" class="btn btn-primary btn-circle btnEditar" data-toggle="modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp
+                        <button type="button" title="Info" class="btn btn-primary btn-circle btnInfo" data-toggle="modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>&nbsp 
+                        <button type="button" title="eliminar" class="btn btn-primary btn-circle btnEliminar" data-toggle="modal" data-target="#modalBorrar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp';
+                echo   '</td>';
+                echo    '<td>'.$fila->dominio.'</td>';
+                echo    '<td>'.$fila->descripcion.'</td>';                       
+                echo    '<td>'.$fila->marca.'</td>';      
+                echo   '</tr>';
+            }
         }
         ?>
         </tbody>
     </table>
-
     <!--__________________FIN TABLA___________________________-->
-
 <script>
 //Convertir a base64 el archivo Imagen
 function getFile(file){
-		var reader = new FileReader();
-		return new Promise((resolve, reject) => {
-			reader.onerror = () => {
-				reader.abort();
-				reject(new Error("Error parsing file"));
-			}
-			reader.onload = function() {
-				//This will result in an array that will be recognized by C#.NET WebApi as a byte[]
-				let bytes = Array.from(new Uint8Array(this.result));
-				//if you want the base64encoded file you would use the below line:
-				let base64StringFile = btoa(bytes.map((item) => String.fromCharCode(item)).join(""));
-				//Resolve the promise with your custom file structure
-				resolve({
-					bytes: bytes,
-					base64StringFile: base64StringFile,
-					fileName: file.name,
-					fileType: file.type
-				});
-			}
-			reader.readAsArrayBuffer(file);
-		});
-	}
-
-
-</script>
-<script>
-
-function cargarImg(){
-   
-    var val = $("#input_aux_img64").val();
-
-    console.table(val);
-    $("#img_base").attr("src",val);
-   
-    return;
-   
+    var reader = new FileReader();
+    return new Promise((resolve, reject) => {
+        reader.onerror = () => {
+            reader.abort();
+            reject(new Error("Error parsing file"));
+        }
+        reader.onload = function() {
+            //This will result in an array that will be recognized by C#.NET WebApi as a byte[]
+            let bytes = Array.from(new Uint8Array(this.result));
+            //if you want the base64encoded file you would use the below line:
+            let base64StringFile = btoa(bytes.map((item) => String.fromCharCode(item)).join(""));
+            //Resolve the promise with your custom file structure
+            resolve({
+                bytes: bytes,
+                base64StringFile: base64StringFile,
+                fileName: file.name,
+                fileType: file.type
+            });
+        }
+        reader.readAsArrayBuffer(file);
+    });
 }
 </script>
-
+<script>
+function cargarImg(){
+    var val = $("#input_aux_img64").val();
+    console.table(val);
+    $("#img_base").attr("src",val);
+    return;
+}
+</script>
 <script>
 async function convert(){
        

@@ -3,11 +3,11 @@
 		<thead class="thead-dark" bgcolor="#eeeeee">
 			<th>Acciones</th>
 			<th>Nombre y Apellido</th>
-			<th>Direccion</th>
+			<th>Dirección</th>
 			<th>Celular</th>
-			<th>Codigo</th>
+			<th>Código</th>
 			<th>Empresa</th>
-			<th>Carnet y Categoria</th>
+			<th>Carnet y Categoría</th>
 			<th>Habiitación</th>
 		</thead>
 
@@ -51,27 +51,24 @@
 	////// funciones imagen EDICION
 		//cada vez que carga una imagen	
 		async function convert_Edit(){       
-			
 			var file = document.getElementById('img_file').files[0];
-			
 			if (file) {
-					
-					var archivo = await getFile(file);			
-					if(archivo.fileType == "image/jpeg"){
-							var cod = "data:image/jpeg;base64,"+archivo.base64StringFile;
-							//var cod = "data:image/png;base64,"+archivo.base64StringFile;
-					}else{
-							if(archivo.fileType == "application/pdf"){
-									var cod = "data:application/pdf;base64,"+archivo.base64StringFile;
-							}				
-					}             
-					console.table(archivo.fileType);				
-					console.table(cod);
-					$("#input_aux_img64").val(cod);
-					console.table($("#input_aux_img64").val());
-					$("#img_base").attr("src",$("#input_aux_img64").val());
-					$("#img_base").attr("width",100);
-					$("#img_base").attr("height",100);			
+				var archivo = await getFile(file);			
+				if(archivo.fileType == "image/jpeg"){
+					var cod = "data:image/jpeg;base64,"+archivo.base64StringFile;
+					//var cod = "data:image/png;base64,"+archivo.base64StringFile;
+				}else{
+					if(archivo.fileType == "application/pdf"){
+						var cod = "data:application/pdf;base64,"+archivo.base64StringFile;
+					}
+				}
+				console.table(archivo.fileType);
+				console.table(cod);
+				$("#input_aux_img64").val(cod);
+				console.table($("#input_aux_img64").val());
+				$("#img_base").attr("src",$("#input_aux_img64").val());
+				$("#img_base").attr("width",100);
+				$("#img_base").attr("height",100);
 			}      
 		}	
 		// trae imagen guardada a vista previa
@@ -82,24 +79,24 @@
 			$(".fa-spinner").show();
     		$("#img_base").hide();
 			$.ajax({
-						type: "POST",
-						data: {chof_id: chof_id},
-						url: "general/Estructura/Chofer/obtener_Imagen",
-						success: function ($dato) {		
-							$(".fa-spinner").hide();
-										var imagen = JSON.parse($dato);	
-										//console.info('imagen en llenar imagen: ' + imagen);						
-										var img_b64 = imagen;									
-										if(img_b64[4]=='a'){
-										pdf(img_b64);
-										}else{
-												if(img_b64[4]=='i'){jpg(img_b64);}
-										}		
-										$("#img_base").show();									
-										//console.table("Como queda src final en llenar imagen: "+img_b64);
-						}
-				});
-			}
+				type: "POST",
+				data: {chof_id: chof_id},
+				url: "<?php echo RESI; ?>general/Chofer/obtener_Imagen",
+				success: function ($dato) {		
+					$(".fa-spinner").hide();
+					var imagen = JSON.parse($dato);	
+					//console.info('imagen en llenar imagen: ' + imagen);						
+					var img_b64 = imagen;									
+					if(img_b64[4]=='a'){
+					pdf(img_b64);
+					}else{
+						if(img_b64[4]=='i'){jpg(img_b64);}
+					}		
+					$("#img_base").show();									
+					//console.table("Como queda src final en llenar imagen: "+img_b64);
+				}
+			});
+		}
 		// carga la imagen en imagen base	
 		function cargarImg(){   
 				var val = $("#input_aux_img64").val();
@@ -255,16 +252,15 @@
 
 	//elimina chof y recarga la tabla
 		function eliminar() {
-
 			var chof_id = $("#chof_delete").val();		
 			wo();
 			$.ajax({
 				type: "POST",
 				data: {	chof_id: chof_id },
-				url: "general/Estructura/Chofer/Borrar_Chofer",
+				url: "<?php echo RESI; ?>general/Chofer/Borrar_Chofer",
 				success: function(result) {
 					wc();
-					$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Chofer/Listar_Chofer");
+					$("#cargar_tabla").load("<?php echo RESI; ?>general/Chofer/Listar_Chofer");
 					$("#modalaviso").modal('hide');
 					alertify.success("Chofer Eliminado con exito");
 				},

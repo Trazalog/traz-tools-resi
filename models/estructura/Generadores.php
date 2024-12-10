@@ -33,31 +33,29 @@ class Generadores extends CI_Model{
     * @return int status
     */
     function Guardar_Generadores($data){
-        log_message('INFO','#TRAZA|Generadores|Guardar_Generadores() >> '); 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generadores | Guardar_Generadores()');
         $usuario = userNick();
         $data['usuario_app'] = $usuario;
-        $post["post_generador"] = $data;           
-        log_message('DEBUG','#Generadores/Guardar_Generadores: '.json_encode($post));
-        $aux = $this->rest->callAPI("POST",REST_RESI."/solicitantesTransporte", $post);
-        $aux =json_decode($aux["data"]);       
-        return $aux->respuesta->sotr_id; 
-		}
+        $post["generador"] = $data;
+        $aux = $this->rest->callAPI("POST",API_URL."/generador", $post);
+        $aux = json_decode($aux["data"]);     
+        return $aux->respuesta->sotr_id;
+    }
 		
-		/**
-		* Guarda batch de tipos de carga asociado a un generador (solicitante de transporte)
-		* @param array tipos de carga y sotro_id
-		* @return 'status' de respuesta servicio
-		*/
-		function guardar_tipo_carga($data)
-		{     
-			log_message('INFO','#TRAZA|GENERADORES|guardar_tipo_carga($data) >> ');
-			$arraycargas['_post_solicitantestransporte_tipocarga'] = $data;
-			$post['_post_solicitantestransporte_tipocarga_batch_req'] = $arraycargas;
-			log_message('DEBUG','#TRAZA|GENERADORES|guardar_tipo_carga($data): $post >> '.json_encode($post));
-			$aux = $this->rest->callAPI("POST",REST_RESI."/_post_solicitantestransporte_tipocarga_batch_req", $post);
-			$aux =json_decode($aux["status"]);
-			return $aux;
-		}
+    /**
+    * Guarda batch de tipos de carga asociado a un generador (solicitante de transporte)
+    * @param array tipos de carga y sotro_id
+    * @return 'status' de respuesta servicio
+    */
+    function guardar_tipo_carga($data){
+        log_message('INFO','#TRAZA|GENERADORES|guardar_tipo_carga($data) >> ');
+        $arraycargas['_post_solicitantestransporte_tipocarga'] = $data;
+        $post['_post_solicitantestransporte_tipocarga_batch_req'] = $arraycargas;
+        log_message('DEBUG','#TRAZA|GENERADORES|guardar_tipo_carga($data): $post >> '.json_encode($post));
+        $aux = $this->rest->callAPI("POST",REST_RESI."/_post_solicitantestransporte_tipocarga_batch_req", $post);
+        $aux =json_decode($aux["status"]);
+        return $aux;
+    }
 
 
     /**
@@ -130,15 +128,14 @@ class Generadores extends CI_Model{
     * @param  array data
     * @return array int status
     */
-    function actualizar_Generador($data)
-    {
-        log_message('INFO','#TRAZA|Generadores|actualizar_Generador() >> ');   
+    function actualizar_Generador($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generadores | actualizar_Generador()');
+        $data['usuario_app'] = userNick();
         $post["solicitante_transporte"] = $data;
-        log_message('DEBUG','#Generadores/actualizar_Generador: '.json_encode($post));
         $aux = $this->rest->callAPI("PUT",REST_RESI."/solicitantesTransporte", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
-		}
+    }
 		
 		/**
 		* Borra tipos de carga asociados a generador
@@ -161,11 +158,9 @@ class Generadores extends CI_Model{
     * @param  array data
     * @return array int status
     */
-    function Borrar_Generador($data)
-    {
-        log_message('INFO','#TRAZA|Generadores|Borrar_Generador() >> '); 
+    function Borrar_Generador($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generadores | Borrar_Generador()');
         $post["estado_nuevo"]= $data;
-        log_message('DEBUG','#Generadores/#Borrar_Generador: '.json_encode($post));
         $aux = $this->rest->callAPI("PUT",REST_RESI."/solicitantesTransporte/estado", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
