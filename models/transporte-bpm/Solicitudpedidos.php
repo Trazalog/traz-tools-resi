@@ -75,8 +75,7 @@ class Solicitudpedidos extends CI_Model{
     * @return array data
     */
     function obtenerTipoResiduos($tran_id){
-        log_message('INFO','#TRAZA|Solicitudpedidos|obtenerTipoResiduos() >> '); 
-        log_message('DEBUG','#Solicitudpedidos/obtenerTipoResiduos: '.json_encode($tran_id));
+        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | obtenerTipoResiduos($tran_id)");
         $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas/$tran_id/tipo/carga");
         $aux =json_decode($aux["data"]);
         return $aux->tiposCarga->cargas;

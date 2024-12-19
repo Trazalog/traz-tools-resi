@@ -264,6 +264,12 @@
 						<p>¿DESEA ELIMINAR EL CONTENEDOR?</p>
 					</h4>
 				</center>
+                <div class="row">
+					<div class="col-md-12">
+                        <label for="motivoEliminacion">Motivo:</label>
+                        <textarea style="width: 100%" id="motivoEliminacion" placeholder="Explique brevemente el motivo"></textarea>
+					</div>
+				</div>
 			</div>
             <div class="modal-footer">
                <center>
@@ -678,11 +684,12 @@ $("#btndelete").click(function(e){
     datos = formToObject(datos);
     datos.cont_id = $("#id_contenedor").val();
     datos.eliminado = 1;
+    motivo = $("#motivoEliminacion").val();
     console.table(datos);
     wo();
     $.ajax({
         type: "POST",
-        data: {datos},
+        data: {datos: datos, motivo: motivo},
         url: "<?php echo RESI; ?>general/Contenedor/Borrar_Contenedor",
         success: function (r) {
             console.table(r);

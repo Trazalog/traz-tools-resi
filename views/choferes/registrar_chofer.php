@@ -241,6 +241,14 @@
 						<p>¿DESEA ELIMINAR EL CHOFER?</p>
 					</h4>
 				</center>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="motivoEliminacion">Motivo:</label>
+							<textarea style="width: 100%" id="motivoEliminacion" placeholder="Explique brevemente el motivo"></textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<center>

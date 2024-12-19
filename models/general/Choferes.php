@@ -62,9 +62,8 @@ class Choferes extends CI_Model{
     */
     function Borrar_Chofer($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Choferes | Borrar_Chofer()');
-        $chofer['chof_id'] = $data;
-        $post["_delete_choferes"] = $chofer;
-        log_message('DEBUG','#CHOFERES/#Borrar_Chofer: '.json_encode($post));
+        $post["_delete_choferes"] = $data;
+        
         $aux = $this->rest->callAPI("DELETE",REST_RESI."/choferes", $post);
         $aux =json_decode($aux["status"]);
         return $aux;	
@@ -103,7 +102,8 @@ class Choferes extends CI_Model{
     */
     public function obtener_Empresa(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Choferes | obtener_Empresa()');
-        $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas");
+        $empr_id = empresa();
+        $aux = $this->rest->callAPI("GET",REST_RESI."/transportista/empresa/".$empr_id);
         $aux =json_decode($aux["data"]);
         return $aux->transportistas->transportista;
     }

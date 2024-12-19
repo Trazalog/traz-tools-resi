@@ -29,13 +29,13 @@ class Solicitud_pedido extends CI_Controller {
 	}
 
 	/**
-	* obtiene los tipos de residuos 
+	* obtiene los tipos de residuos por transportista
 	* @param  string tran_id
 	* @return json tipos de residuos
 	*/        
 	function obtenerTipoRes(){
-		log_message('INFO','#TRAZA |Solicitud_pedido|obtenerTipoRes() >> '); 
-		$tran_id = $this->input->post('id_transportista');
+		log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Solicitud_pedido | obtenerTipoRes()');
+		$tran_id = $this->input->post('tran_id');
 		$resp = $this->Solicitudpedidos->obtenerTipoResiduos($tran_id);
 		echo json_encode($resp);
 	}

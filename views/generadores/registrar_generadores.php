@@ -71,7 +71,7 @@
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
                         <select class="form-control select2 select2-hidden-accesible" name="depa_id" id="depa_id">
-                            <option value="" disabled selected>-Seleccione opcion-</option>
+                            <option value="" disabled selected>-Seleccione opción-</option>
                             <?php
                                 foreach ($departamentos as $dep) {
                                     echo '<option  value="'.$dep->depa_id.'">'.$dep->nombre.'</option>';             
@@ -91,7 +91,7 @@
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
                         <select class="form-control select2 select2-hidden-accesible" name="rubr_id" id="rubr_id">
-                            <option value="" disabled selected>-Seleccione opcion-</option>
+                            <option value="" disabled selected>-Seleccione opción-</option>
                             <?php
                             foreach ($Rubro as $i) {
                                 echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
@@ -110,7 +110,7 @@
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
                         <select class="form-control select2 select2-hidden-accesible" name="tist_id" id="tist_id">
-                            <option value="" disabled selected>-Seleccione opcion-</option>
+                            <option value="" disabled selected>-Seleccione opción-</option>
                             <?php
                             foreach ($Tipogenerador as $i) {
                                 echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
@@ -134,6 +134,18 @@
                     </div>
                 </div>
                 <!--_____________________________________________-->
+                
+                <!--Numero de registro-->
+                <div class="form-group">
+                    <label for="Numero de registro">Número de registro:</label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="glyphicon glyphicon-check"></i>
+                        </div>
+                    <input type="text" class="form-control" name="num_registro" id="num_registro">
+                    </div>
+                </div>
+                <!--_____________________________________________--> 
 
                 <!--Zona-->
                 <div class="form-group">
@@ -143,23 +155,11 @@
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
                         <select class="form-control select2 select2-hidden-accesible" name="zona_id" id="zona_id">
-                            <option value="" disabled selected>-Seleccione opcion-</option>
+                            <option value="" disabled selected>-Seleccione opción-</option>
                         </select>
                     </div>  
                 </div>
                 <!--_____________________________________________-->
-
-                <!--Numero de registro-->
-                <div class="form-group">
-                    <label for="Numero de registro">Numero de registro:</label>
-                    <div class="input-group date">
-                        <div class="input-group-addon">
-                            <i class="glyphicon glyphicon-check"></i>
-                        </div>
-                    <input type="text" class="form-control" name="num_registro" id="num_registro">
-                    </div>
-                </div>
-                <!--_____________________________________________--> 
 
                 <!--Tipo de residuo-->								
                 <div class="form-group">
@@ -224,7 +224,7 @@
                                     <label for="TipoG" >Tipo de generador:</label>
                                     <br>
                                          <select class="form-control select2 select2-hidden-accesible habilitar ocultar" id="E_TipoG"name="e_tipo">
-                                            <option value="" disabled selected>-seleccione opcion-</option>
+                                            <option value="" disabled selected>-seleccione opción-</option>
                                             <?php
                                             foreach ($Tipogenerador as $c) {
                                                 echo '<option  value="'.$c->tabl_id.'">'.$c->valor.'</option>';
@@ -258,7 +258,7 @@
                                     <label for="Zonag" >Zona:</label>
                                     <br>
                                     <select class="form-control select2 select2-hidden-accesible habilitar ocultar" id="E_Zonag" name="e_zonag">
-                                        <option value="" disabled selected>-seleccione opcion-</option>
+                                        <option value="" disabled selected>-Seleccione un departamento-</option>
                                         <?php
                                         foreach ($Zonagenerador as $j) {
                                             echo '<option  value="'.$j->zona_id.'">'.$j->nombre.'</option>';
@@ -410,13 +410,14 @@ $('#depa_id').change(function(e){
         data:{depa_id: depa_id},
         url: "<?php echo RESI; ?>general/Generador/obtener_Zona_departamento",
         success: function(result) {
-            // var sel = document.getElementById("zonaAsociar");
-            // sel.remove(sel.selectedIndex);
             if(result){
                 console.table( ' resultado: ' + result);
+                $("#zona_id").append("<option value='' disabled selected>-Seleccione opción-</option>");
                 $.each(JSON.parse(result), function(key,zona){
                     $('#zona_id').append("<option value='" + zona.zona_id + "'>" +zona.zona_nom+"</option");	
                 });
+            }else{
+                notificar('Error','Departamento seleccionado no posee zonas disponibles.','warning');
             }
         },
         error: function(result){				

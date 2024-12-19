@@ -64,7 +64,7 @@
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
                         </div>
-                        <select class="form-control select2-hidden-accesible" id="transportista_id" name="transportista" required>
+                        <select class="form-control select2-hidden-accesible" id="transportista_id" name="transportista" required onchange="getTipoResiduos()">
                             <option value="" disabled selected>-Seleccione Transportista-</option>
                             <?php
                                 foreach ($transportista as $i) {
@@ -185,13 +185,13 @@
         $('#tabla_contenedores').DataTable().row( $(this).closest('tr') ).remove().draw();
 	});
 
-	$("#botonAgregar").click(function(e){
-        //var id_transportista = $("#transportista option:selected").val();
-        //console.table(id_transportista);
+    function getTipoResiduos(){
+        var tran_id = $("#transportista_id").val();
+        if (tran_id == '') return;
         $.ajax({
             type: "POST",
-            data: {},
-            url: "<?php echo RESI; ?>transporte-bpm/Solicitud_pedido/obtenerTipoResTodos",
+            data: {tran_id : tran_id},
+            url: "<?php echo RESI; ?>transporte-bpm/Solicitud_pedido/obtenerTipoRes",
             success: function($r){
                 var res = JSON.parse($r);
                 console.table(res);
@@ -205,10 +205,11 @@
                 }
             }
         });
-	});
+    }
 
 	//agrega pedido de contedor a la tabla para guardar
 	function Agregar_pedido() {
+        debugger;
 		if($(".cant").val() != ""){
 			console.table($("#tipores").val());
 			$('#pedidos').show();

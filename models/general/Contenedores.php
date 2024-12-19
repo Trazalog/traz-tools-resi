@@ -71,12 +71,10 @@ class Contenedores extends CI_Model
     * @param array datos del contenedor
     * @return string estatus del servicio
     */
-    function eliminar_Contenedor($data){
+    function eliminar_Contenedor($contenedorEstado,$contenedorTipoCarga){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | eliminar_Contenedor() >> '); 
-        $post["_put_contenedores_estado"] = $data;
-        $post2["_put_contenedores_tipocarga_estado"] = $data;
-        log_message('DEBUG','#Contenedores/#eliminar_Contenedor: '.json_encode($post));
-        log_message('DEBUG','#Contenedores/#eliminar_Contenedor_tipocarga: '.json_encode($post2));
+        $post["_put_contenedores_estado"] = $contenedorEstado;
+        $post2["_put_contenedores_tipocarga_estado"] = $contenedorTipoCarga;
         $aux = $this->rest->callAPI("PUT",REST_RESI."/contenedores/estado", $post);
         $aux2= $this->rest->callAPI("PUT",REST_RESI."/contenedores/tipoCarga/estado", $post2);
         $aux =json_decode($aux["status"]);

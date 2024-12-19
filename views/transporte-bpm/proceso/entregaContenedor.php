@@ -12,7 +12,7 @@
 		</div>
 	<!--__________________________-->
     <!--_____________ Nro Pedido _____________-->
-		<div class="form-group">															
+		<div class="form-group" style="display:none">															
 			<label for="NroPedido" class="col-sm-4 control-label">Nro Pedido:</label>
 			<div class="col-sm-8">
 				<input type="text" class="form-control habilitar" name="NroPedido" value="<?php echo $infoSolicitud->sotr_id?>" id="nroPedido" readonly> 

@@ -151,16 +151,18 @@ class Contenedor extends CI_Controller {
       * @param array datos del contenedor
       * @return string "error, ok"
       */
-    function Borrar_Contenedor()
-    {
-      log_message('INFO','#TRAZA|Contenedor|Borrar_Contenedor() >>');
-      $resp = $this->Contenedores->eliminar_Contenedor($this->input->post('datos'));
+    function Borrar_Contenedor(){
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Borrar_Contenedor()');
+      $contenedorTipoCarga = $this->input->post('datos');//Para updatear la tabla log.tipos_carga_contenedores
+      $contenedorEstado = $contenedorTipoCarga;//Para updatear la tabla log.contenedores
+      $contenedorEstado['motivo'] = $this->input->post('motivo');
+      $resp = $this->Contenedores->eliminar_Contenedor($contenedorEstado,$contenedorTipoCarga);
       if($resp){
-         echo "ok";
-         }else{
-         log_message('ERROR','#TRAZA|Contenedor|Borrar_Contenedor() >> $resp: '.$resp); 
-         echo "error";
-         }
+        echo "ok";
+      }else{
+        log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Borrar_Contenedor() >> $resp: '.$resp); 
+        echo "error";
+      }
     }
 
     function GetImagen(){

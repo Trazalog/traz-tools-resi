@@ -90,14 +90,15 @@ class Chofer extends CI_Controller {
     */
     function Borrar_Chofer(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer()');
-       
-        $resp = $this->Choferes->Borrar_Chofer($this->input->post('chof_id'));
-        $chof_id = $this->input->post('chof_id');
+        $data['chof_id'] = $this->input->post('chof_id');
+        $data['motivo'] = $this->input->post('motivo');
+
+        $resp = $this->Choferes->Borrar_Chofer($data);
         if($resp){
-          echo "ok";
+            echo "ok";
         }else{
-          log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer() >> $resp: '.$resp);
-          echo "error";
+            log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer() >> $resp: '.$resp);
+            echo "error";
         }
     }
 

@@ -253,21 +253,26 @@
 	//elimina chof y recarga la tabla
 		function eliminar() {
 			var chof_id = $("#chof_delete").val();		
+			var motivo = $("#motivoEliminacion").val();
+			if (motivo == "") {
+				error("Error","Debe ingresar un motivo de eliminación");
+				return;
+			}
 			wo();
 			$.ajax({
 				type: "POST",
-				data: {	chof_id: chof_id },
+				data: {	chof_id: chof_id, motivo: motivo },
 				url: "<?php echo RESI; ?>general/Chofer/Borrar_Chofer",
 				success: function(result) {
 					wc();
 					$("#cargar_tabla").load("<?php echo RESI; ?>general/Chofer/Listar_Chofer");
 					$("#modalaviso").modal('hide');
-					alertify.success("Chofer Eliminado con exito");
+					alertify.success("Chofer eliminado con éxito");
 				},
 				error: function(result) {
 					wc();
 					$("#modalaviso").modal('hide');
-					alertify.error("Error al Eliminar Chofer");
+					alertify.error("Error al eliminar Chofer");
 				}
 			});
 		}
