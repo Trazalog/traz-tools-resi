@@ -116,7 +116,7 @@ class Contenedor extends CI_Controller {
         $data["estados"] = $this->Contenedores->obtener_Estados();
         $data["carga"] = $this->Contenedores->obtener_Tipo_Carga();
         $data["habilitacion"] = $this->Contenedores->Obtener_Habilitacion();
-        $this->load->view('contenedores/Lista_contenedores',$data);   
+        $this->load->view('contenedores/lista_contenedores',$data);   
     }
       /**
       * Tabla con listado de todos los contenedores para actualizar la anterior
