@@ -30,7 +30,7 @@ class Retirocontenedores extends CI_Model {
   * @return array con info de configuracion de datos para la bandeja de entrada
   */
   public function map($tarea){
-    $data['descripcion'] = 'soy una descripcion'; 
+    $data['descripcion'] = '';
 
     $aux_Sol = $this->obtenerInfoSolRetiro($tarea);    
     $aux = new StdClass();
@@ -81,7 +81,7 @@ class Retirocontenedores extends CI_Model {
   function desplegarVista($tarea){           
     switch ($tarea->nombreTarea) {
       case 'Retira contenedores':
-        log_message('INFO','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | desplegarVista(Retira contenedores): $tarea >> '.json_encode($tarea));
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Retirocontenedores | desplegarVista(Retira contenedores): $tarea >> '.json_encode($tarea));
         $data['contenedores'] = $this->obtenerContenedoresARetirar($tarea->caseId);
         $data['vehiculos'] = $this->obtenerVehiculos();
         

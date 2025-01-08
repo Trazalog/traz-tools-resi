@@ -2,9 +2,9 @@
 <table id="tabla_transportistas" class="table table-bordered table-striped">
     <thead class="thead-dark" bgcolor="#eeeeee">
             <th>Acciones</th>
-            <th>Nombre / Razon social</th>
-            <th>e-Mail</th>
-            <th>Descripcion</th>
+            <th>Nombre / Razón social</th>
+            <th>Usuario Vinculado</th>
+            <th>Descripción</th>
             <th>Registro</th>
     </thead>
     <tbody>

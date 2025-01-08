@@ -3,7 +3,7 @@
     <thead class="thead-dark" bgcolor="#eeeeee">
         <th>Acciones</th>
         <th>Nombre / Razon social</th>
-        <th>e-Mail</th>
+        <th>Usuario vinculado</th>
         <th>Departamento</th>
         <th>Registro</th>
         <!-- <th>Tipo</th> -->

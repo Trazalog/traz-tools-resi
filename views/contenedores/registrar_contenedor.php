@@ -338,7 +338,7 @@ async function convertA(){
                         console.table(r);
                         if (r == "ok") {
                             $("#cargar_tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor");
-                            alertify.success("Contenedor Agregado con exito");
+                            alertify.success("Contenedor agregado con éxito");
 
                             $('#formContenedores').data('bootstrapValidator').resetForm();
                             $("#formContenedores")[0].reset();
@@ -349,7 +349,7 @@ async function convertA(){
                         } else {
                             //console.table(r);
                             wc();
-                            alertify.error("Error al Agregar Contenedor");
+                            alertify.error("Error al agregar contenedor");
                         }
                     }
                 });

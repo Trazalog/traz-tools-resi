@@ -658,7 +658,7 @@ $("#btnsave").click(function(e){
                     console.table(r);
                     if (r == "ok") {
                         $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
-                        alertify.success("Contenedor Actualizado con exito");
+                        alertify.success("Contenedor actualizado con éxito");
                         $("#modalEdit").modal('hide');
                         $('#formContenedoresedit').data('bootstrapValidator').resetForm();
                         $(".esconder").attr("style","left: 0rem; top: 1rem; ");
@@ -697,7 +697,7 @@ $("#btndelete").click(function(e){
                 wc();
                 $('#btndelete').hide();
                 $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
-                    alertify.success("Contenedor Eliminado con exito");
+                    alertify.success("Contenedor Eliminado con éxito");
                     $("#modalBorrar").modal('hide');
             } else {              
                 wc();          

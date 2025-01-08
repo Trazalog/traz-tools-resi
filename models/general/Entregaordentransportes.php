@@ -122,8 +122,8 @@ class Entregaordentransportes extends CI_Model {
         $tarea->infoOTransporte = $this->obtenerInFoOTransporte($tarea->caseId);
         // dataimage/jpegbase64  20 formato que trae
         // 'data:image/jpeg;base64,' formato que tomael src del tag img
-        $imagen = $tarea->infoOTransporte->img_chofer;        
-        $newImgChof = substr_replace($imagen, 'data:image/jpeg;base64,', 0, 20);        
+        $imagen = $tarea->infoOTransporte->img_chofer;
+        $newImgChof = substr_replace($imagen, 'data:image/jpeg;base64,', 0, 20);
         $tarea->infoOTransporte->img_chofer = $newImgChof;
 
         $imagen_vehi = $tarea->infoOTransporte->img_vehiculo;

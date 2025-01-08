@@ -325,7 +325,7 @@
                 success: function(result) {		
                     if(result == 'ok'){
                         $("#modalIncidencia").modal('hide');
-                        alertify.success("Incidencia agregada con exito...");
+                        alertify.success("Incidencia agregada con éxito.");
                     }
                 },
                 error: function(result){

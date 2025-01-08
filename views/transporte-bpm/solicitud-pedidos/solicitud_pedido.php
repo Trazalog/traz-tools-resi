@@ -258,7 +258,7 @@
                     success: function(r) {
                         console.log(r);
                         if (r == 'ok') {
-                            alertify.success("Agregado con exito");
+                            alertify.success("Agregado con éxito");
                             $("#formPedidos")[0].reset();
 
                             $("#boxDatos").hide(500);

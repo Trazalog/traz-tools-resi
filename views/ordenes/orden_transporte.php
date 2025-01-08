@@ -540,7 +540,7 @@ function Guardar_Orden_transporte(){
                 debugger;
                 console.log(respuesta);
                 if (respuesta == "ok") {
-                    alertify.success("Agregado con exito");
+                    alertify.success("Agregado con éxito");
                     $("#formOrden")[0].reset();
                     $("#boxDatos").hide(500);
                     $("#botonAgregar").removeAttr("disabled");

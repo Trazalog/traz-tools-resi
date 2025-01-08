@@ -30,9 +30,10 @@ class Pedidocontenedores extends CI_Model{
     * @return array con info de configuracion de datos para la bandeja de entrada
     */
     public function map($tarea){
-        $data['descripcion'] = 'soy una descripcion';        
+        $data['descripcion'] = '';
 
         $aux_sol_cont = $this->obtenerInfoSolContenedores($tarea)->solicitud;
+        $data['descripcion'] = $aux_sol_cont->observaciones;
         $aux = new StdClass();
         $aux->color = 'warning';
         $aux->texto = 'Estado: '.$aux_sol_cont->estado;
