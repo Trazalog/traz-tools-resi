@@ -49,22 +49,16 @@
              <button type="button" title="Incidencia" calss="btn btn-primary btn-circle" id="incidencia" style="background: #3c8dbc; border-radius: 6rem; border: unset; color: beige; width: 4rem; height: 4rem;"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button>                                     
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="form-group">
             <button type="button" title="Adjuntar Imagen" calss="btn btn-primary btn-circle" id="adjimg" style="background: #3c8dbc; border-radius: 6rem; border: unset; color: beige; width: 4rem; height: 4rem; margin-left: -8rem;"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span></button>
         </div>
     </div>
-
     <div class="col-md-4">
         <div class="form-group">
             <button type="button" title="Certificado de Vuelco" calss="btn btn-primary btn-circle" id="adjimg" style="background: #3c8dbc; border-radius: 6rem; border: unset; color: beige; width: 4rem; height: 4rem; margin-left: -15rem;" onclick="Certificado()"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
         </div>
     </div>
-
-    
-
-    
 </div>
 
 <?php
@@ -73,77 +67,65 @@
         $row = $TamDeposito->row;
         $aux = 0;
         $aux2 = 0;
-        $array=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-       
-           
-            for($j=0; $j<$row; $j++)
-            {
-                $aux2=0;
-                $aux=0;
-                $idcol =0;
-                foreach($Recipientes as $fila)
-                {   
-                    if($fila->row == $j+1 && $fila->row != null){
-                        $aux = 1;
-                        $deposito[] = $fila;
-                    }
+        $array=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z"]; 
+        for($j=0; $j<$row; $j++){
+            $aux2=0;
+            $aux=0;
+            $idcol =0;
+            foreach($Recipientes as $fila)
+            {   
+                if($fila->row == $j+1 && $fila->row != null){
+                    $aux = 1;
+                    $deposito[] = $fila;
                 }
-                echo '<div class="row">';
-                for($i=0; $i<$col; $i++)
-                {   $idcol = $i+1;
-                    $idcol = "BOX" . $array[$j] . $idcol  ;  
-            
-                        echo '<div class="col-xs-2" style="margin-right: -5rem; width: 15.666667%;">';
-                                echo'<div class="thumbnail" style="margin-right: 3rem;">';
-                                    echo'<div class="caption">';
-                                            echo '<h5 style="font-size: 12px; margin-left: 1rem;">'.$idcol.'</h5>';
-                                            if($aux == 1){
-                                                for($t=0;$t<count($deposito);$t++)
-                                                {
-                                                    if($deposito[$t]->col == $i+1)
-                                                    {   $sumai = $i+1;
-                                                        $sumaj = $j+1;
-                                                        $ij = $sumaj.$sumai;
-                                                        $suma = $sumaj."/".$sumai."@".$idcol;
-                                                        if($deposito[$t]->estado == "VACIO"){
-                                                            $aux2 = 1;                                                  
-                                                            echo "<input class='btnvolcar btnMatriz $ij' type='button' name='Volcar' id='$suma'  data-json=".json_encode($deposito[$t])."  value='Volcar' onclick='btnVolcar(this)' style='border-radius: 41rem; width: 5rem; color:#77d86b; border: unset; height: 5rem; '/>";
-                                                            // echo"<button type='button' class='btn btn-default btnvolcar' style='font-size: 10px;' id='$idcol'>Volcar</button>";
-                                                        }else{
-                                                            $aux2= 1;
-                                                            echo "<input class='btnmover btnMatriz $ij'  type='button' name='Mover' id='$suma' value='Mover' onclick='btnMover(this)' style='border-radius: 41rem; width: 5rem; color:#f57474; border: unset; height: 5rem;  '/>";
-                                                            // echo"<button type='button' class='btn btn-default btnMover' style='font-size: 10px;' id='$idcol'>Mover</button>";
-                                                        }
-                                                    }
-                                                }
-                                                if($aux2 == 0){
-                                                    //  echo'<button type="button" class="btn btn-default"></button>';
-                                                }
-                                              
-                                            }else{
-                                                //  echo'<button type="button" class="btn btn-default"></button>';
-                                            } 
-                                            
-                                            
-                                                //  echo'<button type="button" class="btn btn-default">Volcar</button>';
-                                            
-                                            
-                                        echo'</div>';
-                                    echo'</div>';
-                                echo'</div>';
-        
-                }
-                echo '</div>';
-                unset($deposito);
             }
+            echo '<div class="row">';
+            for($i=0; $i<$col; $i++){   
+                $idcol = $i+1;
+                $idcol = "BOX" . $array[$j] . $idcol;
+                echo '<div class="col-xs-2" style="margin-right: -5rem; width: 15.666667%;">';
+                    echo'<div class="thumbnail" style="margin-right: 3rem;">';
+                            echo'<div class="caption">';
+                                echo '<h5 style="font-size: 12px; margin-left: 1rem;">'.$idcol.'</h5>';
+                                    if($aux == 1){
+                                        for($t=0;$t<count($deposito);$t++)
+                                        {
+                                            if($deposito[$t]->col == $i+1)
+                                            {   $sumai = $i+1;
+                                                $sumaj = $j+1;
+                                                $ij = $sumaj.$sumai;
+                                                $suma = $sumaj."/".$sumai."@".$idcol;
+                                                if($deposito[$t]->estado == "VACIO"){
+                                                    $aux2 = 1;                                                  
+                                                    echo "<input class='btnvolcar btnMatriz $ij' type='button' name='Volcar' id='$suma'  data-json='".json_encode($deposito[$t])."'  value='Volcar' onclick='btnVolcar(this)' style='border-radius: 41rem; width: 5rem; color:#77d86b; border: unset; height: 5rem; '/>";
+                                                }else{
+                                                    $aux2= 1;
+                                                    echo "<input class='btnmover btnMatriz $ij'  type='button' name='Mover' id='$suma' value='Mover' onclick='btnMover(this)' style='border-radius: 41rem; width: 5rem; color:#f57474; border: unset; height: 5rem;  '/>";
+                                                }
+                                            }
+                                        }
+                                        if($aux2 == 0){
+                                            //  echo'<button type="button" class="btn btn-default"></button>';
+                                        }
+                                        
+                                    }else{
+                                        //  echo'<button type="button" class="btn btn-default"></button>';
+                                    } 
+                                echo'</div>';
+                            echo'</div>';
+                        echo'</div>';
+            }
+            echo '</div>';
+            unset($deposito);
+        }
         
 ?>
 <div class="col-md-4">
-        <div class="form-group">
-            <button type="button" title="Cancelar seleccion volcar" calss="btn btn-primary btn-circle" id="cancelarsel" style="background: #3c8dbc; border-radius: 6rem; border: unset; color: beige; width: 3rem; height: 3rem;"><span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-             <input type="text" style="display:none;" id="idBox">
-             <input type="text" style="display:none;" id="idRecDestino">                           
-        </div>
+    <div class="form-group">
+        <button type="button" title="Cancelar seleccion volcar" calss="btn btn-primary btn-circle" id="cancelarsel" style="background: #3c8dbc; border-radius: 6rem; border: unset; color: beige; width: 3rem; height: 3rem;"><span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+            <input type="text" style="display:none;" id="idBox">
+            <input type="text" style="display:none;" id="idRecDestino">                           
+    </div>
 </div>
 <div class="text-right">
 	<button class="btn btn-primary" id="redirecciona"  onclick="ReDirecciona()">Re Direccionar</button>
@@ -154,7 +136,7 @@
 <!-- Modlaes Re Direccionar y Mover -->
 <!-- Modal redireccionar-->
 <div class="modal fade" id="modalRedireccionar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-blue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -167,8 +149,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="nro" class="form-label">Vehiculo:</label>
-                                <input size="10" type="text" name="vehiculored" id="vehiculored" min="0" class="form-control input-sm" value="<?php echo $infoOTransporte->dominio?>" readonly>
+                                <label for="nro" class="form-label">Sector de inicio:</label>
+                                <input size="10" type="text" name="sectoriniciored" id="sectoriniciored" min="0" class="form-control input-sm"
+                                    required value="<?php echo $TamDeposito->establecimiento?>" readonly>
                             </div>
                         </div>
                     </div>
@@ -179,23 +162,21 @@
                                 <input size="10" type="text" name="otred" id="otred" min="0" class="form-control input-sm" value="<?php echo $infoOTransporte->ortr_id?>" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="nro" class="form-label">Sector de inicio:</label>
-                                <input size="10" type="text" name="sectoriniciored" id="sectoriniciored" min="0" class="form-control input-sm"
-                                    required value="<?php echo $TamDeposito->establecimiento?>" readonly>
+                                <label for="nro" class="form-label">Vehículo:</label>
+                                <input size="10" type="text" name="vehiculored" id="vehiculored" min="0" class="form-control input-sm" value="<?php echo $infoOTransporte->dominio?>" readonly>
                             </div>
-
                         </div>
                         <div class="col-md-6">
 
                             <div class="form-group">
-                                <label for="nro" class="form-label">Informacion:</label>
+                                <label for="nro" class="form-label">Información:</label>
                                 <input size="10" type="text" name="infored" id="infored" min="0" class="form-control input-sm"
                                 >
                             </div>
                             <div class="form-group">
                                 <label for="nro" class="form-label">Sector de fin:</label>
                                 <select class="form-control select2 select2-hidden-accesible" name="depositos" id="deposito_id">
-                                <option value="" disabled selected>-Seleccione opcion-</option>
+                                <option value="" disabled selected>-Seleccione opción-</option>
                                     <?php
                                         foreach ($depositos as $j) {
                                             echo '<option  value="'.$j->depo_id.'">'.$j->descripcion.'</option>';
@@ -465,12 +446,9 @@
                                                     $suma = $sumaj."/".$sumai."@".$idcol;
                                                     if($deposito[$t]->estado == "VACIO"){
                                                         $aux2 = 1;                                                  
-                                                        echo "<input class='btnvolcar btnMatrizSelreci $ij' type='button' name='Volcar' id='$suma'  data-json=".json_encode($deposito[$t])."  value='Volcar' onclick='btnVolcarRecidest(this)' style='border-radius: 15px; color: #040cff; '/>";
-                                                        // echo"<button type='button' class='btn btn-default btnvolcar' style='font-size: 10px;' id='$idcol'>Volcar</button>";
+                                                        echo "<input class='btnvolcar btnMatrizSelreci $ij' type='button' name='Volcar' id='$suma'  data-json='".json_encode($deposito[$t])."'  value='Volcar' onclick='btnVolcarRecidest(this)' style='border-radius: 15px; color: #040cff; '/>";
                                                     }else{
                                                         $aux2= 1;
-                                                        // echo "<input class='btnmover btnMatriz $ij'  type='button' name='Mover' id='$suma' value='Mover' onclick='btnMover(this)' style='border-radius: 15px; color: red; '/>";
-                                                        // echo"<button type='button' class='btn btn-default btnMover' style='font-size: 10px;' id='$idcol'>Mover</button>";
                                                     }
                                                 }
                                             }
@@ -543,19 +521,7 @@ function GuardaReDirecciona(){
     });
 }
 
-// $(".btnMover").click(function(){
-//    $("#modalMover").modal('show');
-//    var textfilacol = $(".btnMover").attr("id");
-//    console.table(textfilacol);
-   
-// });
-
-// $(".btnvolcar").click(function(){
-//    var textfilacol = $(".btnvolcar").attr("id");
-//    console.table(textfilacol);
-// });
-function btnMover (comp)
-{
+function btnMover (comp){
     $("#modalMover").modal('show');
     let id = comp.id;
     var idfinal = "";
@@ -611,42 +577,32 @@ function btnMover (comp)
 
 // --------------------------------------------------------
 
-function btnVolcar (comp)
-{
+function btnVolcar (comp){
     let id = comp.id;
     console.table("btnVolcar");
     var idfinal = "";
 
     // obtiene el id del boton que se selecciono
-    for(var i=0; i<id.length;i++)
-    {
+    for(var i=0; i<id.length;i++){
         if(id[i]!="/"){
-            if(id[i]!="@")
-            {
+            if(id[i]!="@"){
                 idfinal = idfinal + id[i];
             }
-        
         }
-      
-        if(id[i]=="@")
-        {
+        if(id[i]=="@"){
             i=id.length;
         }
     }
   
-    
-     $("#idBox").val(idfinal); // Guarda el id en un input que esta oculto
-     $("."+idfinal).attr("style","background: #c1f9b7; border-radius: 41rem; width: 5rem; color: #3c8dbc; border: unset; height: 5rem;"); // cambio el color de fondo del boton
-     $(".btnMatriz").attr("disabled", ""); // a todos lo demas botones que de hecho todos tienen la misma clase btnMatriz se los desactiva
-     datareci = JSON.parse($("."+idfinal).attr("data-json")); // aca obtenego todos los datos de ese recipiente
-     console.table(datareci);
-     $("#reci_id").val(datareci.reci_id); // en este input guardo el id del recipiente que luego usare 
-     console.table($("#reci_id").val());
-
-    //  var a = idfinal;
-    //  $("."+id).removeAttr("disabled");
-    
+    $("#idBox").val(idfinal); // Guarda el id en un input que esta oculto
+    $("."+idfinal).attr("style","background: #c1f9b7; border-radius: 41rem; width: 5rem; color: #3c8dbc; border: unset; height: 5rem;"); // cambio el color de fondo del boton
+    $(".btnMatriz").attr("disabled", ""); // a todos lo demas botones que de hecho todos tienen la misma clase btnMatriz se los desactiva
+    datareci = JSON.parse($("."+idfinal).attr("data-json")); // aca obtenego todos los datos de ese recipiente
+    console.table(datareci);
+    $("#reci_id").val(datareci.reci_id); // en este input guardo el id del recipiente que luego usare 
+    console.table($("#reci_id").val());
 }
+
 $("#incidencia").click(function(e){
     $("#modalIncidencia").modal("show");
 });
@@ -656,6 +612,7 @@ $("#adjimg").click(function(e){
 
 $("#cancelarsel").click(function(e){
     var idf =  $("#idBox").val();
+    if(idf == '' || idf == null) return;
     $("."+idf).removeAttr("style");
     $("."+idf).attr("style","border-radius: 41rem; width: 5rem; color:#77d86b; border: unset; height: 5rem; ");
     $(".btnMatriz").removeAttr("disabled", "");

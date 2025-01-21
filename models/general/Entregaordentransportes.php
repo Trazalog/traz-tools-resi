@@ -371,7 +371,7 @@ class Entregaordentransportes extends CI_Model {
 
   function obtenerRecipientes($depo_id){
     log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerRecipientes($depo_id)");
-    $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/recipientes/establecimiento/1/deposito/$depo_id/estado/TODOS/tipo/TODOS/categoria/cate_recipienteBOX");
+    $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/recipientes/establecimiento/5000/deposito/$depo_id/estado/TODOS/tipo/TODOS/categoria/cate_recipienteBOX");
     $aux =json_decode($aux["data"]);
     return $aux->recipientes->recipiente;
   }
@@ -416,7 +416,7 @@ class Entregaordentransportes extends CI_Model {
     $aux =json_decode($aux["status"]);
     return $aux;
   }
-
+  //TODO: No existe este servicio
   function RedireccionarReci($data){
     log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | RedireccionarReci()');
     $aux = $this->rest->callAPI("POST",REST_RESI."/contenedoresEntregados/redireccionar",$data);
