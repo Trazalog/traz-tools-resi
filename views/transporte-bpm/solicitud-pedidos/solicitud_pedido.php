@@ -179,7 +179,37 @@
     </div><!--./box-body-->
 </div><!--./box-->
 <!---//////////////////////////////////////--- FIN BOX 1---///////////////////////////////////////////////////////----->
+<!---//////////////////////////////////////---BOX TABLA ---///////////////////////////////////////////////////////----->
+
+<div class="box box-primary">
+    <div class="box-body">
+        <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+            <div class="row">
+                <div class="col-sm-6"></div>
+                <div class="col-sm-6"></div>
+            </div>        
+
+                <!--__________________TABLA___________________________-->
+
+                    <div class="row"><div class="col-sm-12 table-scroll" id="cargar_tabla"></div>
+
+                <!--__________________TABLA___________________________-->                  
+
+        </div>
+    </div>
+
+<!---//////////////////////////////////////--- FIN BOX TABLA ---///////////////////////////////////////////////////////----->
 <script>
+    $(document).ready(function () {
+        cargarTabla();
+    });
+    //Carga listado de solicitudes de contenedores
+    function cargarTabla(){
+        wo();
+        $("#cargar_tabla").load("<?php echo RESI; ?>transporte-bpm/Solicitud_pedido/listar_solicitudes", () =>{
+            wc();
+        });
+    }
 	// remueve registro de tabla temporal
 	$(document).on("click",".fa-minus",function() {
         $('#tabla_contenedores').DataTable().row( $(this).closest('tr') ).remove().draw();
@@ -250,7 +280,6 @@
                         datos_contenedores.push(getJson(e));
                     });
                 datos.contenedores = datos_contenedores;
-                debugger;
                 $.ajax({
                     type: "POST",
                     data: {datos},
@@ -260,7 +289,7 @@
                         if (r == 'ok') {
                             alertify.success("Agregado con éxito");
                             $("#formPedidos")[0].reset();
-
+                            cargarTabla();
                             $("#boxDatos").hide(500);
                             $("#botonAgregar").removeAttr("disabled");
                             $(".cant").val("");

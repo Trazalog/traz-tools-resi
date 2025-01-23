@@ -101,5 +101,17 @@ class Solicitud_pedido extends CI_Controller {
 				echo 'error';
 		}
 	}
+
+	/**
+	*Lista las solicitudes de contenedores generadas
+	* @param 
+	* @return view lista_solicitud_pedido
+	*/
+	function listar_solicitudes(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitud_pedido | listar_solicitudes()');
+        $data['solicitudes'] = $this->Solicitudpedidos->Listar_Solicitudes_pedido()->sols_cont->sol_cont;
+        
+        $this->load->view('transporte-bpm/solicitud-pedidos/lista_solicitud_pedido',$data);
+	}
 }
 ?>

@@ -19,26 +19,24 @@ class Solicitudpedidos extends CI_Model{
     * @param  string user
     * @return string data
     */
-    function Listar_Solicitudes_pedido(){   
+    function Listar_Solicitudes_pedido(){
         $data = userNick();
-        // $aux = $this->rest->callAPI("GET",REST."/solicitudContenedores/$data"); // servicio que usaria 
-        log_message('INFO','#TRAZA|Solicitudpedidos|Listar_Solicitudes_pedido() >> ');
-        log_message('DEBUG','#Solicitudpedidos/Listar_Solicitudes_pedido: '.json_encode($data));
-        $aux = $this->rest->callAPI("GET",REST_RESI."/solicitudContenedor/$data");
-        $aux =json_decode($aux["data"]);       
-        return $aux; 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitudpedidos | Listar_Solicitudes_pedido()');
+        $aux = $this->rest->callAPI("GET",REST_RESI."/solicitudContenedores/$data");
+        $aux =json_decode($aux["data"]);
+        return $aux;
     }
 
     /**
-     * Guarda solicitud_Pedido
+     * Guarda Solicitudpedidos
     * @param array datos del pedido
     * @return string status
     */
-    function Guardar_Solicitud_pedido($data)
+    function Guardar_Solicitudpedidos($data)
     {   
-        log_message('INFO','#TRAZA|Solicitudpedidos|Guardar_Solicitud_pedido() >> '); 
+        log_message('INFO','#TRAZA|Solicitudpedidos|Guardar_Solicitudpedidos() >> '); 
         $post["post_solicitud"] = $data;
-        log_message('DEBUG','#Solicitudpedidos/Guardar_Solicitud_pedido: '.json_encode($post));
+        log_message('DEBUG','#Solicitudpedidos/Guardar_Solicitudpedidos: '.json_encode($post));
         $aux = $this->rest->callAPI("POST",REST_RESI."/RECURSO", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
@@ -63,7 +61,7 @@ class Solicitudpedidos extends CI_Model{
     * @return array data
     */
     function obtener_Tipo_Carga(){
-        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | obtener_Tipo_Carga()'); 
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitudpedidos | obtener_Tipo_Carga()'); 
         $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/tipo_carga");
         $aux =json_decode($aux["data"]);
         return $aux->valores->valor;
@@ -75,7 +73,7 @@ class Solicitudpedidos extends CI_Model{
     * @return array data
     */
     function obtenerTipoResiduos($tran_id){
-        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | obtenerTipoResiduos($tran_id)");
+        log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitudpedidos | obtenerTipoResiduos($tran_id)");
         $aux = $this->rest->callAPI("GET",REST_RESI."/transportistas/$tran_id/tipo/carga");
         $aux =json_decode($aux["data"]);
         return $aux->tiposCarga->cargas;
@@ -88,7 +86,7 @@ class Solicitudpedidos extends CI_Model{
     */
     function RegistrarPedidoContenedor($data){
         $post["solicitudContenedores"] = $data;
-        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solocitud_Pedido | RegistrarPedidoContenedor() >>'.json_encode($post));
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitudpedidos | RegistrarPedidoContenedor() >>'.json_encode($post));
         // $aux = $this->rest->callAPI("POST",REST."/solicitudContenedores", $post); //servicio que llamaba antes de que caiga el server
         $aux = $this->rest->callAPI("POST",API_URL."/solicitudContenedores",$post);
         $aux = json_decode($aux["status"]);
