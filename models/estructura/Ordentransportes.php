@@ -31,6 +31,7 @@ class Ordentransportes extends CI_Model
     function ObtenerOTpordominio($dominio){
         log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | OrdenTransportes | ObtenerOTpordominio($dominio)");
         $sotr = usrIdGeneradorByNick();
+        $dominio = str_replace(' ','%20',$dominio);
         $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculo/asignadoARetiro/$dominio/solicitanteTransporte/$sotr");
         $aux =json_decode($aux["data"]);
         return $aux;

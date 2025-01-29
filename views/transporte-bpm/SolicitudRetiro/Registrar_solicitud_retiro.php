@@ -172,7 +172,7 @@
       <table style="width: 100%" class="table table-striped" id="tbl_cont">
         <thead class="thead-dark" bgcolor="#eeeeee">
           <th>Acciones</th>
-          <th>Codigo Contenedor</th>
+          <th>Código Contenedor</th>
           <th style="display:none;">Contenedor</th>
           <th>% de llenado</th>
           <th>Mts3</th>
@@ -613,19 +613,16 @@
   // funcion agregar contenedores a tabla 
   function Agregar_contenedor() {
     var validador = 1;
-     if($("#porcentaje").val() != "")
-     { 
-        if($("#metros_cub").val()!= "")
-        {
-          if($("#cont_ent").val() != "")
-          {
-            validador = 0;
-          }
+        if($("#porcentaje").val() != ""){ 
+            if($("#metros_cub").val()!= ""){
+                if($("#cont_ent").val() != ""){
+                    validador = 0;
+                }
+            }
         }
-     }
-     if(validador == 0)
-     {
-          $('#contenedores').show();
+    if(validador == 0){
+        if(!validarContenedorRepetido()) return;
+        $('#contenedores').show();
         //var data = new FormData($('#formPedidos')[0]);
         var data = new FormData();
         data = formToObject(data);
@@ -645,9 +642,9 @@
         $(".btn-guardar-retiro").removeAttr("style");
         //elimina del select los contenedores que se seleccionaron
         // var sel = document.getElementById("tica_id");
-  			// sel.remove(sel.selectedIndex);
+            // sel.remove(sel.selectedIndex);
         var sele = document.getElementById("cont_ent");
-  			sele.remove(sele.selectedIndex);
+            sele.remove(sele.selectedIndex);
         $(".transportistas").attr("style","display:none;");
         var nomtran = $("#transportista option:selected" ).text();
         $("#nom_transportista").removeAttr("style");
@@ -659,16 +656,12 @@
         // $("#btnagregar").attr("style","display:none;");
         // $("#btnmas").removeAttr("style");
        
-     }else{
-       alert("ATENCION!!! verifique que ingreso contenedor, porcentaje de llenado y mts cubicos")
-     }
+    }else{
+        error("Error","Verifique que ingreso contenedor, porcentaje de llenado y mts cúbicos")
+    }
     
   }
 
-  // $("#btnmas").click(function(e){
-  //   $("#btnagregar").removeAttr("style");
-  //   $("#btnmas").attr("style","display:none;");
-  // });
   // remueve registro de lista temporal de contenedres a agregar
   $(document).on("click", ".fa-minus", function() {
     $(this).parents("tr").remove();
@@ -676,7 +669,6 @@
 
   // crea una nueva solicitud de de retiro e inicia un nuevo proceso
   function guardar() {
-    debugger;
     wo();
     var datos = new FormData();
     datos = formToObject(datos);
@@ -688,8 +680,8 @@
 
     var rows = $('#tbl_cont tbody tr');
     rows.each(function(i,e) {  
-				datos_contenedor.push(getJson(e));
-		});
+        datos_contenedor.push(getJson(e));
+    });
 
     //llenarlo afuera del each y aca solo armar el arreglo con el push(getJson(e)) por lo tanto usar dos arreglos uno dentro dep each para obtener bien los datos de la tabla y luego afuera recorrerlo ir armando el modelos e ir insertando en otro arreglo que es el que se enviara como final 
     for(var j=0; j<datos_contenedor.length; j++){
@@ -701,11 +693,10 @@
         contEnt = formToObject(contEnt);
     }
 
-
-	  datos.contenedores = cont_entregados_listo;
+    datos.contenedores = cont_entregados_listo;
 
     if (datos_contenedor.lenght == 0) {
-        alert('Sin Datos para Registrar.');
+        notificar('Alerta','Sin datos para registrar.', 'warning');
         return;
     }else{
 
@@ -749,4 +740,28 @@
     DataTable($('#tabla_transportistas'));
     DataTable($('#tbl_cont'));
   // Datatables 
+
+  function validarContenedorRepetido(){
+    var codigContenedor = $("#cont_ent option:selected").text();
+    var rows = $('#tbl_cont tbody tr');
+    var duplicada = false;
+
+    if(!rows.first().attr('data-json')) return true; //Tabla vacia
+
+    rows.each(function() {
+        var data = $(this).attr('data-json');
+        var dataJson = JSON.parse(data);
+        if (dataJson.codcont === codigContenedor) {
+            duplicada = true;
+            return false;
+        }
+    });
+
+    if (duplicada) {
+        error("Error","El contenedor ya está agregado.");
+        return false;
+    }else{
+        return true;
+    }
+}
   </script>

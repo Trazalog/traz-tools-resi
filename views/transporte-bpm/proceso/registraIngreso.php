@@ -259,13 +259,17 @@
 
 	// pesa camion y llena cantidad neta de contenedor
 		function pesarCamion(){
-	
-			var bruto = parseFloat($("#bruto").val());
+            brutoSinParsear = $("#bruto").val();
+            if(brutoSinParsear == ''){
+                error('Error','Debe ingresar un peso bruto.');
+                return;
+            }
+			var bruto = parseFloat(brutoSinParsear);
 			var tara = parseFloat($("#tara").val());
 			var neto = 0;
 
 			if ( bruto < tara ) {
-				alert("El peso Bruto es menor que la Tara...");
+				error('Error',"El peso bruto es menor que la tara.");
 				return;
 			}
 			neto = bruto - tara;
@@ -274,6 +278,10 @@
 	
 	// cierra tarea
 		function cerrarTareaIngreso(){
+        if($("#peso_neto").val() == ''){ {
+            error('Error','Presione el botón para calcular el peso total.');
+            return;
+        }
 			wo();
 			var taskId = $('#taskId').val();
 			var data= {};

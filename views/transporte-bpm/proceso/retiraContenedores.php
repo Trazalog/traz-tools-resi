@@ -4,11 +4,13 @@
 <table id="tabla_contenedores" class="table table-bordered table-striped">
     <thead class="thead-dark" bgcolor="#eeeeee">
         <th>Seleccionar</th>
-        <th>Codigo</th>
+        <th>Código</th>
         <th>Contenedor</th>
         <th>Tipo Residuo</th>	
         <th>% de Llenado</th>
         <th>mts3</th>
+        <th>Código Contenedor</th>
+        <th>Descripción Contenedor</th>
     </thead>
     <tbody>
         <?php
@@ -23,6 +25,8 @@
                 echo "<td>".$fila->valor."</td>";					
                 echo "<td>".$fila->porc_llenado."</td>";
                 echo "<td>".$fila->mts_cubicos."</td>";
+                echo "<td>".$fila->codigo_contenedor."</td>";
+                echo "<td>".$fila->desc_contenedor."</td>";
                 echo '</tr>';
                 $i++;
             }
