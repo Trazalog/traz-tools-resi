@@ -314,7 +314,7 @@ function  obtenerTemplateOT(){
 }
 
 // funcion agregar contenedores a tabla 
-function AgregarCont($datos) {
+async function AgregarCont($datos) {
    
     // var contenedores = $datos.vehiculoAsignadoARetiro.contenedores;
     // console.table(contenedores);
@@ -345,37 +345,42 @@ function AgregarCont($datos) {
             data.tipo_carga = $datos.vehiculoAsignadoARetiro.contenedores.contenedor[i].tipo_carga;
             data.porc_llenado = $datos.vehiculoAsignadoARetiro.contenedores.contenedor[i].porc_llenado;
             data.mts_cubicos = $datos.vehiculoAsignadoARetiro.contenedores.contenedor[i].mts_cubicos;
-            // TRAE INFO DEL CONTENEDOR - CODIGO PARA MOSTRARLO EN LA TABLA
-            var cont_id = data.cont_id;
-            $.ajax({
-                type: 'POST',
-                data:{cont_id},
-                url: '<?php echo RESI; ?>transporte-bpm/Solicitudretiro/ObtenerContenedorCont_id',
-                success: function(result) {
-                    var cont = JSON.parse(result);
-                    // dibujar tabla temporal
-                    var table = $('#tbl_cont').DataTable();
-                        var row = `<tr data-json='${JSON.stringify(data)}'>  
-                        <td><i class="fa fa-wa fa-minus text-light-blue" style="cursor: pointer; margin-left: 15px;" title="Quitar"></i></td>        
-                        <td style='display:none;'>${data.cont_id}</td>
-                        <td>${cont.codigo}</td>
-                        <td>${data.tipo_carga}</td>
-                        <td>${data.porc_llenado}</td>
-                        <td>${data.mts_cubicos}</td>		
-                        </tr>`;
-                    table.row.add($(row)).draw();
-                    wc();
-                },
-                error: function(result){
-                    wc();
-                    alertify.error('Error Al obtener info de contenedor seleccionado');
-                },
-                complete: function(){
-                }
-            });
-            //FIN LLAMADA
+            
+            try {
+                var cont = await getContenedorData(data.cont_id);
+                var table = $('#tbl_cont').DataTable();
+                var row = `<tr data-json='${JSON.stringify(data)}'>  
+                            <td><i class="fa fa-wa fa-minus text-light-blue" style="cursor: pointer; margin-left: 15px;" title="Quitar"></i></td>        
+                            <td style='display:none;'>${data.cont_id}</td>
+                            <td>${cont.codigo}</td>
+                            <td>${data.tipo_carga}</td>
+                            <td>${data.porc_llenado}</td>
+                            <td>${data.mts_cubicos}</td>		
+                            </tr>`;
+                table.row.add($(row)).draw();
+                wc();
+            } catch (error) {
+                wc();
+                alertify.error(error);
+            }
         }
     }
+}
+// TRAE INFO DEL CONTENEDOR - CODIGO PARA MOSTRARLO EN LA TABLA CON PROMESA
+function getContenedorData(cont_id) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'POST',
+            data: { cont_id },
+            url: '<?php echo RESI; ?>transporte-bpm/Solicitudretiro/ObtenerContenedorCont_id',
+            success: function(result) {
+                resolve(JSON.parse(result));
+            },
+            error: function(result) {
+                reject('Error Al obtener info de contenedor seleccionado');
+            }
+        });
+    });
 }
 
 function obtenerchoftran($aux)

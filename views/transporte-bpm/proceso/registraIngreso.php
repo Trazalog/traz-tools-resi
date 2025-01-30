@@ -278,7 +278,7 @@
 	
 	// cierra tarea
 		function cerrarTareaIngreso(){
-        if($("#peso_neto").val() == ''){ {
+        if($("#peso_neto").val() == ''){
             error('Error','Presione el botón para calcular el peso total.');
             return;
         }

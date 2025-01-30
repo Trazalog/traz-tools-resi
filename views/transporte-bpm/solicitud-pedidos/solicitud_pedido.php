@@ -33,7 +33,7 @@
         <form class="formCircuitos" id="formPedidos">
             <!--_____________________________________________-->
             <!--NRO-->
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="Nro" class="form-label">Nro:</label>
                     <div class="input-group date">
@@ -44,7 +44,7 @@
             </div>
             <!--_____________________________________________-->
             <!--FECHA RETIRO-->
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-3 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="fecha" class="form-label">Fecha:</label>
                     <div class="input-group date">
@@ -57,7 +57,7 @@
             </div>
             <!--_____________________________________________-->
             <!--TRANSPORTISTA-->
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="form-group">
                     <label for="transportista" class="form-label">Transportista:</label>
                     <div class="input-group date">
@@ -75,11 +75,7 @@
                     </div>
                 </div>
             </div>
-            <!--_____________________________________________-->
-            <!--_________________SEPARADOR_________________-->
-            <div class="col-md-12">
-                <hr>
-            </div>    
+            <!--_____________________________________________-->  
         </form>		      
         <!--_____________________________________________-->					
         <!--_____________ SEPARADOR _____________-->
@@ -98,29 +94,42 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <form class="formPedidos" id="formPedidos">
                 <!--TIPO RESIDUOS-->
-                <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="col-md-4 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label for="tipores" class="form-label">Tipo residuo:</label>
+                        <label for="tipores" class="form-label">Tipo residuo<?php echo hreq() ?>:</label>
                         <div class="input-group date">
                             <div class="input-group-addon">
                                     <i class="glyphicon glyphicon-check"></i>
                             </div>
                             <select class="form-control select2 select2-hidden-accesible" id="tipores" name="tipo_residuo" required>
-                                <option value="" disabled selected>-Seleccione opcion-</option>
+                                <option value="" disabled selected>-Seleccione opción-</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <!--_____________________________________________-->
                 <!--CANTIDAD-->
-                <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="col-md-3 col-sm-4 col-xs-12">
                     <div class="form-group">
-                        <label for="Dpto" >Cantidad de contenedor:</label>
+                        <label for="Dpto" >Cantidad de contenedores<?php echo hreq() ?>:</label>
                         <div class="input-group date">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-check"></i>
                             </div>
-                            <input type="number" class="form-control cant"   name="cantidad" id="Tipo de residuos">
+                            <input type="number" class="form-control cant" name="cantidad" id="cantidadContenedores">
+                        </div>          
+                    </div>
+                </div>
+                <!--_____________________________________________-->
+                <!--Mts3-->
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <div class="form-group">
+                        <label for="Volumen" >Mts3:</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-check"></i>
+                            </div>
+                            <input type="number" class="form-control" name="volumen" id="volumen">
                         </div>          
                     </div>
                 </div>
@@ -153,6 +162,7 @@
                             <th>Cantidad Solicitada</th>
                             <th style="display:none;">tica_id</th>
                             <th>Tipo de carga</th>
+                            <th>Mts3</th>
                         </thead>	
                         <tbody>	</tbody>
                     </table>										
@@ -239,35 +249,38 @@
 
 	//agrega pedido de contedor a la tabla para guardar
 	function Agregar_pedido() {
-        debugger;
-		if($(".cant").val() != ""){
+        cantidadPedido = $("#cantidadContenedores").val();
+        tipoResPedido = $("#tipores").val();
+        volumenPedido = $("#volumen").val();
+		if(cantidadPedido != "" && tipoResPedido != ""){
 			console.table($("#tipores").val());
 			$('#pedidos').show();
 			var data = new FormData();
 			data = formToObject(data);
-			data.usuario_app = "hugoDS";
-			data.otro ="";
+			data.otro = ""; //No lleva nada ?
 			data.tica_id = $("#tipores").val();
 			var tipocarga = data.tica_id.substring(10);
-			data.cantidad = $(".cant").val();
+			data.cantidad = cantidadPedido;
+			data.volumen = volumenPedido;
 			var table = $('#tabla_contenedores').DataTable();
 			var row =  `<tr data-json='${JSON.stringify(data)}'> 
                             <td> <i class='fa fa-fw fa-minus text-light-blue' style='cursor: pointer; margin-left: 15px;' title='Nuevo'></i> </td>
                             <td>${data.cantidad}</td>
                             <td style="display:none;">${data.tica_id}</td>
                             <td>${tipocarga}</td>
+                            <td>${volumenPedido}</td>
                         </tr>`;
 			table.row.add($(row)).draw();
 			$(".btn-guardar-pedido").removeAttr("style");
 		}else{
-			alert("ATENCION!!! No ingreso Cantidad");
+			error("No cargo los campos obligatorios");
 		}        
 	}
 
 	// Crea unnuevo pedido de contenedores
 	function Guardar_pedidoContenedor(){
 		if(  $('#tabla_contenedores').DataTable().data().any() ){
-            console.info("tabla insumos (artículos) vacía");
+            // console.info("tabla insumos (artículos) vacía");
             if($("#Fecha").val() != ""){
                 var datos = new FormData();
                 datos = formToObject(datos);

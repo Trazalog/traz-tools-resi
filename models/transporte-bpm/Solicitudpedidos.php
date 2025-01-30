@@ -87,7 +87,6 @@ class Solicitudpedidos extends CI_Model{
     function RegistrarPedidoContenedor($data){
         $post["solicitudContenedores"] = $data;
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Solicitudpedidos | RegistrarPedidoContenedor() >>'.json_encode($post));
-        // $aux = $this->rest->callAPI("POST",REST."/solicitudContenedores", $post); //servicio que llamaba antes de que caiga el server
         $aux = $this->rest->callAPI("POST",API_URL."/solicitudContenedores",$post);
         $aux = json_decode($aux["status"]);
         return $aux;
