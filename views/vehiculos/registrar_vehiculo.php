@@ -33,36 +33,36 @@
         </div>
     </div>
 
-​        <!--_____________________________________________________________-->
+       <!--_____________________________________________________________-->
 
         <div class="box-body">
+            <input type="hidden" value="<?php echo $tran_id ?>" id="transportistaLogeado">
             <form class="formVehiculo" id="formVehiculo"  method="POST" autocomplete="off" class="registerForm">
                 <div class="col-md-6 col-sm-6 col-xs-12">
-
                     <!--Descripcion-->
                         <div class="form-group">
                             <label for="Descripcion" >Descripción:</label>
                             <input type="text" class="form-control" id="descripcion" name="descripcion">
                         </div>
-            ​        <!--_____________________________________________________________-->
+                   <!--_____________________________________________________________-->
 
                     <!--Dominio-->
                         <div class="form-group dominio">
                             <label for="Dominio">Dominio:</label>
                             <input type="text" class="form-control" id="dominio" name="dominio">
                         </div>
-            ​        <!--_____________________________________________________________-->
+                   <!--_____________________________________________________________-->
 
                     <!--Marca-->
                         <div class="form-group">
                             <label for="Marca" >Marca:</label>
                             <input type="text" class="form-control" id="marca" name="marca">
                         </div>
-            ​        <!--_____________________________________________________________-->
+                   <!--_____________________________________________________________-->
                      <!--Condicion-->
                         <div class="form-group">
                             <label for="transportista" >Transportista:</label>
-                            <select class="form-control select2 select2-hidden-accesible" id="tran_id" name="tran_id" >
+                            <select class="form-control select2 select2-hidden-accesible" id="tran_id" name="tran_id" disabled>
                                 <option value="" disabled selected>-Seleccione opción-</option>
                                 <?php
                                     foreach ($transportista as $i) {
@@ -71,8 +71,76 @@
                                 ?>
                             </select>
                         </div>
-            ​        <!--_____________________________________________________________-->
-                                    <!--Tara-->
+                   <!--_____________________________________________________________-->
+                   <!--Adjuntar imagen--> 
+                   <div class="form-group">
+                        <form action="cargar_archivo" method="post" enctype="multipart/form-data"  id="fileimage">
+                            <label for="img_File">Seleccione Imagen</label>
+                            <input type="file" name="imagen" id="img_File" onchange="convertA()" style="font-size: smaller">
+                            <input type="text" id="input_aux_img" style="display:none" >
+                        </form>
+                        <br>
+                        <img src="" alt="" id="imagen" width="" height="">
+                    </div>
+                    <!--_____________________________________________________________-->
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <!--Ubicacion-->
+                    <div style="display:none" class="form-group ubicacion">
+                        <label for="ubicacion">Ubicación:</label>
+                        <input type="text" class="form-control" id="ubicacion" name="ubicacion" >
+                    </div>
+                    <!--_____________________________________________________________-->  
+
+                    <!--Registro-->
+                    <div class="form-group codigo">
+                        <label for="codigo" >Código:</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" >
+                    </div>
+                   <!--_____________________________________________________________--> 
+
+                    <!--Fecha de habilitacion-->
+                    <div class="form-group" >
+                        <label for="fecha_ingreso" >Fecha de Ingreso:</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="date" class="form-control pull-right" id="fecha_ingreso" name="fecha_ingreso">
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label for="optolva" >Posee Tolva:</label>
+                        <select class="form-control select2 select2-hidden-accesible opcionTolva" id="optolva" name="optionsTolva" >
+                            <option value="" disabled selected>-Seleccione opción-</option>
+                            <option value="si">SI</option>
+                            <option value="no">NO</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group Capacidad" style="display:none;">
+                        <label for="codigo" >Capacidad:</label>
+                        <input type="number" class="form-control" id="capacidad" name="capacidad" >
+                    </div>
+
+                    <!--Tipo carga-->
+                    <div class="form-group RSU" style="display:none;">
+                        <label for="rsu">Tipo de residuo:</label>
+                        <div class="input-group date" id="carg">
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>
+                                <select class="form-control select3" multiple="multiple"  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="rsu" name="rsu" required>
+                                    <?php
+                                        foreach ($Rsu as $i) {
+                                            echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
+                                        }
+                                    ?>
+                                </select>
+                        </div>
+                    </div>               
+                    <!--_____________________________________________________________-->
+                    <!--Tara-->
                     <div class="form-group">
                         <label for="Tara" >Tara:</label>
                         <div class="input-group date">
@@ -80,116 +148,7 @@
                                 <input type="number" class="form-control" name="tara" id="tara">
                         </div>
                     </div>
-                    <!--Condicion-->
-                        <!-- <div class="form-group">
-                            <label for="condicion" >Condicion:</label>
-                            <select class="form-control select2 select2-hidden-accesible" id="condicion" name="condicion" >
-                                <option value="" disabled selected>-Seleccione opcion-</option>
-                            </select>
-                        </div> -->
-            ​        <!--_____________________________________________________________-->
-
-                    <!--Modelo-->
-                        <!-- <div class="form-group">
-                            <label for="Modelo" >Modelo:</label>
-                            <input type="text" class="form-control" id="modelo" name="modelo">
-                        </div> -->
-            ​        <!--_____________________________________________________________-->
-
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-
-                    <!--Capacidad-->
-                        <!-- <div class="form-group">
-                            <label for="Capacidad" >Capacidad:</label>
-                            <input type="text" class="form-control" id="Capacidad" name="capacidad">
-                        </div> -->
-            ​        <!--_____________________________________________________________-->
-
-                    <!--Tara-->
-                        <!-- <div class="form-group">
-                            <label for="Tara" >Tara:</label>
-                            <input type="text" class="form-control" id="Tara" name="tara" >
-                        </div> -->
-            ​        <!--_____________________________________________________________-->   
-                    <!--Ubicacion-->
-                        <div class="form-group ubicacion">
-                            <label for="ubicacion">Ubicación:</label>
-                            <input type="text" class="form-control" id="ubicacion" name="ubicacion" >
-                        </div>
-                    <!--_____________________________________________________________-->    
- 
-
-                    <!--Habilitacion-->
-                        <!-- <div class="form-group">
-                            <label for="Habilitacion" >Habilitacion:</label>
-                            <input type="text" class="form-control" id="Habilitacion" name="habilitacion" >
-                        </div> -->
-            ​        <!--_____________________________________________________________-->    
-
-                    <!--Registro-->
-                        <div class="form-group codigo">
-                            <label for="codigo" >Código:</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo" >
-                        </div>
-            ​        <!--_____________________________________________________________--> 
-
-                    <!--Fecha de habilitacion-->
-                        <div class="form-group" >
-                            <label for="fecha_ingreso" >Fecha de Ingreso:</label>
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="date" class="form-control pull-right" id="fecha_ingreso" name="fecha_ingreso">
-                            </div>
-                           
-                        </div>
-
-                        <div class="form-group">
-                            <label for="optolva" >Pose Tolva:</label>
-                            <select class="form-control select2 select2-hidden-accesible opcionTolva" id="optolva" name="optionsTolva" >
-                                <option value="" disabled selected>-Seleccione opción-</option>
-                                <option value="si">SI</option>
-                                <option value="no">NO</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group Capacidad" style="display:none;">
-                            <label for="codigo" >Capacidad:</label>
-                            <input type="number" class="form-control" id="capacidad" name="capacidad" >
-                        </div>
-
-                            <!--Tipo carga-->                
-                        <div class="form-group RSU" style="display:none;">
-                            <label for="rsu">Tipo de residuo:</label>
-                            <div class="input-group date" id="carg">
-                                <div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>
-                                    <select class="form-control select3" multiple="multiple"  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="rsu" name="rsu" required>
-                                
-                                        <?php
-                                            foreach ($Rsu as $i) {
-                                                
-
-                                                echo '<option  value="'.$i->tabl_id.'">'.$i->valor.'</option>';
-                                            }
-                                        ?>
-                                    </select>
-                            </div>
-                        </div>               
-            ​        <!--_____________________________________________________________-->
-                          <!--Adjuntar imagen--> 
-                        <div class="form-group">
-                            <form action="cargar_archivo" method="post" enctype="multipart/form-data"  id="fileimage">
-                                <label for="img_File">Seleccione Imagen</label>
-                                <input type="file" name="imagen" id="img_File" onchange="convertA()" style="font-size: smaller">
-                                <input type="text" id="input_aux_img" style="display:none" >
-                            </form>
-                            <br>
-                            <img src="" alt="" id="imagen" width="" height="">
-                        </div>
-                   
-
+                   <!--_____________________________________________________________-->
                 </div>
 
                     <!--__________________SEPARADOR__________________-->            
@@ -197,19 +156,6 @@
                 <div class="col-md-12"><hr></div>
 
                     <!--__________________SEPARADOR__________________-->
-
-<!--                    
-                        <div class="col-md-6">
-                            <form action="cargar_archivo" method="post" enctype="multipart/form-data">
-                                <input type="file" name="imagen" id="img_File" onchange="convertA()" style="font-size: smaller" id="img_Id">
-                                <input type="text" id="input_aux_img" style="display:none" >
-                            </form>
-                            <img src="" alt="" id="img_Base" width="" height="">
-                        </div> -->
-                    <!--_____________________________________________-->           
-                    <!--_____________________________________________________________-->            
-
-                <div class="col-md-12"><hr></div><br>
 
                     <!--Boton de guardado--> 
                         <button type="submit" class="btn btn-primary pull-right" onclick="GuardarVhiculo()">Guardar</button>
@@ -256,7 +202,6 @@
                         <form class="formVehiculoEdit" id="formVehiculoEdit"  method="POST" autocomplete="off" class="registerForm">
                             <div class="modal-body">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                    
                                     <!--Descripcion-->
                                         <div class="form-group">
                                             <label for="descripcion" >Descripcion:</label>
@@ -273,23 +218,19 @@
                                             <label for="dominio">Dominio:</label>
                                             <br>
                                             <input type="text" class="form-control habilitar redimensionar"  id="e_dominio" name="e_dominio">
-                                        </div>           ​            
+                                        </div>          
                                     <!--Tara-->
                                     <div class="form-group">
                                         <label for="Tara" >Tara:</label>
-                                        
                                         <br>
-                                                <input type="number" class="form-control habilitar redimensionar" name="taraedit" id="taraedit">
-                                        
+                                        <input type="number" class="form-control habilitar redimensionar" name="taraedit" id="taraedit">
                                     </div>
                                     <!--Marca-->
-                                        <div class="form-group">
-                                            <label for="marca" >Marca:</label>
-                                            <br>
-                                            <input type="text" class="form-control habilitar redimensionar" id="e_marca" name="e_marca">
-                                        </div>       
-                                               
-
+                                    <div class="form-group">
+                                        <label for="marca" >Marca:</label>
+                                        <br>
+                                        <input type="text" class="form-control habilitar redimensionar" id="e_marca" name="e_marca">
+                                    </div>       
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <!--Ubicacion-->
@@ -310,9 +251,9 @@
                                         <select class="form-control select2 select2-hidden-accesible redimensionar" id="e_tran_id" name="e_tran_id" >
                                             <option value=""  disabled selected  >-seleccione opcion-</option>
                                             <?php 
-                                                                        foreach ($transportista as $j) { 
-                                                                            echo '<option  value="'.$j->tran_id.'">'.$j->razon_social.'</option>'; 
-                                                                        } 
+                                                foreach ($transportista as $j) { 
+                                                    echo '<option  value="'.$j->tran_id.'">'.$j->razon_social.'</option>'; 
+                                                } 
                                             ?> 
                                         </select>
                                     </div> 
@@ -331,21 +272,21 @@
                                             </div>
                                         
                                         </div>
-                                         <!--__________________SEPARADOR__________________-->            
-
-                                         <div class="col-md-12"><hr></div>
-
-                                    
-                                        <div class="form-group">
-                                            <label for="CircR" name="img">Imagen:</label>
-                                            <input type="file" class="ocultar" name=img id="img_file" onchange="convert()" style="font-size: smaller;" id="files" style="color:transparent;">
-                                            <input type="text" id="input_aux_img64" style="display:none" >
-                                            <input type="text" id="input_aux_zonaID" style="display:none" > 
-                                            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>  
-                                            <br>                                
-                                            <img src="" alt="no hay imagen! cargue una" id="img_base" width="" height="">
+                                    </div>
+                                    <!--Imagen-->
+                                    <!-- <div class="row"> -->
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="CircR" name="img">Imagen:</label>
+                                                <input type="file" class="ocultar" name=img id="img_file" onchange="convert()" style="font-size: smaller;" id="files" style="color:transparent;">
+                                                <input type="text" id="input_aux_img64" style="display:none" >
+                                                <input type="text" id="input_aux_zonaID" style="display:none" > 
+                                                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>  
+                                                <br>                                
+                                                <img src="" alt="no hay imagen! cargue una" id="img_base" width="" height="">
+                                            </div>
                                         </div>
-                                </div>  
+                                    <!-- </div> -->
                             </div>
                         </form>
                     </div>
@@ -498,14 +439,11 @@ async function convertA(){
         var aux = "";
         $("#img_File").val(aux);
 		$("#imagen").attr("src",aux);
-				
-        $(".dominio").attr("style","margin-top: -2rem;");
-        $(".ubicacion").attr("style","margin-top: -2rem;");
-        $(".codigo").attr("style","margin-top: -2rem;");
         var aleatorio = Math.round(Math.random() * (100 - 1) + 1);
         $("#nro").val(aleatorio);
         $("#botonAgregar").attr("disabled", "");
-        //$("#boxDatos").removeAttr("hidden");
+        var tran_id = $("#transportistaLogeado").val();
+        $("#tran_id").val(tran_id);//Solo se puede cargar choferes para el transportista logeado
         $("#boxDatos").focus();
         $("#boxDatos").show();
     });

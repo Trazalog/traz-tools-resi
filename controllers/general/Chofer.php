@@ -55,8 +55,10 @@ class Chofer extends CI_Controller {
     * @return view Lista_choferes
     */
     function Listar_Chofer(){
-        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Listar_Chofer()');
-        $data["choferes"] = $this->Choferes->Listar_Chofer();        
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Chofer | Listar_Chofer()');
+        $this->load->model('estructura/Ordentransportes');
+        $tran_id = $this->Choferes->getIDTransportista();
+        $data["choferes"] = $this->Choferes->Listar_Choferes($tran_id);
         $this->load->view('choferes/lista_choferes',$data);
     }
     // _________________________________________________________
@@ -90,15 +92,14 @@ class Chofer extends CI_Controller {
     */
     function Borrar_Chofer(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer()');
-        $data['chof_id'] = $this->input->post('chof_id');
-        $data['motivo'] = $this->input->post('motivo');
-
-        $resp = $this->Choferes->Borrar_Chofer($data);
+       
+        $resp = $this->Choferes->Borrar_Chofer($this->input->post('chof_id'));
+        $chof_id = $this->input->post('chof_id');
         if($resp){
-            echo "ok";
+          echo "ok";
         }else{
-            log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer() >> $resp: '.$resp);
-            echo "error";
+          log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Chofer | Borrar_Chofer() >> $resp: '.$resp);
+          echo "error";
         }
     }
 

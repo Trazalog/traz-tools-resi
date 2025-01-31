@@ -26,9 +26,11 @@
     */
     function templateVehiculos(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | templateVehiculos()');
+        $this->load->model('general/Choferes');
         $data["vehiculos"] = $this->Vehiculos->Listar_Vehiculo();
         $data["transportista"] = $this->Vehiculos->Obtener_Transportista();
         $data['Rsu'] = $this->Vehiculos->obtener_RSU();
+        $data['tran_id'] = $this->Choferes->getIDTransportista();//Solo debe poder seleccionarse el transportista que esta logueado
         $this->load->view('vehiculos/registrar_vehiculo',$data);
     }
 

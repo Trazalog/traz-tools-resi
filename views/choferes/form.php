@@ -5,21 +5,21 @@
         <div class="form-group">
             <label for="Nombre">Nombre:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="nombre" name="nombre">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Apellido-->
         <div class="form-group">
             <label for="Apellido">Apellido:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="apellido" name="apellido">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--DNI-->
         <div class="form-group">
             <label for="DNI">DNI:</label>
             <input type="number" <?php echo req() ?> class="form-control" id="documento" name="documento">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Fecha de nacimiento-->
@@ -31,14 +31,14 @@
                 </div>
                 <input type="date" <?php echo req() ?> class="form-control" id="fec_nacimiento" name="fec_nacimiento">
             </div>
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Direccion-->
         <div class="form-group">
-            <label for="Direccion">Direccion:</label>
+            <label for="Direccion">Dirección:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="direccion" name="direccion">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Celular-->
@@ -52,51 +52,51 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <!--Codigo-->
         <div class="form-group">
-            <label for="Codigo">Codigo:</label>
+            <label for="Codigo">Código:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="codigo" name="codigo">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Empresa-->
         <div class="form-group">
             <label for="Empresa">Empresa:</label>
             <select <?php echo req() ?> class="form-control select2 select2-hidden-accesible" id="tran_id" name="tran_id">
-                <option value="" disabled selected>-Seleccione opcion-</option>
+                <option value="" disabled selected>-Seleccione opción-</option>
                 <?php
-										foreach ($empresa as $empre) {
-												echo '<option value="'.$empre->tran_id.'">'.$empre->razon_social.'</option>';
-										}
-								?>
+                    foreach ($empresa as $empre) {
+                            echo '<option value="'.$empre->tran_id.'">'.$empre->razon_social.'</option>';
+                    }
+                ?>
             </select>
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Carnet-->
         <div class="form-group">
             <label for="Carnet">Carnet:</label>
             <select <?php echo req() ?> class="form-control select2 select2-hidden-accesible" id="carnet" name="carnet">
-                <option value="" disabled selected>-Seleccione opcion-</option>
+                <option value="" disabled selected>-Seleccione opción-</option>
                 <?php
-										foreach ($carnet as $car) {
-												echo '<option value="'.$car->tabl_id.'">'.$car->valor.'</option>';
-										}
-								?>
+                    foreach ($carnet as $car) {
+                            echo '<option value="'.$car->tabl_id.'">'.$car->valor.'</option>';
+                    }
+                ?>
             </select>
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Categoria-->
         <div class="form-group">
-            <label for="Categoria">Categoria:</label>
+            <label for="Categoria">Categoría:</label>
             <select <?php echo req() ?> class="form-control select2 select2-hidden-accesible" id="cach_id" name="cach_id">
-                <option value="" disabled selected>-Seleccione opcion-</option>
+                <option value="" disabled selected>-Seleccione opción-</option>
                 <?php
-										foreach ($categoria as $categ) {
-												echo '<option value="'.$categ->tabl_id.'">'.$categ->valor.'</option>';
-										}
-								?>
+                    foreach ($categoria as $categ) {
+                            echo '<option value="'.$categ->tabl_id.'">'.$categ->valor.'</option>';
+                    }
+                ?>
             </select>
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Vencimiento-->
@@ -109,14 +109,14 @@
                 <input type="date" <?php echo req() ?> class="form-control pull-right" id="vencimiento" name="vencimiento">
             </div>
             <!-- /.input group -->
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
         <!--Habilitacion-->
         <div class="form-group">
-            <label for="Habilitacion">Habilitacion:</label>
+            <label for="Habilitacion">Habilitación:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="habilitacion" name="habilitacion">
-        </div> ​
+        </div>
         <!--_____________________________________________________________-->
 
     </div>

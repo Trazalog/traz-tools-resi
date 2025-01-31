@@ -5,12 +5,10 @@
     <thead class="thead-dark" bgcolor="#eeeeee">
         <th>Seleccionar</th>
         <th>Código</th>
-        <th>Contenedor</th>
+        <th>Descripción</th>
         <th>Tipo Residuo</th>	
         <th>% de Llenado</th>
         <th>mts3</th>
-        <th>Código Contenedor</th>
-        <th>Descripción Contenedor</th>
     </thead>
     <tbody>
         <?php
@@ -20,13 +18,11 @@
                 echo "<tr id='".$i."' data-registro='".$i."' data-json='".json_encode($fila)."'>";
                 // echo "<td><button type='button' title='Eliminar' class='btn btn-primary btn-circle btnEliminar' id='btnBorrar'><span class='glyphicon glyphicon-ok' aria-hidden='true' ></span></button>&nbsp</td>";
                 echo "<td> <input type='checkbox' id='".$i."' name='cont' value='".$i."'></td>";
-                echo "<td>".$fila->cont_id."</td>";						
-                echo "<td>".$fila->coen_id."</td>";
+                echo "<td>".$fila->codigo_contenedor."</td>";						
+                echo "<td>".$fila->desc_contenedor."</td>";
                 echo "<td>".$fila->valor."</td>";					
                 echo "<td>".$fila->porc_llenado."</td>";
                 echo "<td>".$fila->mts_cubicos."</td>";
-                echo "<td>".$fila->codigo_contenedor."</td>";
-                echo "<td>".$fila->desc_contenedor."</td>";
                 echo '</tr>';
                 $i++;
             }
@@ -72,10 +68,9 @@
 <table id="tbl_temporal" class="table table-bordered table-striped">
     <thead class="thead-dark" bgcolor="#eeeeee">
         <th>Borrar</th>
-        <th>id Contenedor</th>
-        <th>Codigo Contenedor</th>
-        <th>id vehiculo</th>
-        <th>Dominio</th>
+        <th>Contenedor</th>
+        <th>Descripción</th>
+        <th>Vehículo</th>
     </thead>
     <tbody>
     </tbody>
@@ -107,7 +102,7 @@ function agregar(){
         var id_row = $(this).parents("tr").attr("data-registro");
         if (datos != null) {	
             var d = JSON.parse(datos);
-            var dom= $("#vehiculo").val();
+            var dom = $("#vehiculo").val();
             var dompat = $("#vehiculo option:selected").text();
             //trae info del contenedor
             var cont_id = d.cont_id;
@@ -120,13 +115,16 @@ function agregar(){
                     var cont = JSON.parse(result);
                     // dibujar tabla temporal
                     if (!(reg).hasClass("hidden")) {
-                        $("#tbl_temporal").DataTable().row.add([
+                        var row = $("#tbl_temporal").DataTable().row.add([
                             '<button type="button" title="Eliminar" class="btn btn-primary btn-circle btnEliminar" onclick="sacar('+ id_row +')"><span class="glyphicon glyphicon-trash" aria-hidden="true" ></span></button>',
-                            d.coen_id,
                             cont.codigo,
-                            dom,
+                            cont.descripcion,
                             dompat
-                        ]).draw().node().id = id_row;
+                        ]).draw().node();
+                        d.dominio = dom;
+                        d.dominioPatente = dompat;
+                        $(row).attr("data-json", JSON.stringify(d));
+                        row.id = id_row;
                         //oculto el registro de la tabla principal
                         reg.addClass('hidden');
                     } 
@@ -151,7 +149,6 @@ function sacar(data){
 
 function guardar(){
 	wo();
-	debugger;
 	// valida si el retiro es completo
     var rows = $("#tabla_contenedores tbody tr");
     var retiro = {};
@@ -169,12 +166,10 @@ function guardar(){
     var contAsign = [];
 
     fila.each(function(i,e) { 
-
-        var contenedor= $(this).find("td").eq(1).html();	
-        var vehiculo = $(this).find("td").eq(3).html();	
+        var dataJson = JSON.parse($(this).attr("data-json"));
         tmp = {};		
-        tmp.coen_id = contenedor;
-        tmp.equi_id = vehiculo;
+        tmp.coen_id = dataJson.coen_id;
+        tmp.equi_id = dataJson.dominio;
         contAsign.push(tmp);
     });
 	// cierra tarea y guarda en tablas

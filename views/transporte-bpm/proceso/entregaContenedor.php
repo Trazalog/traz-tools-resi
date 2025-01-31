@@ -21,7 +21,7 @@
 	<!--__________________________-->
       <!--_____________ Direccion _____________-->
 		<div class="form-group">															
-			<label for="Direcc" class="col-sm-4 control-label">Direccion:</label>
+			<label for="Direcc" class="col-sm-4 control-label">Dirección:</label>
 			<div class="col-sm-8">
 				<input type="text" class="form-control habilitar" name="Direcc" value="<?php echo $infoSolicitud->domicilio?>" id="Direccion" readonly> 
 			</div>	
@@ -41,7 +41,7 @@
 <!--_________________SEPARADOR_________________-->
 <!--Camiones aca en este select se sacara el equi_id que luego va en el json para el servicio /contenedores/entregados/entregar-->
 <div class="form-group camion">
-    <label for="camion">Camion:</label>
+    <label for="camion">Camión:</label>
     <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                    
         <select class="form-control select2 select2-hidden-accesible" name="camion" id="camion_id">
             <option value="" disabled selected>-Seleccione opción-</option>
@@ -141,64 +141,35 @@
 <!--_____________ Fin taba _____________-->
 
 <!--_________________SEPARADOR_________________-->
-<div class="col-md-12 col-sm-12 col-xs-12"></div>
+<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
 <!--_________________SEPARADOR_________________-->
-    
-    <!--__________________________________________________________________________________________-->
-    <!-- en el boton agregar al clikear debe agregar en la tabla de entrega contenedores la nueva entrega junto con las entrega anteriores  -->
-    <!-- <div class="text-right"> 
-	<button class="btn btn-success estadoTarea" id="agregar" onclick="agregar()">Agregar</button>
-	</div> -->
-    <!--_________________SEPARADOR_________________-->
-    <div class="col-md-12 col-sm-12 col-xs-12"></div>
-    <!--_________________SEPARADOR_________________-->
 
 <!--_____________ Entrega Anteriores aca los datos son del servicio contenedoresEntregados/$soco_id con estos debo calcular la cantidad pendiente_____________-->
 <div class="box-body table-scroll">		
-			<table id="tbl_contenedoresagregados" class="table table-bordered table-striped" style="display:none">
-				<thead class="thead-dark" bgcolor="#eeeeee">				
-						<tr>
-								<th>Acciones</th>
-								<th style="display:none">Tipo de Residuos</th>
-								<th>Tipo de Carga</th>
-								<th style="display:none">Camion</th>
-								<th>Camion Dominio</th>
-								<th>Contenedor</th>
-						</tr>
-				</thead>
-				<tbody>
-						<?php
-							// if($infoContenedoresEntregados)
-							// {
-							// 	foreach($infoContenedoresEntregados as $fila)
-							// 	{
-							// 		echo "<tr dataa-json='".json_encode($fila)."'>";
-							// 		//echo "<tr data-json= >";
-										
-							// 			echo "<td>".$fila->tica_id."</td>";
-							// 			echo "<td>".$fila->cantidad."</td>";										
-                            //             echo "<td>".$fila->cantidad_acordada."</td>";
-                            //             // echo "<td> <input id='' style='border:none;' placeholder='Ingrese cantidad'> </td>";
-							// 		echo '</tr>';
-							// 	}
-							// }
-							// else
-							// {
-							// 			echo "<td>---</td>";
-							// 			echo "<td>---</td>";
-							// 			echo "<td>---</td>";
-							// }
-						?>
-				</tbody>
-		</table>
+    <table id="tbl_contenedoresagregados" class="table table-bordered table-striped" style="display:none">
+        <thead class="thead-dark" bgcolor="#eeeeee">				
+            <tr>
+                <th>Acciones</th>
+                <th style="display:none">Tipo de Residuos</th>
+                <th>Tipo de Carga</th>
+                <th style="display:none">Camion</th>
+                <th>Camión Dominio</th>
+                <th>Código</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
 <!--_____________ Fin taba _____________-->
 
 <!--_________________SEPARADOR_________________-->
-<div class="col-md-12 col-sm-12 col-xs-12"></div>
-    <!--_________________SEPARADOR_________________-->
-    <!-- aca realiza la entrega y envia o inserta con el servicio /contenedores/entregados/entregar -->
-    <div class="text-right">
+<div class="col-md-12 col-sm-12 col-xs-12"><hr></div>
+<!--_________________SEPARADOR_________________-->
+
+<!-- aca realiza la entrega y envia o inserta con el servicio /contenedores/entregados/entregar -->
+<div class="text-right">
 	<button class="btn btn-success estadoTarea" style="display:none" id="entrega" onclick="RealizarEntrega()">Realizar Entrega</button>
 </div>
 <div class="text-right">
@@ -210,26 +181,23 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-blue">
-				<h5 class="modal-title" ><span class="fa fa-fw fa-times-circle" style="color:#A4A4A4"></span>Seleccion de Contenedor</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true" >&times;</span>
 				</button>
+				<h3 class="modal-title" >Contenedores disponibles</h3>
 			</div>
 			<input id="circuito_delete" style="display: none;">
 			<div class="modal-body">
+                <p>Los contenedores estan filtrados por tipos de residuos habilitados a transportar.</p>
 				<center>
-				<h3><p>Seleccione un Contenedor</p></h3>
-				<label for="cont">Contenedor:</label>
-                        <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                    
-                            <select class="form-control select2 select2-hidden-accesible" name="cont" id="cont_id">
-                                <option value="" disabled selected>-Seleccione opción-</option>
-                                    <?php
-                                        // foreach ($contenedores as $k) {
-                                        //     echo '<option  value="'.$k->cont_id.'">'.$k->codigo.'</option>';
-                                        // }
-                                    ?>
-                            </select>
-                        </div>			
+                    <h3>
+                        <p>Seleccione un Contenedor</p>
+                    </h3>
+                    <div class="input-group date"><div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>                    
+                        <select class="form-control select2 select2-hidden-accesible" name="cont" id="cont_id">
+                            <option value="" disabled selected>-Seleccione opción-</option>
+                        </select>
+                    </div>			
 				</center>
 				<input type="text" style="display:none" id="tica_id">
 				<input type="text" style="display:none" id="tica_valor">
@@ -237,7 +205,7 @@
 			</div>
 			<div class="modal-footer">
 				<center>
-				<button type="button" class="btn btn-primary" onclick="OK()">OK</button>
+				    <button type="button" class="btn btn-primary" onclick="OK()">OK</button>
 				</center>
 			</div>
 		</div>
@@ -292,7 +260,7 @@ function ModalEntregar($dataJson){
                 for(var i = 0; i< cont.length; i++){
                     for(var j=0; j<cont[i].tipos_carga.tipoCarga.length; j++){
                         if(cont[i].tipos_carga.tipoCarga[j].tica_id == tica){
-                            $("#cont_id").append("<option selected value= '" + cont[i].cont_id + "'> " + cont[i].codigo + " - " + cont[i].descripcion +"</option>");
+                            $("#cont_id").append("<option data-json='"+ JSON.stringify(cont[i]) +"' selected value= '" + cont[i].cont_id + "'> " + cont[i].codigo + " - " + cont[i].descripcion +"</option>");
                         }
                     }
                 }
@@ -349,6 +317,10 @@ function OK(){
 		entregaCont.valor = $("#tica_valor").val();
 		entregaCont.camion = $("#camion_id").val();
 		entregaCont.cont = $("#cont_id").val();
+        var dataContenedor = $("#cont_id").find("option:selected").attr("data-json");
+        if(dataContenedor){
+            var jsonContenedor = JSON.parse(dataContenedor);
+        }
 		var dominio = $("#camion_id option:selected" ).text();
 		var table = $('#tbl_contenedoresagregados').DataTable();
 				var row =  `<tr data-json='${JSON.stringify(entregaCont)}'> 
@@ -357,7 +329,8 @@ function OK(){
 							<td>${entregaCont.valor}</td>
 							<td style='display:none;'>${entregaCont.camion}</td>
 							<td>${dominio}</td> 
-							<td>${entregaCont.cont}</td>            
+							<td>${jsonContenedor.codigo}</td>            
+							<td>${jsonContenedor.descripcion}</td>            
 					</tr>`;
 			table.row.add($(row)).draw();  
 			var sel = document.getElementById("cont_id");

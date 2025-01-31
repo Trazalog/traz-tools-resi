@@ -116,12 +116,11 @@ class Ordentransportes extends CI_Model
         return $aux->contenedores->contenedor;	
     }
 
-    function Obtenerchofertran_id($tran_id)
-    {
-        log_message('INFO','#TRAZA|SolicitudesRetiro|obtenerContenedor >> ');
+    function Obtenerchofertran_id($tran_id){
+        log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Ordebtransportes | Obtenerchofertran_id($tran_id)");
         $aux = $this->rest->callAPI("GET",REST_RESI."/choferes/$tran_id");
         $aux =json_decode($aux["data"]);
-        return $aux->choferes->chofer;	
+        return $aux->choferes->chofer;
     }
 
     function Obtenertranspo_id($tran_id)

@@ -20,7 +20,7 @@
 	<div class="box box-primary animated bounceInDown" id="boxDatos" hidden>
 			<div class="box-header with-border">
 				<div class="box-tittle">
-					<h5>Informacion</h5>
+					<h5>Información</h5>
 				</div>
 					<div class="box-tools pull-right">
 					<button type="button" id="btnclose" title="cerrar" class="btn btn-box-tool" data-widget="remove"
@@ -357,7 +357,7 @@ function Guardar_Chofer() {
                         wc();
                         $("#cargar_tabla").load(
                             "<?php echo RESI; ?>general/Chofer/Listar_Chofer");
-                        alertify.success("Chofer Agregado con exito");
+                        alertify.success("Chofer agregado con éxito");
 
                         $('#formChofer').data('bootstrapValidator').resetForm();
                         $("#formChofer")[0].reset();
@@ -438,7 +438,7 @@ $("#btnsave").on("click", function() {
 								$("#cargar_tabla").load(
 									"<?php echo RESI; ?>general/Chofer/Listar_Chofer");
 								$("#modalEdit").modal('hide');
-								alertify.success("Chofer Actualizado con exito");
+								alertify.success("Chofer actualizado con éxito");
 							}
 						}
 					});
