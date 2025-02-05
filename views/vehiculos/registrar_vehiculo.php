@@ -74,11 +74,11 @@
                    <!--_____________________________________________________________-->
                    <!--Adjuntar imagen--> 
                    <div class="form-group">
-                        <form action="cargar_archivo" method="post" enctype="multipart/form-data"  id="fileimage">
+                        <!-- <form action="cargar_archivo" method="post" enctype="multipart/form-data"  id="fileimage"> -->
                             <label for="img_File">Seleccione Imagen</label>
                             <input type="file" name="imagen" id="img_File" onchange="convertA()" style="font-size: smaller">
                             <input type="text" id="input_aux_img" style="display:none" >
-                        </form>
+                        <!-- </form> -->
                         <br>
                         <img src="" alt="" id="imagen" width="" height="">
                     </div>
@@ -444,6 +444,9 @@ async function convertA(){
         $("#botonAgregar").attr("disabled", "");
         var tran_id = $("#transportistaLogeado").val();
         $("#tran_id").val(tran_id);//Solo se puede cargar choferes para el transportista logeado
+        setTimeout(function() {
+            $("#formVehiculo").data('bootstrapValidator').updateStatus('tran_id', 'NOT_VALIDATED').validateField('tran_id');
+        }, 100);
         $("#boxDatos").focus();
         $("#boxDatos").show();
     });
