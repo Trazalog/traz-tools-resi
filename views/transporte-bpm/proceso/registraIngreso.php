@@ -258,23 +258,44 @@
 		});	
 
 	// pesa camion y llena cantidad neta de contenedor
-		function pesarCamion(){
-            brutoSinParsear = $("#bruto").val();
-            if(brutoSinParsear == ''){
-                error('Error','Debe ingresar un peso bruto.');
-                return;
-            }
-			var bruto = parseFloat(brutoSinParsear);
-			var tara = parseFloat($("#tara").val());
-			var neto = 0;
+    // usa llamada a api de bascula y trae el pesaje
+    function pesarCamion(){
+       var urli = 'http://10.142.0.13:8280/tools/bascula/pesar'; 
+        debugger;
+        $.ajax({
+            type:"POST",
+            url: urli,
+            dataType: "json",
+            crossDomain: true, 
+            success: function( data ) {
+                    if(data['respuesta']['resultado'] == 'ok'){
+                        $('#bruto').val(data['respuesta']['peso']);
+                        brutoSinParsear = $("#bruto").val();
+                        if(brutoSinParsear == ''){
+                            error('Error','Debe ingresar un peso bruto.');
+                            return;
+                        }
+                        var bruto = parseFloat(brutoSinParsear);
+                        var tara = parseFloat($("#tara").val());
+                        var neto = 0;
 
-			if ( bruto < tara ) {
-				error('Error',"El peso bruto es menor que la tara.");
-				return;
-			}
-			neto = bruto - tara;
-			$("#peso_neto").val(neto);		
-		}
+                        if ( bruto < tara ) {
+                            error('Error',"El peso bruto es menor que la tara.");
+                            return;
+                        }
+                        neto = bruto - tara;
+                        $("#peso_neto").val(neto);	 
+                    }
+                    else{
+                        $('#bruto').val(0); 
+                    }
+            },
+            error: function(data) {
+                $('#bruto').val(0); 
+                //alert("Error al obtener peso de bascula");
+            }
+        });
+    }
 	
 	// cierra tarea
 		function cerrarTareaIngreso(){
