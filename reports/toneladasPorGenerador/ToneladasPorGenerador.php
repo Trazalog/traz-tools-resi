@@ -1,6 +1,6 @@
 <?php
 
-require APPPATH . "/libraries/koolreport/core/autoload.php";
+require APPPATH . '/modules/'.RESI."/libraries/koolreport/core/autoload.php";
 use \koolreport\processes\Sort;
 use \koolreport\processes\Limit;
 use \koolreport\processes\OnlyColumn;
@@ -19,24 +19,37 @@ class ToneladasPorGenerador extends \koolreport\KoolReport
 
     protected function settings()
     {
-        log_message('DEBUG', '#RECIDUOS| #TONELADASPORGENERADOR.PHP|#TONELADASPORGENERADOR|#SETTINGS| #INGRESO');
-        $json = $this->params;
+        $param = $this->params;
 
-        foreach($json->solicitantesTransporte as $data)
-        {
-            $a = '';
-            return array(
-                "dataSources" => array(
-                    "apiarray" => array(
-                        "class" => '\koolreport\datasources\ArrayDataSource',
-                        "dataFormat" => "associate",
-                        "data" => $data,
-                    )
-                )
-            );
+        if (is_array($param) && isset($param[0])) {
+            $param = $param[0];
         }
 
+        $rows = [];
+
+        if (is_object($param) && isset($param->generadores->generador)) {
+            $generadores = $param->generadores->generador;
+
+            if (is_object($generadores)) {
+                $rows[] = (array)$generadores;
+            } elseif (is_array($generadores)) {
+                foreach ($generadores as $g) {
+                    $rows[] = (array)$g;
+                }
+            }
+        }
+
+        return [
+            "dataSources" => [
+                "apiarray" => [
+                    "class" => '\koolreport\datasources\ArrayDataSource',
+                    "dataFormat" => "associate",
+                    "data" => $rows,
+                ]
+            ]
+        ];
     }
+
 
     protected function setup()
     {

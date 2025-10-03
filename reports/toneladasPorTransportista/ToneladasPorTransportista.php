@@ -1,6 +1,6 @@
 <?php
 
-require APPPATH . "/libraries/koolreport/core/autoload.php";
+require APPPATH . '/modules/'.RESI."/libraries/koolreport/core/autoload.php";
 use \koolreport\processes\Sort;
 use \koolreport\processes\Limit;
 use \koolreport\processes\OnlyColumn;
@@ -19,22 +19,22 @@ class ToneladasPorTransportista extends \koolreport\KoolReport
 
     protected function settings()
     {
-        log_message('DEBUG', '#RECIDUOS| #TONELADASPORTRANSPORTISTA.PHP|#TONELADASPORTRANSPORTISTA|#SETTINGS| #INGRESO');
-        $json = $this->params;
+       log_message('DEBUG', '#RECIDUOS| #TONELADASPORTRANSPORTISTA.PHP|#SETTINGS| #INGRESO');
 
-        foreach($json->transportistas as $data)
-        {
-            $a = '';
-            return array(
-                "dataSources" => array(
-                    "apiarray" => array(
-                        "class" => '\koolreport\datasources\ArrayDataSource',
-                        "dataFormat" => "associate",
-                        "data" => $data,
-                    )
+        // Convierte stdClass -> array asociativo si es necesario
+        $data = array_map(function($row) {
+            return (array) $row;
+        }, $this->params);
+
+        return array(
+            "dataSources" => array(
+                "apiarray" => array(
+                    "class" => '\koolreport\datasources\ArrayDataSource',
+                    "dataFormat" => "associate",
+                    "data" => $data,
                 )
-            );
-        }
+            )
+        );
     }
 
     protected function setup()

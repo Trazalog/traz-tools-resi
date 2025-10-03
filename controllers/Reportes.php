@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 require APPPATH . '/modules/'.RESI."/reports/toneladasPorEmpresa/ToneladasPorEmpresa.php";
+require APPPATH . '/modules/'.RESI."/reports/toneladasPorDisposicion/ToneladasPorDisposicion.php";
+require APPPATH . '/modules/'.RESI."/reports/toneladasPorGenerador/ToneladasPorGenerador.php";
+require APPPATH . '/modules/'.RESI."/reports/toneladasPorTransportista/ToneladasPorTransportista.php";
 /*require APPPATH . "/reports/pesoDeBascula/PesoDeBascula.php";
 require APPPATH . "/reports/incidencia/Incidencia.php";
 require APPPATH . "/reports/incidenciaPorTransportista/IncidenciaPorTransportista.php";
@@ -9,8 +12,7 @@ require APPPATH . "/reports/incidenciaPorZona/IncidenciaPorZona.php";
 require APPPATH . "/reports/toneladasPorTransportista/ToneladasPorTransportista.php";
 require APPPATH . "/reports/toneladasPorGenerador/ToneladasPorGenerador.php";
 require APPPATH . "/reports/toneladasPorResiduo/ToneladasPorResiduo.php";
-require APPPATH . "/reports/toneladasPorEmpresa/ToneladasPorEmpresa.php";
-require APPPATH . "/reports/toneladasPorDisposicion/ToneladasPorDisposicion.php";*/
+require APPPATH . "/reports/toneladasPorEmpresa/ToneladasPorEmpresa.php";*/
 
 class Reportes extends CI_Controller
 {
@@ -233,16 +235,14 @@ class Reportes extends CI_Controller
         $hasta = $filtro['datepickerHasta'];
         if($hasta || $desde)
         {
-            $desde = ($desde) ? date("d-m-Y", strtotime($desde)) : null;
-            $hasta = ($hasta) ? date("d-m-Y", strtotime($hasta)) : null;
-            $url = CONSTANTE.'/toneladasPorTransportista?desde='.$desde.'&hasta'.$hasta;
-            $data = $this->Koolreport->getToneladasPorTransportista($url);
+            $desde = ($desde) ? date("Y-m-d", strtotime($desde)) : null;
+            $hasta = ($hasta) ? date("Y-m-d", strtotime($hasta)) : null;
+            $data = $this->Koolreport->getToneladasPorTransportista($desde, $hasta)->transportistas->transportista;
             $reporte = new ToneladasPorTransportista($data);
             $reporte->run()->render();
         }else
         {
-            $url = CONSTANTE.'desde//hasta';
-            $data = $this->Koolreport->getToneladasPorTransportista($url);
+            $data = $this->Koolreport->getToneladasPorTransportista($desde, $hasta)->transportistas->transportista;
             $reporte = new ToneladasPorTransportista($data);
             $reporte->run()->render();
         }
@@ -265,16 +265,14 @@ class Reportes extends CI_Controller
         $hasta = $filtro['datepickerHasta'];
         if($hasta || $desde)
         {
-            $desde = ($desde) ? date("d-m-Y", strtotime($desde)) : null;
-            $hasta = ($hasta) ? date("d-m-Y", strtotime($hasta)) : null;
-            $url = CONSTANTE.'/toneladasPorGenerador?hasta='.$hasta.'&desde'.$desde;
-            $data = $this->Koolreport->getToneladasPorGenerador($url);
+            $desde = ($desde) ? date("Y-m-d", strtotime($desde)) : null;
+            $hasta = ($hasta) ? date("Y-m-d", strtotime($hasta)) : null;
+            $data = $this->Koolreport->getToneladasPorGenerador($desde, $hasta);
             $reporte = new ToneladasPorGenerador($data);
             $reporte->run()->render();
         }else
         {
-            $url = CONSTANTE.'desde//hasta';
-            $data = $this->Koolreport->getToneladasPorGenerador($url);
+            $data = $this->Koolreport->getToneladasPorGenerador($desde, $hasta);
             $reporte = new ToneladasPorGenerador($data);
             $reporte->run()->render();
         }
@@ -329,16 +327,14 @@ class Reportes extends CI_Controller
         $hasta = $filtro['datepickerHasta'];
         if($desde || $hasta)
         {
-            $desde = ($desde) ? date("d-m-Y", strtotime($desde)) : null;
-            $hasta = ($hasta) ? date("d-m-Y", strtotime($hasta)) : null;
-            $url = CONSTANTE.'/toneladasPorEmpresa?desde='.$desde.'&hasta'.$hasta;
-            $data = $this->Koolreport->getToneladasPorEmpresa($url)->tiposDeCarga->tipoDeCarga;
+            $desde = ($desde) ? date("Y-m-d", strtotime($desde)) : null;
+            $hasta = ($hasta) ? date("Y-m-d", strtotime($hasta)) : null;
+            $data = $this->Koolreport->getToneladasPorEmpresa($desde, $hasta)->empresas->empresa;
             $reporte = new ToneladasPorEmpresa($data);
             $reporte->run()->render();
         }else
         {
-            $url = CONSTANTE.'desde//hasta';
-            $data = $this->Koolreport->getToneladasPorEmpresa($url)->tiposDeCarga->tipoDeCarga;
+            $data = $this->Koolreport->getToneladasPorEmpresa($desde, $hasta)->empresas->empresa;
             $reporte = new ToneladasPorEmpresa($data);
             $reporte->run()->render();
         }
@@ -361,16 +357,14 @@ class Reportes extends CI_Controller
         $hasta = $filtro['datepickerHasta'];
         if($desde || $hasta)
         {
-            $desde = ($desde) ? date("d-m-Y", strtotime($desde)) : null;
-            $hasta = ($hasta) ? date("d-m-Y", strtotime($hasta)) : null;
-            $url = CONSTANTE.'/toneladasPorDisposicion?desde='.$desde.'&hasta'.$hasta;
-            $data = $this->Koolreport->getToneladasPorDisposicion($url)->tiposDeCarga->tipoDeCarga;
+            $desde = ($desde) ? date("Y-m-d", strtotime($desde)) : null;
+            $hasta = ($hasta) ? date("Y-m-d", strtotime($hasta)) : null;
+            $data = $this->Koolreport->getToneladasPorDisposicion($desde, $hasta)->disposiciones->disposicion;
             $reporte = new ToneladasPorDisposicion($data);
             $reporte->run()->render();
         }else
         {
-            $url = CONSTANTE.'desde//hasta';
-            $data = $this->Koolreport->getToneladasPorDisposicion($url)->tiposDeCarga->tipoDeCarga;
+            $data = $this->Koolreport->getToneladasPorDisposicion($desde, $hasta)->disposiciones->disposicion;
             $reporte = new ToneladasPorDisposicion($data);
             $reporte->run()->render();
         }

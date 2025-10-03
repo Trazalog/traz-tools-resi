@@ -1,3 +1,8 @@
+<!-- ocultar/eliminar el botón que guardar de el form dinámico -->
+<style>
+.frm-new .frm-save { display: none !important; }
+</style>
+
 <!-- /// ----------------------------------- HEADER ----------------------------------- /// -->
 
 <div class="box box-primary animated fadeInLeft">
@@ -177,12 +182,20 @@
                 </div>
                 <!--_____________________________________________-->
             </div>
-            <div class="col-md-12 col-sm-12 col-xs-12">
+<!--             <div class="col-md-12 col-sm-12 col-xs-12">
                 <hr>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary pull-right" onclick="Guardar_Generador()">Guardar</button>
+            </div> -->
         </form>
+        <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php
+                    echo (!empty($form_id)) ? '<div class="frm-new" data-form="'.$form_id.'"></div>' : '<div class="frm-new" data-form="0"></div>';
+                ?>
+                <!-- Campo oculto para almacenar form_id -->
+			    <input type="hidden" id="FormId" value="<?php echo $form_id; ?>">
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary pull-right" onclick="Guardar_Generador(event)">Guardar</button>
+        <br>
     </div>
 </div>
 
@@ -300,6 +313,13 @@
                     </div>
                 </div><!-- ./modal-body -->
             </form>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <?php
+                    echo (!empty($form_id)) ? '<div class="frm-new" data-form="'.$form_id.'"></div>' : '<div class="frm-new" data-form="0"></div>';
+                ?>
+                <!-- Campo oculto para almacenar form_id -->
+			    <input type="hidden" id="FormId" value="<?php echo $form_id; ?>">
+            </div>
 
             <!--__________________ FIN FORMULARIO MODAL __________________-->
 
@@ -466,14 +486,14 @@ $('#depa_id').change(function(e){
                     }
                 }
             },
-            zona_id: {
+            /* zona_id: {
                 message: 'la entrada no es valida',
                 validators: {
                     notEmpty: {
                         message: 'la entrada no puede ser vacia'
                     }
                 }
-            },
+            }, */
             Rubro: {
                 message: 'la entrada no es valida',
                 validators: {
@@ -619,14 +639,14 @@ $('#formGeneradoresEdit').bootstrapValidator({
                     }
                 }
             },
-            e_zonag: {
+/*             e_zonag: {
                 message: 'la entrada no es valida',
                 validators: {
                     notEmpty: {
                         message: 'la entrada no puede ser vacia'
                     }
                 }
-            },
+            }, */
             e_tica_edit: {
                 message: 'la entrada no es valida',
                 validators: {
@@ -649,16 +669,64 @@ $('#formGeneradoresEdit').bootstrapValidator({
 <!-- Funcion GUARDAR Generador -->
 <script>
     $("#cargar_tabla").load("<?php echo RESI; ?>general/Generador/Listar_Generador");
+    
+    detectarForm();
+	initForm();
 
-    function Guardar_Generador() {
+   async function Guardar_Generador(e) {
         // datos = $('#form').serialize();
                     //FIXME: AGREGAR CAMPOS LAT Y LONG
+
+        if (e && e.preventDefault) e.preventDefault();
         var datos = new FormData($('#formGeneradores')[0]);
+
+        const tistId = datos.get('tist_id');
+        const esMunicipio = tistId === 'tipo_generadorMunicipio';
+
+        if (esMunicipio) {
+            // Para municipio, zona_id es obligatorio
+            if (!datos.has('zona_id')) {
+                alert('Es municipio es obligatorio seleccionar una zona');
+                $("#btnGuardar_generador").removeAttr("disabled");
+                return;
+            }
+        } else {
+            // Para otros tipos, si no tiene zona_id, agregar como null
+            if (!datos.has('zona_id')) {
+                datos.append('zona_id', '');
+            }
+        }
+
         datos = formToObject(datos);
+
         datos.lat = "110";
         datos.lng = "220";
         console.table(datos);
         var datos_tipo_carga = $("#tica_id").val();
+
+        //validacion Evaluador form dinamico
+        var $dynForm = $('.frm-new').find('form').first();
+        if ($dynForm.length) {
+            // si el campo existe, validarlo
+            var $eval = $dynForm.find('[name="evaluadores_resi"]');
+            if ($eval.length) {
+                // si hay bootstrapValidator en el form dinámico, usarlo
+                var bv = $dynForm.data('bootstrapValidator');
+                if (bv) {
+                    bv.validate();
+                    if (!bv.isValid()) {
+                        error('Error..','Debes completar los campos obligatorios (*)');
+                        return;
+                    }
+                } else {
+                    var val = $eval.val();
+                    if (!val || val === "") {
+                        error('Error..','Seleccioná un Evaluador');
+                        return;
+                    }
+                }
+            }
+        }
 
         if ($("#formGeneradores").data('bootstrapValidator').isValid()) {
             wo();
@@ -666,18 +734,52 @@ $('#formGeneradoresEdit').bootstrapValidator({
                 type: "POST",
                 data: {datos, datos_tipo_carga},
                 url: "<?php echo RESI; ?>general/Generador/Guardar_Generador",
-                success: function (r) {
+                success: async function (r) {
                     console.log(r);
-                    if (r == "ok") {
-                        wc();
-                        $("#cargar_tabla").load("<?php echo RESI; ?>general/Generador/Listar_Generador");
-                        alertify.success("Generador Agregado con exito");
-                        $('#tica_id').select2('val', 'All');
-                        $('#formGeneradores').data('bootstrapValidator').resetForm();
-                        $("#formGeneradores")[0].reset();
+                    const resp = JSON.parse(r);
+                    if (resp.status == "ok") {
 
-                        $("#boxDatos").hide(500);
-                        $("#botonAgregar").removeAttr("disabled");
+                        // Guardado del formulario dinamico
+                        idFormDinamico = "#"+$('.frm-new').find('form').attr('id');
+		
+                        if(idFormDinamico != "#undefined"){
+                            wo();
+                            var newInfoID = await frmGuardarConPromesa($(idFormDinamico));
+                        }
+
+                        if(newInfoID){
+                            wc();
+                            // actualizo solicitantes_transporte con el info_id
+                             $.ajax({
+                                type: "POST",
+                                url: "<?php echo RESI; ?>general/Generador/set_InfoId_generador",
+                                data: { sotr_id: resp.sotr_id, info_id: newInfoID },
+                                success: function (res) {
+                                    if (res === "ok") {
+                                        $("#cargar_tabla").load("<?php echo RESI; ?>general/Generador/Listar_Generador");
+                                        alertify.success("Generador Agregado con exito");
+                                        $('#tica_id').select2('val', 'All');
+                                        $('#formGeneradores').data('bootstrapValidator').resetForm();
+                                        $("#formGeneradores")[0].reset();
+                                        $(".frm-new")[0].reset();
+
+                                        $("#boxDatos").hide(500);
+                                        $("#botonAgregar").removeAttr("disabled"); 
+                                    } else {
+                                        wc();
+                                        alertify.error("Error al actualizar Generador con info_id");
+                                    }
+                                }
+                            });
+                        }
+                        else{
+                            wc();
+                            alertify.error("Error al Agregar Formulario dinamico");
+                            $('#tica_id').select2('val', 'All');
+                            $('#formGeneradores').data('bootstrapValidator').resetForm();
+                            $("#formGeneradores")[0].reset();
+                        }
+
                     } else {
                         wc();
                         alertify.error("Error al Agregar Generador");
@@ -693,72 +795,152 @@ $('#formGeneradoresEdit').bootstrapValidator({
     }
 
     // Funcion Guardar lo que se edito del modal Edit
-    $("#btnsave_e").click(function(e){
-        var generador = new FormData();
-        generador = formToObject(generador);
-        generador.sotr_id = $("#id_gen").val();
-        generador.razon_social =  $("#E_Nombre_Razon_social").val();
-        generador.cuit =  $("#E_CUIT").val();
-        generador.domicilio =  $("#E_Domicilio").val();
-        generador.num_registro =  $("#E_Numero_registro").val();
-        generador.lat =  120; //para futuro uso degeolocalizacion
-        generador.lng = 120; //para futuro uso degeolocalizacion
-        // generador.usuario_app = "hugoDS";
-        generador.zona_id =  $("#E_Zonag").val();
-        generador.rubr_id =  $("#E_TipoR").val();
-        generador.tist_id =  $("#E_TipoG").val(); // este es el tipo de generador
-        //generador.tica_id =  $("#E_TipoResiduo").val();
-        console.table(generador);
+    /* falta terminar guarda vacio los datos del form_id */
+       $("#btnsave_e").click(function(e){
+            e.preventDefault();
 
-        //codigo judas se hizo a las apuradas pero hay que optimizarlo XD
-        var aux =0;
-        if($("#E_Nombre_Razon_social").val() != ""){
-            if($("#E_CUIT").val() != ""){
-                if($("#E_TipoR").val() != ""){
-                    if($("#E_Domicilio").val() != ""){
-                        if($("#E_Numero_registro").val() != ""){
-                            if( $("#E_Zonag").val() != ""){
-                                if($("#E_TipoG").val() != ""){
-                                    if($("#tica_edit").val() != ""){
-                                        aux = 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        //fin codigo judas
-        var datos_tipo_carga = $("#tica_edit").val();
-        if (aux != 0){
+            var generador = formToObject(new FormData()); // mantiene tu patrón
+            generador.sotr_id = $("#id_gen").val();
+            generador.razon_social =  $("#E_Nombre_Razon_social").val();
+            generador.cuit =  $("#E_CUIT").val();
+            generador.domicilio =  $("#E_Domicilio").val();
+            generador.num_registro =  $("#E_Numero_registro").val();
+            generador.lat =  120;
+            generador.lng = 120;
+            generador.zona_id =  $("#E_Zonag").val();
+            generador.rubr_id =  $("#E_TipoR").val();
+            generador.tist_id =  $("#E_TipoG").val();
+            console.table(generador);
+
+            // validación rápida
+            var requiredOk = $("#E_Nombre_Razon_social").val() !== "" &&
+                            $("#E_CUIT").val() !== "" &&
+                            $("#E_TipoR").val() !== "" &&
+                            $("#E_Domicilio").val() !== "" &&
+                            $("#E_Numero_registro").val() !== "" &&
+                            $("#E_Zonag").val() !== "" &&
+                            $("#E_TipoG").val() !== "" &&
+                            $("#tica_edit").val() && $("#tica_edit").val().length > 0;
+
+            if (!requiredOk) return error("Error","Hay campos vacíos o mal ingresados");
+
+            var datos_tipo_carga = $("#tica_edit").val();
+
             wo();
             $.ajax({
                 type: "POST",
                 data: {generador, datos_tipo_carga},
                 url: "<?php echo RESI; ?>general/Generador/Actualizar_Generador",
-                success: function (r) {
-                    
+                success: async function (r) {
                     console.table(r);
-                    if (r == "ok") {
-                        wc();
-                        $("#cargar_tabla").load("<?php echo RESI; ?>/general/Generador/Listar_Generador");
-                        alertify.success("Generador actualizado con éxito");
-                        $("#modalEdit").modal('hide');      
-                        $('#tica_edit').select2('val', 'All');
-                        $('#formGeneradoresEdit').data('bootstrapValidator').resetForm();
-                    } else {
-                        wc();
+                    wc();
+                    if (r != "ok") {
                         alertify.error("Error al Actualizar Generador");
                         $('#tica_edit').select2('val', 'All');
                         $('#formGeneradoresEdit').data('bootstrapValidator').resetForm();
+                        return;
                     }
+
+                    // buscar solo el form dinámico dentro del modal de edición
+                    var $dynContainer = $("#modalEdit").find(".frm-new").first();
+                    if (!$dynContainer.length) {
+                        // no hay form dinámico -> terminar flujo
+                        $("#cargar_tabla").load("<?php echo RESI; ?>/general/Generador/Listar_Generador");
+                        alertify.success("Generador actualizado con éxito");
+                        $("#modalEdit").modal('hide');
+                        $('#tica_edit').select2('val', 'All');
+                        $('#formGeneradoresEdit').data('bootstrapValidator').resetForm();
+                        return;
+                    }
+
+                    var $form = $dynContainer.is('form') ? $dynContainer : $dynContainer.find('form').first();
+                    if (!$form.length) {
+                        console.warn('form dinámico no encontrado dentro de modalEdit');
+                        return alertify.error("Formulario dinámico no disponible");
+                    }
+
+                    // Asegurar que select2 actualice el elemento real antes de serializar
+                    $form.find('.select2-hidden-accessible').each(function(){
+                        $(this).trigger('change'); // fuerza que el elemento tenga el valor correcto
+                    });
+
+                    // DEBUG: mostrar lo que va a enviar el form dinámico
+                    try {
+                        var fdDebug = new FormData($form[0]);
+                        console.log('DEBUG - dyn form serialized:', formToObject(fdDebug));
+                    } catch (e) {
+                        console.warn('No se pudo serializar form dinámico para debug', e);
+                    }
+
+                    // validar evaluadores_resi si existe
+                    var $eval = $form.find('[name="evaluadores_resi"]');
+                    if ($eval.length) {
+                        var bv = $form.data('bootstrapValidator');
+                        if (bv) {
+                            bv.validate();
+                            if (!bv.isValid()) return error('Error..','Debes completar los campos obligatorios (*)');
+                        } else {
+                            var v = $eval.val();
+                            if (!v || v === "") return error('Error..','Seleccioná un Evaluador');
+                        }
+                    }
+
+                    // llamar frmGuardarConPromesa pasando el DOM form (no el contenedor)
+                    if (typeof window.frmGuardarConPromesa !== 'function') {
+                        return alertify.error("Función frmGuardarConPromesa no disponible");
+                    }
+
+                    wo();
+                    var newInfoID = null;
+                    try {
+                        // pasar el elemento DOM como primera opción
+                        newInfoID = await window.frmGuardarConPromesa($form[0]);
+
+                        // fallback: si devuelve undefined, intentar selector por id
+                        if ((newInfoID === undefined || newInfoID === null) && $form.attr('id')) {
+                            newInfoID = await window.frmGuardarConPromesa('#' + $form.attr('id'));
+                        }
+                    } catch(err) {
+                        console.error('frmGuardarConPromesa error:', err);
+                        newInfoID = null;
+                    } finally {
+                        wc();
+                    }
+
+                    if (!newInfoID) {
+                        return alertify.error("Error al guardar Formulario dinámico");
+                    }
+
+                    // actualizar generador con info_id
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo RESI; ?>general/Generador/set_InfoId_generador",
+                        data: { sotr_id: generador.sotr_id, info_id: newInfoID },
+                        success: function(resUpd){
+                            if (resUpd === "ok") {
+                                $("#cargar_tabla").load("<?php echo RESI; ?>/general/Generador/Listar_Generador");
+                                alertify.success("Generador actualizado con éxito");
+                                $("#modalEdit").modal('hide');
+                                $('#tica_edit').select2('val', 'All');
+                                $('#formGeneradoresEdit').data('bootstrapValidator').resetForm();
+                                // resetear el form dinámico correctamente
+                                if ($form.length) $form[0].reset();
+                            } else {
+                                alertify.error("Error al actualizar Generador con info_id");
+                            }
+                        },
+                        error: function(){
+                            alertify.error("Error al actualizar Generador con info_id");
+                        }
+                    });
+
+                },
+                error: function(){
+                    wc();
+                    alertify.error("Error al Actualizar Generador");
                 }
             });
-        }else{
-            error("Error","Hay campos vacíos o mal ingresados");
-        }
-    });
+        }); 
 
 //Funcion para elimiar generador 
 function deletegenerador (){
@@ -834,4 +1016,4 @@ $('.select3').select2();
     DataTable($('#tabla_generadores'))
 </script>
 
- 
+

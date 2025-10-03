@@ -57,6 +57,8 @@ $(".btnEditar").click( function(e){
     $("#E_TipoG").val(tipogen);
     var tiporubro = data.rubr_id;
     $("#E_TipoR").val(tiporubro);
+
+    llenarFormDinamico(data.transportistas_formularios.transportista_formulario, $('#modalEdit .frm-new'), true);
 });
 
 $(".btnInfo").click(function(e){
@@ -92,9 +94,10 @@ $(".btnInfo").click(function(e){
     var tiporubro = data.rubr_id;
     $("#E_TipoR").val(tiporubro);   
     $("#text_rubro").val(tiporubro.substr(15,50));
- 
-              
-       
+
+    // llena form dinamico
+    let $modalForm = $('#modalEdit').find('.frm-new');
+    llenarFormDinamico(data.transportistas_formularios.transportista_formulario, $modalForm, false);
 
 });
 
@@ -117,6 +120,52 @@ function llenarSelectRsu($tipos){
 	$('#tica_edit').val(opcGuardadas);
 	$('#tica_edit').trigger('change');	
 }
+
+// llena datos del form dinamico asociado al generador
+function llenarFormDinamico(data, $formContenedor, modoEdicion) {
+    // Limpiar valores
+    $formContenedor.find('input').val('');
+    $formContenedor.find('select').val('').trigger('change');
+
+    // Llenar valores
+    $.each(data, function(index, item) {
+        let label = item.label.toLowerCase().trim();
+        let valor = item.valor;
+        switch(label) {
+            case 'expediente':
+                let $exp = $formContenedor.find('#expediente');
+                $exp.val(valor);
+                if (!modoEdicion) $exp.prop('readonly', true);
+                else $exp.prop('readonly', false);
+                break;
+
+            case 'evaluador':
+                let $sel = $formContenedor.find('select[name="evaluadores_resi"]');
+                $sel.val(valor).trigger('change');
+                if (!modoEdicion) {
+                    $sel.prop('disabled', true);
+                    if ($sel.hasClass('select2-hidden-accessible')) {
+                        $sel.select2({disabled: true});
+                    }
+                }else {
+                    $sel.prop('disabled', false);
+                    if ($sel.hasClass('select2-hidden-accessible')) {
+                        $sel.select2({disabled: false});
+                    }
+                }
+                break;
+
+            case 'año':
+                let $ano = $formContenedor.find('#año');
+                $ano.val(valor);
+                if (!modoEdicion) $ano.prop('readonly', true);
+                else $ano.prop('readonly', false);
+                break;
+        }
+    });
+}
+
+
 DataTable($('#tabla_transportistas'));
 // DataTable($('#tabla_'));
 </script>

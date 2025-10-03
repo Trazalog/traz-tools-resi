@@ -136,6 +136,19 @@ class Generadores extends CI_Model{
         $aux =json_decode($aux["status"]);
         return $aux;
     }
+
+     /**
+    * Actualiza un  generador
+    * @param  array data
+    * @return array int status
+    */
+    function Set_InfoId_Generador($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generadores | Set_InfoId_Generador()');
+        $post["solicitante_transporte_info_id"] = $data;
+        $aux = $this->rest->callAPI("PUT",REST_RESI."/solicitantesTransporte/infoId", $post);
+        $aux =json_decode($aux["status"]);
+        return $aux;
+    }
 		
 		/**
 		* Borra tipos de carga asociados a generador
@@ -176,5 +189,25 @@ class Generadores extends CI_Model{
         $aux = $this->rest->callAPI("GET",REST_RESI."/zonas/departamento/".$depa_id);
         $aux =json_decode($aux["data"]);
         return $aux->zonas->zona;
+    }
+
+     /**
+    * Obtiene formulario asociado a generador
+    * @param  
+    * @return array valor , form_id
+    */
+    public function obtener_form_generador(){   
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generadores | obtener_form_generador()');  
+        $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/configuraciones_log");
+        $aux =json_decode($aux["data"]);
+        $vals = $aux->valores->valor;
+        //obtengo si es generador
+        foreach ($vals as $v) {
+                if (isset($v->valor) && $v->valor === 'form_generadores') {
+                    $data = isset($v->valor2) ? $v->valor2 : null;
+                    break;
+                }
+            }
+        return $data;
     }
 }
