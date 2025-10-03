@@ -31,7 +31,8 @@ class Generador extends CI_Controller {
         $data['Tipogenerador'] = $this->Generadores->obtener_Tipo_Generador();
         $data['Zonagenerador'] = $this->Generadores->obtener_Zonas();
         $data['Tiporesiduo'] = $this->Generadores->obtener_Tipo_residuo();
-        $data['Rubro'] = $this->Generadores->obtener_Rubro();           
+        $data['Rubro'] = $this->Generadores->obtener_Rubro();       
+		$data['form_id'] = $this->Generadores->obtener_form_generador();    
         $this->load->view('generadores/registrar_generadores',$data);
 	}
 
@@ -60,7 +61,10 @@ class Generador extends CI_Controller {
         $resp = $this->Generadores->guardar_tipo_carga($tipocarga);
         
         if($resp){
-			echo "ok";
+			echo json_encode([
+            	"status" => "ok",
+            	"sotr_id" => $sotr_id  
+        	]);
         }else{
 			log_message('ERROR','#TRAZA|Generador|Guardar_Generador() >> $resp: '.$resp);
 			echo "error";
@@ -76,7 +80,6 @@ class Generador extends CI_Controller {
 	function Listar_Generador(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generador | Listar_Generador()');
         $data['generadores'] = $this->Generadores->Lista_generadores();
-        
         $this->load->view('generadores/lista_generadores',$data);
 	}
 
@@ -149,6 +152,29 @@ class Generador extends CI_Controller {
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generador | obtener_Zona_departamento()');
 	    $resp = $this->Generadores->obtener_Zona_departamento($this->input->post('depa_id'));
 	    echo json_encode($resp);
+	}
+
+	/**
+	*Actualiza un generador en especifico 
+	* @param 
+	* @return string "ok","error"
+	*/  
+	public function set_InfoId_generador(){
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generador | set_InfoId_generador()');
+		$sotr_id =  $this->input->post('sotr_id');
+		$info_id = $this->input->post('info_id');
+		$datos = [
+        	'sotr_id' => $sotr_id,
+        	'info_id' => $info_id
+    	];
+		// actualiza los datos del generador
+		$resp = $this->Generadores->Set_InfoId_Generador($datos);
+		if($resp == 1){
+            echo "ok";
+        }else{
+            log_message('ERROR','#TRAZA|Generador|set_InfoId_generador() >> $resp: '.$resp); 
+            echo "error";
+        }
 	}
 
 }

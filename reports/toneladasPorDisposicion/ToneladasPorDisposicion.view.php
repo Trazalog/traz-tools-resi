@@ -34,34 +34,65 @@ use \koolreport\widgets\koolphp\Card;
                         <div class="box-body">
                             <div class="col-md-12">
                                 <?php
-                                    foreach($report->params as $clave => $valor)
-                                    {
-                                        echo "<strong><a class='prueba' onclick=\"$('#".str_replace(" ","-",$valor->nombre)."').toggle();\" style='font-size:18px;'><i class='fa fa-minus'></i> <p style='color: black; display:inline'>$valor->nombre, $valor->pesajeTotal Tn</p></a></strong><br><br>";
-                                        echo "<div id='".str_replace(" ","-",$valor->nombre)."'>";
-                                        if($valor != null)
-                                        {
-                                            Table::create(array(
-                                                "dataStore" => $valor->destinos_finales->destino_final,
-                                                "headers" => array(
-                                                ), // Para desactivar encabezado reemplazar "headers" por "showHeader"=>false
-                                                "columns" => array(
-                                                    "nombre" => array(
-                                                        "label" => "Tipo de residuo"
-                                                    ),
-                                                    "fecha" => array(
-                                                        "label" => "Fecha"
-                                                    ),
-                                                    "pesaje" => array(
-                                                        "label" => "Toneladas"
-                                                    )
-                                                ),
-                                                "cssClass" => array(
-                                                    "table" => "table table-striped table-scroll table-hover  table-responsive",
-                                                    "th" => "sorting"
-                                                )
-                                            ));
+
+                                    $data = $report->dataStore("data_toneladasPorDisposicion_table")->toArray();
+                                    
+                                    $agrupados = [];
+                                    $totalesDisposicion = [];
+
+                                    foreach ($data as $row) {
+                                        $difi = $row["disposicion"];
+                                        
+                                        // cantidad -> toneladas
+                                        $toneladas = floatval($row['cantidad']) / 1000.0;
+
+                                        $fecha = $row["fecha"] ?? "";
+                                        if ($fecha && strtotime($fecha)) {
+                                            $fecha = date("d-m-Y", strtotime($fecha));
                                         }
-                                        echo '</div>';                                    
+
+                                        $tipo = $row["tipo_residuo"] ?? "";
+
+                                        $agrupados[$gen][$dep][] = [
+                                            "tipo_carga" => $tipo,
+                                            "fecha" => $fecha,
+                                            "toneladas" => $toneladas,  
+                                        ];
+
+                                        // Sumar valores numéricos
+                                        $totalesDisposicion[$difi] = ($totalesDisposicion[$difi] ?? 0) + $toneladas;
+                                    }
+
+                                    foreach ($agrupados as $disposiciones => $dis) {
+                                        
+                                        $safeGen = preg_replace("/[^A-Za-z0-9_]/", "", $disposiciones);
+        
+                                        foreach ($dis as $dep => $residuos) {
+                                            $idDiv = preg_replace("/[^A-Za-z0-9_]/", "", $disposiciones . "_" . $dep);
+                                            
+                                            echo "<a class='disposiciones' onclick=\"$('#{$idDiv}').toggle();\" style='font-size:17px; cursor:pointer;'>
+                                                    <i class='fa fa-minus'></i> 
+                                                    <span>Disposicion: " . htmlspecialchars($difi) . " - {$totalesDisposicion[$difi]} Tn</span>
+                                                </a><br><br>";
+
+                                            echo "<div id='{$idDiv}'>";
+                                                Table::create([
+                                                    "dataSource" => $residuos,
+                                                    "columns" => [
+                                                        "tipo_carga" => ["label" => "Tipo de residuo"],
+                                                        "fecha" => ["label" => "Fecha"],
+                                                        "toneladas" => [
+                                                            "label" => "Toneladas",
+                                                            "type" => "float",
+                                                            "format" => ["decimals" => 3, "dec_point" => ",", "thousand_sep" => "."]
+                                                        ]
+                                                    ],
+                                                    "cssClass" => [
+                                                        "table" => "table-striped table-scroll table-hover table-responsive"
+                                                    ]
+                                                ]);
+                                            echo "</div><br>";
+                                        }
                                     }
                                 ?>
                             </div>
@@ -84,12 +115,78 @@ use \koolreport\widgets\koolphp\Card;
             $(this).css('text-align', 'center');
         }
     });
-    $('filtro').load('<?php echo base_url() ?>index.php/Reportes/filtroToneladasPorDisposicion');
+
+    $('filtro').load('<?php echo base_url(RESI) ?>/Reportes/filtroToneladasPorDisposicion');
     // convierte la tabla en data table para usar las funciones de ordenar por columna y buscar
     // $('table').dataTable().fnDestroy();
-    $('.table').dataTable();
+    $(document).ready(function() {
+        // target: solo las tablas dentro del reporte para no afectar otras
+        $('.box-body .table').each(function(index, table){
+        // si ya está inicializada, saltar
+        if ( $.fn.dataTable.isDataTable(table) ) return;
 
-    $('.prueba').click(function() {
+        $(table).DataTable({
+            dom: "Bfrtip", // muestra Buttons + filtros
+            buttons: [{
+                //Botón para Excel
+                extend: 'excel',
+                exportOptions: {
+                    columns: [0, 1, 2]
+                },
+                footer: true,
+                title: 'Reporte de toneladas entregadas por disposicion',
+                filename: 'Reporte de toneladas entregadas por disposicion',
+
+                //Aquí es donde generas el botón personalizado
+                text: '<button class="btn btn-success ml-2 mb-2 mb-2 mt-3">Exportar a Excel <i class="fa fa-file-excel-o"></i></button>'
+            },
+            // //Botón para PDF
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: [0, 1, 2]
+                },
+                footer: true,
+                title: 'Reporte de toneladas entregadas por disposicion',
+                filename: 'Reporte de toneladas entregadas por disposicion',
+                text: '<button class="btn btn-danger ml-2 mb-2 mb-2 mt-3">Exportar a PDF <i class="fa fa-file-pdf-o mr-1"></i></button>'
+            },
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [0, 1, 2]
+                },
+                footer: true,
+                title: 'Reporte de toneladas entregadas por disposicion',
+                filename: 'Reporte de toneladas entregadas por disposicion',
+                text: '<button class="btn btn-primary ml-2 mb-2 mb-2 mt-3">Copiar <i class="fa fa-file-text-o mr-1"></i></button>'
+            },
+            {
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2]
+                },
+                footer: true,
+                title: 'Reporte de toneladas entregadas por disposicion',
+                filename: 'Reporte de toneladas entregadas por disposicion',
+                text: '<button class="btn btn-default ml-2 mb-2 mb-2 mt-3">Imprimir <i class="fa fa-print mr-1"></i></button>'
+            }
+        ],
+            // exportar solo columnas visibles, o ajustar selector si necesitás excluir columnas (p.ej. acciones)
+            exportOptions: {
+            columns: ':visible'
+            },
+            // ajustes opcionales
+            paging: true,
+            pageLength: 25,
+            language: {
+            url: '<?php base_url() ?>lib/bower_components/datatables.net/js/es-ar.json'
+            }
+        });
+        });
+    });
+
+    $('.disposiciones').click(function() {
         var ban = $(this).find('i').hasClass('fa-plus');
         $(this).find('i').remove();
         if (ban) $(this).prepend('<i class="fa fa-minus"></i>');

@@ -20,22 +20,19 @@ class ToneladasPorEmpresa extends \koolreport\KoolReport
     protected function settings()
     {
         log_message('DEBUG', '#RECIDUOS| #TONELADASPOREMPRESA.PHP|#TONELADASPOREMPRESA|#SETTINGS| #INGRESO');
-        $json = $this->params;
-        foreach($json as $data)
-        {
-            $a = $data->empresas->empresa;
-            $b = '';
-            return array(
-                "dataSources" => array(
-                    "apiarray" => array(
-                        "class" => '\koolreport\datasources\ArrayDataSource',
-                        "dataFormat" => "associate",
-                        "data" => $a,
-                    )
-                )
-            );
-        }
+         $data = array_map(function($row) {
+            return (array) $row;
+        }, $this->params);
 
+        return array(
+            "dataSources" => array(
+                "apiarray" => array(
+                    "class" => '\koolreport\datasources\ArrayDataSource',
+                    "dataFormat" => "associate",
+                    "data" => $data,
+                )
+            )
+        );
     }
 
     protected function setup()
