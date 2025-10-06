@@ -55,7 +55,7 @@ use \koolreport\widgets\koolphp\Card;
                                         ];
 
                                          // Sumar valores numéricos
-                                        $toneladasTotales[$res] = ($toneladasTotales[$res] ?? 0) + $toneladas;
+                                        $toneladasTotales[$res] = (isset($toneladasTotales[$res]) ? $toneladasTotales[$res] : 0) + $toneladas;
                                     }
                                     foreach($agrupados as $residuo => $valor)
                                     {

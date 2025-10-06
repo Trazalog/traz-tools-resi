@@ -46,12 +46,12 @@ use \koolreport\widgets\koolphp\Card;
                                         // cantidad -> toneladas
                                         $toneladas = floatval($row['cantidad']) / 1000.0;
 
-                                        $fecha = $row["fecha"] ?? "";
+                                       $fecha = isset($row["fecha"]) ? $row["fecha"] : "";
                                         if ($fecha && strtotime($fecha)) {
                                             $fecha = date("d-m-Y", strtotime($fecha));
                                         }
 
-                                        $tipo = $row["tipo_residuo"] ?? "";
+                                       $tipo = isset($row["tipo_residuo"]) ? $row["tipo_residuo"] : "";
 
                                         $agrupados[$gen][$dep][] = [
                                             "tipo_carga" => $tipo,
@@ -60,7 +60,7 @@ use \koolreport\widgets\koolphp\Card;
                                         ];
 
                                         // Sumar valores numéricos
-                                        $totalesDisposicion[$difi] = ($totalesDisposicion[$difi] ?? 0) + $toneladas;
+                                        $totalesDisposicion[$difi] = (isset($totalesDisposicion[$difi]) ? $totalesDisposicion[$difi] : 0) + $toneladas;
                                     }
 
                                     foreach ($agrupados as $disposiciones => $dis) {
