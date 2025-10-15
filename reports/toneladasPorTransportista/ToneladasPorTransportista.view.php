@@ -31,18 +31,18 @@ use \koolreport\widgets\koolphp\Table;
                             $totalesDep = [];
 
                             foreach ($data as $row) {
-                                $gen = $row["transportista"] ?? "Sin Transportista";
-                                $dep = $row["departamento"] ?? "Sin Departamento";
+                                $gen = isset($row["transportista"]) ? $row["transportista"] : "Sin Transportista";
+                                $dep = isset($row["departamento"]) ? $row["departamento"] : "Sin Departamento";
 
                                 // cantidad -> toneladas
                                 $toneladas = floatval($row['cantidad']) / 1000.0;
 
-                                $fecha = $row["fecha"] ?? "";
+                                $fecha = isset($row["fecha"]) ? $row["fecha"] : "";
                                 if ($fecha && strtotime($fecha)) {
                                     $fecha = date("d-m-Y", strtotime($fecha));
                                 }
 
-                                $tipo = $row["tipo_residuo"] ?? "";
+                                $tipo = isset($row["tipo_residuo"]) ? $row["tipo_residuo"] : "";
 
                                 $agrupados[$gen][$dep][] = [
                                     "tipo_carga" => $tipo,
@@ -51,15 +51,15 @@ use \koolreport\widgets\koolphp\Table;
                                 ];
 
                                 // Sumar valores numéricos
-                                $totalesTransportista[$gen] = ($totalesTransportista[$gen] ?? 0) + $toneladas;
-                                $totalesDep[$gen][$dep] = ($totalesDep[$gen][$dep] ?? 0) + $toneladas;
+                                $totalesTransportista[$gen] = isset($totalesTransportista[$gen]) ? $totalesTransportista[$gen] + $toneladas : $toneladas;
+                                $totalesDep[$gen][$dep] = isset($totalesDep[$gen][$dep]) ? $totalesDep[$gen][$dep] + $toneladas : $toneladas;
                             }
 
                             // Mostrar la información
                             foreach ($agrupados as $transportista => $deps) {
 
                                 // Obtener el total numérico y formatearlo para mostrar
-                                $totalGenNumerico = $totalesTransportista[$transportista] ?? 0;
+                                $totalGenNumerico = isset($totalesTransportista[$transportista]) ? $totalesTransportista[$transportista] : 0;
                                 $totGen = number_format($totalGenNumerico, 2, ",", ".");
                                 
                                 $safeGen = preg_replace("/[^A-Za-z0-9_]/", "", $transportista);
@@ -70,7 +70,7 @@ use \koolreport\widgets\koolphp\Table;
                                     $idDiv = preg_replace("/[^A-Za-z0-9_]/", "", $transportista . "_" . $dep);
                                     
                                     // Obtener el total numérico del departamento y formatearlo
-                                    $totalDepNumerico = $totalesDep[$transportista][$dep] ?? 0;
+                                    $totalDepNumerico = isset($totalesDep[$transportista][$dep]) ? $totalesDep[$transportista][$dep] : 0;
                                     $totDep = number_format($totalDepNumerico, 2, ",", ".");
 
                                     echo "<a class='muni' onclick=\"$('#{$idDiv}').toggle();\" style='font-size:17px; cursor:pointer;'>
