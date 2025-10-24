@@ -62,7 +62,8 @@ $(".btnEditar").click( function(e){
 });
 
 $(".btnInfo").click(function(e){
-    var data = JSON.parse($(this).parents("tr").attr("data-json")); 
+    var data = JSON.parse($(this).parents("tr").attr("data-json"));
+
     console.table(data);
     $("#E_Nombre_Razon_social").val(data.razon_social);
     $("#E_CUIT").val(data.cuit);
@@ -122,7 +123,7 @@ function llenarSelectRsu($tipos){
 }
 
 // llena datos del form dinamico asociado al generador
-function llenarFormDinamico(data, $formContenedor, modoEdicion) {
+function llenarFormDinamico(data, $formContenedor, modoEdicion) {  
     // Limpiar valores
     $formContenedor.find('input').val('');
     $formContenedor.find('select').val('').trigger('change');
@@ -132,7 +133,7 @@ function llenarFormDinamico(data, $formContenedor, modoEdicion) {
         let label = item.label.toLowerCase().trim();
         let valor = item.valor;
         switch(label) {
-            case 'expediente':
+            case 'n° de expediente':
                 let $exp = $formContenedor.find('#expediente');
                 $exp.val(valor);
                 if (!modoEdicion) $exp.prop('readonly', true);
@@ -155,11 +156,41 @@ function llenarFormDinamico(data, $formContenedor, modoEdicion) {
                 }
                 break;
 
-            case 'año':
-                let $ano = $formContenedor.find('#año');
-                $ano.val(valor);
-                if (!modoEdicion) $ano.prop('readonly', true);
-                else $ano.prop('readonly', false);
+            case 'responsable técnico':
+                let $sele = $formContenedor.find('select[name="consultor_resi"]');
+                $sele.val(valor).trigger('change');
+                if (!modoEdicion) {
+                    $sele.prop('disabled', true);
+                    if ($sele.hasClass('select2-hidden-accessible')) {
+                        $sele.select2({disabled: true});
+                    }
+                }else {
+                    $sele.prop('disabled', false);
+                    if ($sele.hasClass('select2-hidden-accessible')) {
+                        $sele.select2({disabled: false});
+                    }
+                }
+                break;     
+
+            case 'e-mail':
+                let $email = $formContenedor.find('#email');
+                $email.val(valor);
+                if (!modoEdicion) $email.prop('readonly', true);
+                else $email.prop('readonly', false);
+                break;
+
+            case 'teléfono':
+                let $telefono = $formContenedor.find('#telefono');
+                $telefono.val(valor);
+                if (!modoEdicion) $telefono.prop('readonly', true);
+                else $telefono.prop('readonly', false);
+                break;
+
+            case 'domicilio legal':
+                let $domicilio_legal = $formContenedor.find('#domicilio_legal');
+                $domicilio_legal.val(valor);
+                if (!modoEdicion) $domicilio_legal.prop('readonly', true);
+                else $domicilio_legal.prop('readonly', false);
                 break;
         }
     });

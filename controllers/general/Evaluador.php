@@ -79,6 +79,19 @@ class Evaluador extends CI_Controller {
         $data['evaluadores'] = $this->Evaluadores->Listar_Evaluadores();
         $this->load->view('evaluadores/lista_evaluadores',$data);
 	}
+	   
+	/**
+	 *Lista los evaluadores
+	* @param 
+	* @return view lista_evaluadores
+	*/  
+	public function Get_Evaluadores()
+        {
+                log_message('DEBUG', '#TRAZA | Evaluador | Get_Evaluadores()');
+                $evaluadores = $this->Evaluadores->Get_Evaluadores();
+                echo json_encode($evaluadores);
+
+        }
 
         /**
 	 *Edita datos de un evaluador existente
