@@ -326,6 +326,10 @@
                 validators: {
                     notEmpty: {
                         message: 'la entrada no puede ser vacia'
+                    },
+                    regexp: {
+                        regexp: /^(0|[1-9][0-9]*)$/,
+                        message: 'la entrada no debe ser un numero entero'
                     }
                 }
             },

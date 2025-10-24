@@ -210,4 +210,16 @@ class Generadores extends CI_Model{
             }
         return $data;
     }
+
+
+        /**
+    * verifica si existe el registro en base de datos
+    * @param  
+    * @return boolean true,false
+    */
+    function valida_Registro($registro){
+        $aux = $this->rest->callAPI("GET",REST_RESI."/validaRegistroTransportista/".$registro);
+        $aux =json_decode($aux["data"]);
+        return $aux->resultado->existe;
+	}
 }

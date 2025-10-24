@@ -80,6 +80,17 @@ class Consultor extends CI_Controller {
         $this->load->view('consultores/lista_consultor',$data);
 	}
 
+        /**
+	 *get los consultores
+	* @param 
+	* @return Consultores
+	*/  
+	function Get_Consultores(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Consultor | Get_Consultores()');
+        $consultores= $this->Consultores->Listar_Consultores();
+        echo json_encode($consultores);
+	}
+
 
          /**
 	 *Edita datos de un consultor existente

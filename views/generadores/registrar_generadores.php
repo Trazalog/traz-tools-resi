@@ -1,6 +1,12 @@
 <!-- ocultar/eliminar el botón que guardar de el form dinámico -->
 <style>
 .frm-new .frm-save { display: none !important; }
+
+    .edit-padding {
+        padding-left: 0 !important;
+        padding-right: 10px;
+    }
+
 </style>
 
 <!-- /// ----------------------------------- HEADER ----------------------------------- /// -->
@@ -46,7 +52,7 @@
 
                 <!--Nombre / Razon social-->
                 <div class="form-group">
-                    <label for="Nombre/Razon social"> Nombre / Razon social:</label>
+                    <label for="Nombre/Razon social"> Nombre / Razon social <strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                             <div class="input-group-addon">
                                 <i class="glyphicon glyphicon-check"></i>
@@ -58,7 +64,7 @@
 
                 <!--CUIT-->
                 <div class="form-group">
-                    <label for="CUIT">CUIT:</label>
+                    <label for="CUIT">CUIT <strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -70,7 +76,7 @@
 
                 <!--Departamento-->
                 <div class="form-group">
-                    <label for="Dpto">Departamento:</label>
+                    <label for="Dpto">Departamento <strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -90,7 +96,7 @@
 
                 <!--Rubro-->
                 <div class="form-group">
-                    <label for="Rubro" >Rubro:</label>
+                    <label for="Rubro" >Actividad / Rubro:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -109,7 +115,7 @@
 
                 <!--Tipo-->
                 <div class="form-group">
-                    <label for="TipoG" name="Tipo">Tipo:</label>
+                    <label for="TipoG" name="Tipo">Tipo <strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -126,11 +132,12 @@
                 </div>
             </div>
             <!--_____________________________________________-->
+
             
             <!--Domicilio-->
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="form-group">                
-                    <label for="Domicilio">Domicilio:</label>
+                    <label for="Domicilio">Domicilio de Operación<strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -142,7 +149,7 @@
                 
                 <!--Numero de registro-->
                 <div class="form-group">
-                    <label for="Numero de registro">Número de registro:</label>
+                    <label for="Numero de registro">N° de Registro<strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -154,7 +161,7 @@
 
                 <!--Zona-->
                 <div class="form-group">
-                    <label for="Zonag">Zona:</label>
+                    <label for="Zonag">Zona/Circuito:</label>
                     <div class="input-group date">
                         <div class="input-group-addon">
                             <i class="glyphicon glyphicon-check"></i>
@@ -168,7 +175,7 @@
 
                 <!--Tipo de residuo-->								
                 <div class="form-group">
-                    <label for="tipoResiduos">Tipo de residuo:</label>
+                    <label for="tipoResiduos">Tipo de residuo<strong class="text-danger"> *</strong>:</label>
                     <div class="input-group date">
                         <div class="input-group-addon"><i class="glyphicon glyphicon-check"></i></div>
                         <select class="form-control select3" multiple="multiple"  data-placeholder="Seleccione tipo residuo"  style="width: 100%;"  id="tica_id" name="tica_id">															
@@ -178,6 +185,19 @@
                                 }
                             ?>
                         </select>
+                    </div>
+                </div>
+                <!--_____________________________________________-->
+
+                <!--Geolocalizacion-->
+    
+                <div class="form-group">                
+                    <label for="Domicilio">Geolocalización<strong class="text-danger"> *</strong>:</label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="glyphicon glyphicon-check"></i>
+                        </div>
+                    <input type="text" class="form-control"  name="geolocalizacion" id="geolocalizacion">
                     </div>
                 </div>
                 <!--_____________________________________________-->
@@ -313,12 +333,16 @@
                     </div>
                 </div><!-- ./modal-body -->
             </form>
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <?php
-                    echo (!empty($form_id)) ? '<div class="frm-new" data-form="'.$form_id.'"></div>' : '<div class="frm-new" data-form="0"></div>';
-                ?>
-                <!-- Campo oculto para almacenar form_id -->
-			    <input type="hidden" id="FormId" value="<?php echo $form_id; ?>">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <?php
+                        echo (!empty($form_id)) 
+                        ? '<div class="frm-new frm-edit" data-form="'.$form_id.'" data-info="'.$info_id.'"></div>' 
+                        : '<div class="frm-new frm-edit" data-form="0" data-info=""></div>';
+                    ?>
+                    <!-- Campo oculto para almacenar form_id -->
+                    <input type="hidden" id="FormIdEdit" value="<?php echo $form_id; ?>">
+                </div>
             </div>
 
             <!--__________________ FIN FORMULARIO MODAL __________________-->
@@ -683,6 +707,15 @@ $('#formGeneradoresEdit').bootstrapValidator({
         const tistId = datos.get('tist_id');
         const esMunicipio = tistId === 'tipo_generadorMunicipio';
 
+        const num_registro = datos.get('num_registro');
+        const existe = await validaRegistro(num_registro);
+
+            if (existe) {
+                alertify.error("El N° de Registro ya se encuentra registrado");
+                wc();
+                return;
+            }
+
         if (esMunicipio) {
             // Para municipio, zona_id es obligatorio
             if (!datos.has('zona_id')) {
@@ -705,28 +738,7 @@ $('#formGeneradoresEdit').bootstrapValidator({
         var datos_tipo_carga = $("#tica_id").val();
 
         //validacion Evaluador form dinamico
-        var $dynForm = $('.frm-new').find('form').first();
-        if ($dynForm.length) {
-            // si el campo existe, validarlo
-            var $eval = $dynForm.find('[name="evaluadores_resi"]');
-            if ($eval.length) {
-                // si hay bootstrapValidator en el form dinámico, usarlo
-                var bv = $dynForm.data('bootstrapValidator');
-                if (bv) {
-                    bv.validate();
-                    if (!bv.isValid()) {
-                        error('Error..','Debes completar los campos obligatorios (*)');
-                        return;
-                    }
-                } else {
-                    var val = $eval.val();
-                    if (!val || val === "") {
-                        error('Error..','Seleccioná un Evaluador');
-                        return;
-                    }
-                }
-            }
-        }
+        if (!validaFormDinamico('.frm-new')) return;
 
         if ($("#formGeneradores").data('bootstrapValidator').isValid()) {
             wo();
@@ -842,66 +854,40 @@ $('#formGeneradoresEdit').bootstrapValidator({
                     }
 
                     // buscar solo el form dinámico dentro del modal de edición
-                    var $dynContainer = $("#modalEdit").find(".frm-new").first();
-                    if (!$dynContainer.length) {
-                        // no hay form dinámico -> terminar flujo
-                        $("#cargar_tabla").load("<?php echo RESI; ?>/general/Generador/Listar_Generador");
-                        alertify.success("Generador actualizado con éxito");
-                        $("#modalEdit").modal('hide');
-                        $('#tica_edit').select2('val', 'All');
-                        $('#formGeneradoresEdit').data('bootstrapValidator').resetForm();
-                        return;
-                    }
+                   var $dynContainer = $("#modalEdit").find('.frm-new.frm-edit');
 
                     var $form = $dynContainer.is('form') ? $dynContainer : $dynContainer.find('form').first();
                     if (!$form.length) {
                         console.warn('form dinámico no encontrado dentro de modalEdit');
                         return alertify.error("Formulario dinámico no disponible");
-                    }
+                    } 
 
                     // Asegurar que select2 actualice el elemento real antes de serializar
-                    $form.find('.select2-hidden-accessible').each(function(){
+                     $form.find('.select2-hidden-accessible').each(function(){
                         $(this).trigger('change'); // fuerza que el elemento tenga el valor correcto
-                    });
+                    }); 
 
-                    // DEBUG: mostrar lo que va a enviar el form dinámico
-                    try {
-                        var fdDebug = new FormData($form[0]);
-                        console.log('DEBUG - dyn form serialized:', formToObject(fdDebug));
-                    } catch (e) {
-                        console.warn('No se pudo serializar form dinámico para debug', e);
-                    }
+                    // validar campos del formulario dinámico
+                    if (!validaFormDinamico('#modalEdit .frm-new')) return;
 
-                    // validar evaluadores_resi si existe
-                    var $eval = $form.find('[name="evaluadores_resi"]');
-                    if ($eval.length) {
-                        var bv = $form.data('bootstrapValidator');
-                        if (bv) {
-                            bv.validate();
-                            if (!bv.isValid()) return error('Error..','Debes completar los campos obligatorios (*)');
-                        } else {
-                            var v = $eval.val();
-                            if (!v || v === "") return error('Error..','Seleccioná un Evaluador');
-                        }
-                    }
-
-                    // llamar frmGuardarConPromesa pasando el DOM form (no el contenedor)
-                    if (typeof window.frmGuardarConPromesa !== 'function') {
-                        return alertify.error("Función frmGuardarConPromesa no disponible");
-                    }
-
+                    // GUARDAR FORMULARIO DINÁMICO
                     wo();
                     var newInfoID = null;
                     try {
-                        // pasar el elemento DOM como primera opción
-                        newInfoID = await window.frmGuardarConPromesa($form[0]);
-
-                        // fallback: si devuelve undefined, intentar selector por id
-                        if ((newInfoID === undefined || newInfoID === null) && $form.attr('id')) {
-                            newInfoID = await window.frmGuardarConPromesa('#' + $form.attr('id'));
+                        // Asegurar que el formulario tenga ID
+                        if (!$form.attr('id')) {
+                            var tempId = 'form-dinamico-edit-' + Date.now();
+                            $form.attr('id', tempId);
+                            console.log('Asignado ID temporal:', tempId);
                         }
+
+                        console.log('ID del formulario:', $form.attr('id'));
+                        
+                        // Llamar a nuestra nueva función corregida
+                        newInfoID = await editarFormulario($form);
+
                     } catch(err) {
-                        console.error('frmGuardarConPromesa error:', err);
+                        console.error('editarFormulario error:', err);
                         newInfoID = null;
                     } finally {
                         wc();
@@ -970,10 +956,124 @@ function deletegenerador (){
                 }
             });
 
-
-
 }
 
+
+function validaFormDinamico(formContainer) {
+    // formContainer puede ser '.frm-new' o '.frm-edit-mode'
+    var $dynForm = $(formContainer).find('form').first();
+    if (!$dynForm.length) return true; // si no hay formulario dinámico, para adelante
+
+    // Validar Evaluador
+    var $eval = $dynForm.find('[name="evaluadores_resi"]');
+    if ($eval.length) {
+        var bv = $dynForm.data('bootstrapValidator');
+        if (bv) {
+            bv.validate();
+            if (!bv.isValid()) {
+                error('Error..', 'Debes completar los campos obligatorios del formulario dinámico (*)');
+                return false;
+            }
+        } else if (!$eval.val()) {
+            error('Error..', 'Seleccioná un Evaluador');
+            return false;
+        }
+    }
+
+    // Validar Consultor
+    var $consultor = $dynForm.find('[name="consultor_resi"]');
+    if ($consultor.length) {
+        var bv = $dynForm.data('bootstrapValidator');
+        if (bv) {
+            bv.validate();
+            if (!bv.isValid()) {
+                error('Error..', 'Debes completar los campos obligatorios del formulario dinámico (*)');
+                return false;
+            }
+        } else if (!$consultor.val()) {
+            error('Error..', 'Seleccioná un Consultor');
+            return false;
+        }
+    }
+
+    var $email = $dynForm.find('[name="email"]');
+    if ($email.length) {
+        var bv = $dynForm.data('bootstrapValidator');
+        if (bv) {
+            bv.validate();
+            if (!bv.isValid()) {
+                error('Error..', 'Debes completar los campos obligatorios del formulario dinámico (*)');
+                return false;
+            }
+        } else if (!$email.val()) {
+            error('Error..', 'Seleccioná un email');
+            return false;
+        }
+    }
+
+      var $telefono = $dynForm.find('[name="telefono"]');
+    if ($telefono.length) {
+        var bv = $dynForm.data('bootstrapValidator');
+        if (bv) {
+            bv.validate();
+            if (!bv.isValid()) {
+                error('Error..', 'Debes completar los campos obligatorios del formulario dinámico (*)');
+                return false;
+            }
+        } else if (!$telefono.val()) {
+            error('Error..', 'Seleccioná un telefono');
+            return false;
+        }
+    }
+
+      var $expediente = $dynForm.find('[name="expediente"]');
+    if ($expediente.length) {
+        var bv = $dynForm.data('bootstrapValidator');
+        if (bv) {
+            bv.validate();
+            if (!bv.isValid()) {
+                error('Error..', 'Debes completar los campos obligatorios del formulario dinámico (*)');
+                return false;
+            }
+        } else if (!$expediente.val()) {
+            error('Error..', 'Seleccioná un expediente');
+            return false;
+        }
+    }
+
+    return true;
+}
+
+
+function validaRegistro(registro) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: "GET",
+            data: { registro: registro },
+            url: "<?php echo RESI; ?>general/Generador/valida_registro", 
+            success: function (r) {
+                wc();
+
+                try {
+
+                    let existe = false;
+                    if (r === 'true') {
+                        existe = true;
+                    } else  {
+                        existe = false;
+                    }
+
+                    resolve(existe);
+                } catch (e) {
+                    reject(e);
+                }
+            },
+            error: function (xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}
 
 </script>
 <!--_____________________________________________________________-->

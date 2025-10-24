@@ -177,5 +177,20 @@ class Generador extends CI_Controller {
         }
 	}
 
+	
+	/**
+	*verifica si ya fue cargado el registro
+	* @param 
+	* @return true,false
+	*/  
+	
+	function valida_registro(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Generador | valida_registro()');  
+        $registro = $this->input->get('registro');
+        $data = $this->Generadores->valida_Registro($registro);
+        echo $data;
+	}
+
+
 }
 ?>

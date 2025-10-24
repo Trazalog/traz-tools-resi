@@ -66,6 +66,17 @@ class Evaluadores extends CI_Model{
         return $aux->evaluadores->evaluador;
     }
     
+      /**
+    * Lista los evaluadores, obtiene los evaluadores para listarlos
+    * @param 
+    * @return array evaluadores
+    */
+    function Get_Evaluadores(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Evaluadores | Listar_Evaluadores()');  
+        $aux = $this->rest->callAPI("GET",REST_RESI."/evaluadores");
+        $aux =json_decode($aux["data"]); 
+        return $aux->evaluadores->evaluador;
+    }
 
     /**
     * Actualiza un  evaluador
