@@ -26,7 +26,7 @@ class Consultor extends CI_Controller {
 	* @return view registrar_consultor
 	*/  
 	
-	function templateEvaluador(){
+	function templateConsultor(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Consultor | templateConsultor()');  
         $data['profesiones'] = $this->Consultores->obtener_Profesion_Consultor();
         $this->load->view('consultores/registrar_consultor',$data);

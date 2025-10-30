@@ -492,7 +492,7 @@
                     wc();
                     console.log(respuesta);
                     $("#cargar_tabla").load("<?php echo RESI; ?>general/Consultor/Listar_Consultores");
-                    alertify.success("Evaluador agregado correctamente");
+                    alertify.success("Consultor agregado correctamente");
                     $('#formConsultores').data('bootstrapValidator').resetForm();
                     $("#formConsultores")[0].reset();
                 },
