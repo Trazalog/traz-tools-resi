@@ -3,25 +3,84 @@
 
 <!-- ____________________________ GRUPO 1 ____________________________ -->
 
+ <!-- _____________ SECCION DOMINIO DE TRASLADO________________ -->
 <div class="col-md-12">
     <div class="form-group">
         <input type="text" name="" id="difi_id" min="0" class="form-control hidden" value="<?php echo $infoOT->difi_id; ?>">
         <!-- ________________________________________________________ -->
-        <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
+         <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
             <div class="form-group">
-                <label for="dominio" class="form-label">Dominio:</label>
+                <label for="dominio" class="form-label">Dominio de Traslado:</label>
                 <input type="text" name="" id="dominio" min="0" class="form-control" value="<?php echo $infoOTransporte->dominio; ?>" readonly>
             </div>
         </div>
-        <!-- ________________________________________________________ -->
+
         <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
             <div class="form-group">
-                <label for="cont_restantes" class="form-label">Contenedores Restantes:</label>
-                <input type="text" name="" id="cont_restantes" min="0" class="form-control" required readonly>
+                <label for="taraTraslado" class="form-label">Tara:</label>
+                <input type="text" name="" id="taraTraslado" min="0" class="form-control" value="<?php echo $infoOTransporte->tara; ?>" readonly>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="imgmovil" class="form-label">Vehiculo:</label>
+                <img src="<?php echo $infoOTransporte->img_vehiculo; ?>" id="imgmovil" height="60" width="60">
             </div>
         </div>
         <!-- ________________________________________________________ -->
+       
+    </div>
+</div>
+<!-- _____________FIN SECCION DOMINIO DE TRASLADO________________ -->
+
+
+<!-- _____________SECCION DOMINIO DE PESADO________________ -->
+<div class="col-md-12">
+    <div class="form-group">
+        <!-- ________________________________________________________ -->
         <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
+            <label for="camion">Dominio de la Pesada:</label>
+                <select class="form-control select2 select2-hidden-accesible" name="camion" id="camion_id">
+                    <option value="" disabled selected>-Seleccione opción-</option>
+                    <?php
+                        foreach ($camion as $l) {
+                            echo '<option  value="'.$l->equi_id.'">'.$l->dominio.'</option>';
+                        }
+                    ?>
+                </select>
+        </div>
+
+        <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
+            <div class="form-group">
+                <label for="taraPesado" class="form-label">Tara:</label>
+                <input type="text" name="" id="taraPesado" min="0" class="form-control" value="" readonly>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="img_vehiculo_pesado" id="vehipesado" class="form-label">Vehiculo:</label>
+                <i id="spinnerCamion" class="fa fa-spinner fa-pulse fa-3x fa-fw" style="display:none"></i>
+                <img src="" id="img_vehiculo_pesado" height="60" width="60" style="display:none">
+            </div>
+        </div>
+
+
+        <!-- ________________________________________________________ -->
+    </div>
+</div>
+<!-- _____________FIN SECCION DOMINIO DE PESADO________________ -->
+
+<!-- ____________________________ SEPARADOR ____________________________ -->
+<div class="col-md-12"> <br> </div>
+<!-- ____________________________ / SEPARADOR ____________________________ -->
+
+
+<!-- _____________ SECCION CONTENEDOR ________________ -->
+    <div class="col-md-12">
+        <!-- ________________________________________________________ -->
+         <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
             <label for="coen_id" class="form-label">Contenedor:</label>
             <select class="form-control select2 select2-hidden-accesible" id="coen_id" name="coen_id" required>
                 <option value="" disabled selected>-Seleccione opcion-</option>
@@ -33,41 +92,53 @@
                     }          
                 ?>
             </select>
+        </div> 
+
+        <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
+            <div class="form-group">
+                <label for="taraTotal" class="form-label">Tara:</label>
+                <input type="text" name="" id="taraTotal" min="0" class="form-control" value="" readonly>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="img_contenedor" id="cont" class="form-label">Contenedor:</label>
+                <i id="spinnerContenedor" class="fa fa-spinner fa-pulse fa-3x fa-fw" style="display:none"></i>
+                <img src="" id="img_contenedor" height="60" width="60">
+            </div>
         </div>
         <!-- ________________________________________________________ -->
     </div>
-</div>
-<!-- ____________________________ SEPARADOR ____________________________ -->
-<div class="col-md-12"> <br> </div>
-<!-- ____________________________ / SEPARADOR ____________________________ -->
-<!-- _____________ IMAGENES ________________ -->
-<div class="row">
-    <div class="col-md-12">
+<!-- _____________ FIN SECCION CONTENEDOR ________________ -->  
+
+<!-- ____________________________ SECCION CONTENEDOR RESTANTE ____________________________ -->
+  <div class="col-md-12">
+        
+        <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
+            <div class="form-group">
+                <label for="cont_restantes" class="form-label">Contenedores Restantes:</label>
+                <input type="text" name="" id="cont_restantes" min="0" class="form-control" required readonly>
+            </div>
+        </div>  
+  
+      <!-- _____________ IMAGENES Dominio de Traslado________________ -->
         <div class="col-md-4">
             <div class="form-group">
                 <label for="imgchof" class="form-label">Chofer:</label>
                 <img src="<?php echo $infoOTransporte->img_chofer; ?>" id="imgchof" height="60" width="60">
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="imgmovil" class="form-label">Vehiculo:</label>
-                <img src="<?php echo $infoOTransporte->img_vehiculo; ?>" id="imgmovil" height="60" width="60">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="img_contenedor" id="cont" class="form-label">Contenedor:</label>
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                <img src="" id="img_contenedor" height="60" width="60">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- _____________ IMAGENES ________________ -->                      
+                    
+      <hr> 
+ </div>
+<!-- ____________________________ FIN SECCION CONTENEDOR RESTANTE ____________________________ -->
+
 <!-- ____________________________ SEPARADOR ____________________________ -->
-  <div class="col-md-12"> <hr> </div>
+  <div class="col-md-12"><hr></div>
 <!-- ____________________________ / SEPARADOR ____________________________ -->
+
+
 <!-- ____________________________ GRUPO 2 ____________________________ -->
 <div class="col-md-12" style="background-color: #EFEFEF; ">
     <div class="form-group" style="padding-top: 16px;">
@@ -375,7 +446,7 @@
 	// trae imagen al cambiar de contenedore en el select contenedores
 		$("#coen_id").on("change", function(){
             $("#img_contenedor").hide();			
-            $(".fa-spinner").show();		
+            $("#spinnerContenedor").show();		
 
             coen_id = $(this).val();				
             var coen = {};
@@ -385,11 +456,18 @@
                 data:{coen},
                 url: '<?php echo RESI; ?>transporte-bpm/Entregaordentransporte/obtenerImagenContenedor',
                 success: function(result) {
-                    $(".fa-spinner").hide();
+                    debugger;
+                    $("#spinnerContenedor").hide();
                     var img = JSON.parse(result);							
-                    var imagen = img.replace('dataimage/jpegbase64', 'data:image/jpeg;base64,');							
+                    var imagen = img.imagen.replace('dataimage/jpegbase64', 'data:image/jpeg;base64,');							
                     $('#img_contenedor').prop("src", imagen);	
-                    $("#img_contenedor").show();								
+                    $("#img_contenedor").show();
+                    
+                    //calculo tara Total	
+                    var taraTraslado = parseFloat($("#taraPesado").val());
+                    var taraContenedor = parseFloat(img.tara);							
+                    var taraTotal = taraTraslado + taraContenedor;
+                    $("#taraTotal").val(taraTotal);
                 },
                 error: function(result){
                                     
@@ -452,4 +530,34 @@
             });
         }
 		//////// Fin Tratamiento de Imagen en Registrar nuevo circuito
+
+        // traer datos del camion de pesado seleccionado
+        $("#camion_id").on("change", function(){
+            var camion_id = $(this).val();
+            $("#img_vehiculo_pesado").hide();
+            $("#spinnerCamion").show();
+            
+            wo();
+             $.ajax({
+                type: 'POST',
+                data:{equi_id: camion_id},
+                url: '<?php echo RESI; ?>transporte-bpm/Entregaordentransporte/obtenerDataCamionPesado',
+                success: function(result) {
+                    wc();
+                    var  data = JSON.parse(result);
+
+                    $("#taraPesado").val(data[0].tara);
+                    $("#spinnerCamion").hide();							
+                    var imagen = data[0].imagen.replace('dataimage/jpegbase64', 'data:image/jpeg;base64,');							
+                    $('#img_vehiculo_pesado').prop("src", imagen);	
+                    $("#img_vehiculo_pesado").show();					
+                },
+                error: function(result){
+                        console.log(result);
+                },
+                complete: function(){
+                        wc();            
+                }
+            });
+        });
 </script>

@@ -21,4 +21,12 @@ class Entregaordentransporte extends CI_Controller {
         $img = $this->Entregaordentransportes->obtenerImagenContenedor($coen_id['coen_id']);
         echo json_encode($img);
     }
+
+    function obtenerDataCamionPesado()
+    {
+      log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | obtenerDataCamionPesado()');
+      $equi_id = $this->input->post('equi_id');
+      $aux = $this->Entregaordentransportes->obtenerDataCamionPesado($equi_id);
+      echo json_encode($aux);
+    }
 }

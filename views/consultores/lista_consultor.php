@@ -3,7 +3,7 @@
     <thead class="thead-dark" bgcolor="#eeeeee">
         <th>Acciones</th>
         <th>Nombre y Apellido</th>
-        <th>DNI</th>
+        <th>N° de Registro</th>
         <th>Formacion</th>
         <th>Telefono</th>
         <th>Email</th>

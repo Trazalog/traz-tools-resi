@@ -135,6 +135,7 @@ class Entregaordentransportes extends CI_Model {
         $tarea->infoOT = $this->obtenerInfoOTIncidencia($tarea->caseId);
         $tarea->tipoCarga = $this->obtenerTipoCarga();
         $tarea->tipoIncidencia = $this->obtenerTipoIncidencia();
+        $tarea->camion = $this->ObtenerCamiones($tarea->infoOTransporte->tran_id); 
         $resp = $this->load->view(RESI . 'transporte-bpm/proceso/registraIngreso', $tarea, true);
         return $resp;
       break;
@@ -307,7 +308,7 @@ class Entregaordentransportes extends CI_Model {
     log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerImagenContenedor()");
     $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/ingreso/".$coen_id);
     $aux =json_decode($aux["data"]);
-    return $aux->imag_contenedor->imagen;
+    return $aux->imag_contenedor;
   }
 
   /**
@@ -441,4 +442,32 @@ class Entregaordentransportes extends CI_Model {
     $aux =json_decode($auxx["status"]);
     return $aux;
   }
+
+
+   /**
+    * Devuelve informacion de Camiones (todos los equipos)
+    * @param 
+    * @return array informacion de camiones (todos los equipos)
+    */
+    function ObtenerCamiones($tran_id)
+    {
+      log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | ObtenerCamiones()');
+      $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculos/transp/".$tran_id);
+      $aux =json_decode($aux["data"]);
+      return $aux->vehiculos->vehiculo;
+    }
+
+
+       /**
+    * Devuelve informacion de Camion por equi_id
+    * @param 
+    * @return array informacion de camion 
+    */
+    function obtenerDataCamionPesado($equi_id)
+    {
+      log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | obtenerDataCamionPesado()');
+      $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculo/equi/".$equi_id);
+      $aux =json_decode($aux["data"]);
+      return $aux->equipos->equipo;
+    }
 }

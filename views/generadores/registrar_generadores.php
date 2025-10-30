@@ -214,12 +214,21 @@
 			    <input type="hidden" id="FormId" value="<?php echo $form_id; ?>">
         </div>
         <hr>
-        <button type="submit" class="btn btn-primary pull-right" onclick="Guardar_Generador(event)">Guardar</button>
+        <div class='modal-footer'>
+            <button type="submit" class="btn btn-primary pull-right" style="margin-left:10px;" onclick="Guardar_Generador(event)">Guardar</button>
+            <button type='submit' class='btn btn-danger pull-right' id='btnImprimir' onclick='abrirModalGenerador()' disabled>Imprimir Registro</button>
+        </div>
+
         <br>
     </div>
 </div>
 
 </div>
+
+ <!-- MODAL REMITO -->
+    <?php $this->load->view(RESI. "generadores/modal_impresion") ?>
+<!-- FIN MODAL REMITO -->
+
 <!---//////////////////////////////////////--- MODAL EDITAR ---///////////////////////////////////////////////////////----->
 
     
@@ -738,7 +747,7 @@ $('#formGeneradoresEdit').bootstrapValidator({
         var datos_tipo_carga = $("#tica_id").val();
 
         //validacion Evaluador form dinamico
-        if (!validaFormDinamico('.frm-new')) return;
+        //if (!validaFormDinamico('.frm-new')) return;
 
         if ($("#formGeneradores").data('bootstrapValidator').isValid()) {
             wo();
@@ -772,10 +781,11 @@ $('#formGeneradoresEdit').bootstrapValidator({
                                         alertify.success("Generador Agregado con exito");
                                         $('#tica_id').select2('val', 'All');
                                         $('#formGeneradores').data('bootstrapValidator').resetForm();
-                                        $("#formGeneradores")[0].reset();
-                                        $(".frm-new")[0].reset();
+                                        $("#btnImprimir").removeAttr("disabled");
+                                        //$("#formGeneradores")[0].reset();
+                                        //$(".frm-new")[0].reset();
+                                        //$("#boxDatos").hide(500);
 
-                                        $("#boxDatos").hide(500);
                                         $("#botonAgregar").removeAttr("disabled"); 
                                     } else {
                                         wc();
@@ -960,6 +970,7 @@ function deletegenerador (){
 
 
 function validaFormDinamico(formContainer) {
+
     // formContainer puede ser '.frm-new' o '.frm-edit-mode'
     var $dynForm = $(formContainer).find('form').first();
     if (!$dynForm.length) return true; // si no hay formulario dinámico, para adelante
@@ -1103,6 +1114,30 @@ function validaRegistro(registro) {
         $('#selecmov').find('option').remove();
         $('#chofer').find('option').remove();
     });
+
+
+
+    /* modal de impresion formulario generador con los datos*/
+    function abrirModalGenerador() {
+    // Tomamos los datos del formulario
+    let razonSocial = $('#razon_social').val();
+    let expediente   = $('#expediente').val();
+    let registro     = $('#num_registro').val();
+
+    // Fecha actual
+    let fecha = new Date();
+    let meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    let fechaTexto = fecha.getDate() + ' de ' + meses[fecha.getMonth()] + ' de ' + fecha.getFullYear();
+
+    // Cargar datos en el modal
+    $('#generador').text(razonSocial);
+    $('#expedienteTexto').text("Expediente N°: " + expediente);
+    $('#registro').text("Registro N°: " + registro + ", todo en concordancia con la Ley de Residuos Sólidos Urbanos N° 1114-L, Resolución N° 382-SEAyDS-2023 ");
+    $('#fecha').text("Fecha: " + fechaTexto);
+
+    // Mostrar modal
+    $('#modalImpresion').modal('show');
+}
 </script>
 
 
