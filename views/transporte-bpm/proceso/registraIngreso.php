@@ -331,7 +331,8 @@
 	// pesa camion y llena cantidad neta de contenedor
     // usa llamada a api de bascula y trae el pesaje
     function pesarCamion(){
-       var urli = 'http://10.142.0.13:8280/tools/bascula/pesar'; 
+      var urli = 'http://10.142.0.13:8280/tools/bascula/pesar';
+      // var urli = 'API_BASCULA'; 
         debugger;
         $.ajax({
             type:"POST",
@@ -382,6 +383,7 @@
 			data.difi_id = $("#difi_id").val();
 			data.depo_id = $("#deposito").val();
 			data.coen_id = $("#coen_id").val();
+            data.equi_id_pesado = $("#camion_id").val();
 
 			$.ajax({
                 type: 'POST',
@@ -465,9 +467,15 @@
                     
                     //calculo tara Total	
                     var taraTraslado = parseFloat($("#taraPesado").val());
-                    var taraContenedor = parseFloat(img.tara);							
+                    if(isNaN(taraTraslado)){
+                        taraTraslado = parseFloat($("#taraTraslado").val());;
+                    }
+                    var taraContenedor = parseFloat(img.tara);
+                    //tara contenedor
+                    $("#taraTotal").val(taraContenedor);
                     var taraTotal = taraTraslado + taraContenedor;
-                    $("#taraTotal").val(taraTotal);
+                    //tara total
+                    $("#tara").val(taraTotal);
                 },
                 error: function(result){
                                     
@@ -477,6 +485,23 @@
                 }
             });
 		});	
+        
+        //calculo de peso neto sin pesar bascula
+		$("#bruto").on("change", function(){
+             brutoSinParsear = $("#bruto").val();
+             var bruto = parseFloat(brutoSinParsear);
+             var tara = parseFloat($("#tara").val());
+             var neto = 0;
+
+             if ( bruto < tara ) {
+                error('Error',"El peso bruto es menor que la tara.");
+                return;
+                }
+            neto = bruto - tara;
+            $("#peso_neto").val(neto);	
+        });
+
+
 		//////// Tratamiento de Imagen en Registrar nuevo circuito
         async function convertA(){      
                     

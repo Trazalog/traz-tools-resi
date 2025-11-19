@@ -52,7 +52,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <!--Codigo-->
         <div class="form-group">
-            <label for="Codigo">Código:</label>
+            <label for="Codigo">Código / N° de Registro:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="codigo" name="codigo">
         </div>
         <!--_____________________________________________________________-->
@@ -63,6 +63,11 @@
             <select <?php echo req() ?> class="form-control select2 select2-hidden-accesible" id="tran_id" name="tran_id">
                 <option value="" disabled selected>-Seleccione opción-</option>
                 <?php
+                /* si la empresa esta habilitada muestra todos los transportistas/empresas sino muestra solo las del usuario logueado  */
+                    $empresas_admin = EMPRESAS_RESI_ADMIN;
+                    if(in_array($empr_id, json_decode($empresas_admin))){
+                        $empresa = $empresa_admins;
+                    }
                     foreach ($empresa as $empre) {
                             echo '<option value="'.$empre->tran_id.'">'.$empre->razon_social.'</option>';
                     }
@@ -113,10 +118,10 @@
         <!--_____________________________________________________________-->
 
         <!--Habilitacion-->
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="Habilitacion">Habilitación:</label>
             <input type="text" <?php echo req() ?> class="form-control" id="habilitacion" name="habilitacion">
-        </div>
+        </div> -->
         <!--_____________________________________________________________-->
 
     </div>

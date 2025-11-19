@@ -8,7 +8,6 @@
 			<th>Código</th>
 			<th>Empresa</th>
 			<th>Carnet y Categoría</th>
-			<th>Habiitación</th>
 		</thead>
 
 		<!--__________________BODY TABLA__________________-->
@@ -33,7 +32,6 @@
 							echo    '<td>'.$fila->codigo.'</td>';
 							echo    '<td>'.$fila->razon_social.'</td>';
 							echo    '<td>'.$fila->carnet. " - ".$fila->categoria.'</td>';
-							echo    '<td>'.$fila->habilitacion.'</td>';
 							echo   '</tr>';
 							}
 					}
@@ -429,23 +427,6 @@
 						},
 					}
 				},
-				habilitacion: {
-					message: 'la entrada no es valida',
-					validators: {
-						notEmpty: {
-							message: 'la entrada no puede ser vacia'
-						},
-						/*stringLength: {
-								min: 6,
-								max: 30,
-								message: 'The username must be more than 6 and less than 30 characters long'
-						},*/
-						regexp: {
-							regexp: /[A-Za-z]/,
-							message: 'la entrada no debe ser un numero entero'
-						}
-					}
-				}
 			}
 		}).on('success.form.bv', function(e) {
 			e.preventDefault();

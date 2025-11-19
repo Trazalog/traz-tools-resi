@@ -159,4 +159,51 @@ class Contenedores extends CI_Model
         $aux =json_decode($aux["data"]);       
         return $aux->contenedor;
     }
+
+
+    /**
+    * verifica si existe el dominio en codigo de contenedor
+    * @param  
+    * @return boolean true,false
+    */
+    function valida_Codigo($codigo){
+        $aux = $this->rest->callAPI("GET",REST_RESI."/contenedor/validaCodigo/".$codigo);
+        $aux =json_decode($aux["data"]);
+        return $aux->resultado->existe;
+	}
+
+
+    /**
+    * Obtiene formulario asociado a contenedor
+    * @param  
+    * @return array valor , form_id
+    */
+    public function obtener_form_contenedor(){   
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | contenedor | obtener_form_contenedor()');  
+        $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/configuraciones_log");
+        $aux =json_decode($aux["data"]);
+        $vals = $aux->valores->valor;
+        //obtengo si es contenedor
+        foreach ($vals as $v) {
+                if (isset($v->valor) && $v->valor === 'form_contenedor') {
+                    $data = isset($v->valor2) ? $v->valor2 : null;
+                    break;
+                }
+            }
+        return $data;
+    }
+
+    /**
+    * Actualiza un  equipo
+    * @param  array data
+    * @return array int status
+    */
+    function set_InfoId_Contenedor($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | set_InfoId_Contenedor()');
+        $post["contenedor_info_id"] = $data;
+        $aux = $this->rest->callAPI("PUT",REST_RESI."/contenedor/infoId", $post);
+        $aux =json_decode($aux["status"]);
+        return $aux;
+    }
+
 }

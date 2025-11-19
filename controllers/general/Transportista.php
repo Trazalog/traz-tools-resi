@@ -23,6 +23,7 @@ class Transportista extends CI_Controller{
     function templateTransportistas(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportista | templateTransportistas()');
         $data['Rsu'] = $this->Transportistas->obtener_RSU();
+        $data['form_id'] = $this->Transportistas->obtener_form_transportista();  
         $this->load->view('transportistas/registrar_transportista',$data);   
     }
    
@@ -54,7 +55,10 @@ class Transportista extends CI_Controller{
       $resp = $this->Transportistas->asociarTipoCarga($data);
 
       if($resp){
-        echo "ok";
+			    echo json_encode([
+            	"status" => "ok",
+            	"tran_id" => $tran_id  
+        	]);
       }else{
         log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportista | Guardar_Transportista() >> $resp: '.$resp);
         echo "error";
@@ -129,7 +133,43 @@ class Transportista extends CI_Controller{
       log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportista | obtener_RSU() >>');
       $rsu = $this->Transportistas->obtener_RSU();
       echo json_encode($rsu);   
-    }         
+    }
+    
+    /**
+	*Actualiza un transportista en especifico 
+	* @param 
+	* @return string "ok","error"
+	*/  
+	public function set_InfoId_transportista(){
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportista | set_InfoId_transportista()');
+		$tran_id =  $this->input->post('tran_id');
+		$info_id = $this->input->post('info_id');
+		$datos = [
+        	'tran_id' => $tran_id,
+        	'info_id' => $info_id
+    	];
+		// actualiza los datos del transportista
+		$resp = $this->Transportistas->Set_InfoId_Transportista($datos);
+		if($resp == 1){
+            echo "ok";
+        }else{
+            log_message('ERROR','#TRAZA|Transportista|set_InfoId_transportista() >> $resp: '.$resp); 
+            echo "error";
+        }
+	}
+
+  	/**
+	*verifica si ya fue cargado el cuit
+	* @param 
+	* @return true,false
+	*/  
+	
+	function valida_cuit(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportista | valida_cuit()');  
+        $cuit = $this->input->get('cuit');
+        $data = $this->Transportistas->valida_Cuit($cuit);
+        echo $data;
+	}
 
 }
 

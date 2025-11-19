@@ -26,6 +26,11 @@ class Contenedor extends CI_Controller {
         $data['Habilitacion'] = $this->Contenedores->Obtener_Habilitacion();
         $data['Carga'] = $this->Contenedores->obtener_Tipo_Carga();
         $data['transportista'] = $this->Contenedores->obtener_transportista();
+        $data['form_id'] = $this->Contenedores->obtener_form_contenedor();  
+        $tran_id = usrIdTransportistaByNick();
+        $data['tran_id'] = $tran_id;
+        $data['empr_id'] = empresa();
+
         $this->load->view('contenedores/registrar_contenedor',$data); 
     }
      /**
@@ -58,7 +63,7 @@ class Contenedor extends CI_Controller {
             log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Guardar_Contenedor() >> $resp: '.$resp);
             echo "tipo carga no asociado";return;
         }
-        echo 'ok';
+        echo $cont_id;
     }
      /**
       * Actualiza datos de Contenedor
@@ -111,6 +116,7 @@ class Contenedor extends CI_Controller {
         }
         $data["contenedores"] = $arregloEq;
         //FIN CODIGO FILTRADOR
+        $data['form_id'] = $this->Contenedores->obtener_form_contenedor();  
 
         // $data["contenedores"] = $this->Contenedores->Listar_Contenedor();
         $data["estados"] = $this->Contenedores->obtener_Estados();
@@ -171,5 +177,43 @@ class Contenedor extends CI_Controller {
          $dato= $this->Contenedores->obtenerImagen_Cont_Id($id);  
          echo json_encode($dato);
     }
+
+
+      	/**
+	*verifica si ya fue cargado el codigo
+	* @param 
+	* @return true,false
+	*/  
+	
+	function valida_codigo(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | valida_codigo()');  
+        $codigo = $this->input->get('codigo');
+        $data = $this->Contenedores->valida_Codigo($codigo);
+        echo $data;
+	}
+
+  /**
+	*Actualiza un transportista en especifico 
+	* @param 
+	* @return string "ok","error"
+	*/  
+	public function set_InfoId_contenedor(){
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | set_InfoId_contenedor()');
+		$cont_id =  $this->input->post('cont_id');
+		$info_id = $this->input->post('info_id');
+		$datos = [
+        	'cont_id' => $cont_id,
+        	'info_id' => $info_id
+    	];
+		// actualiza los datos del contenedor
+		$resp = $this->Contenedores->set_InfoId_Contenedor($datos);
+		if($resp == 1){
+            echo "ok";
+        }else{
+            log_message('ERROR','#TRAZA|Contenedor|set_InfoId_contenedor() >> $resp: '.$resp); 
+            echo "error";
+        }
+	}
+
 }
 ?>

@@ -17,6 +17,7 @@ class Chofer extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('general/Choferes');
+        $this->load->model('estructura/Transportistas');
     }
 
     /**
@@ -29,6 +30,9 @@ class Chofer extends CI_Controller {
         $data['carnet'] = $this->Choferes->obtener_Carnet();
         $data['categoria'] = $this->Choferes->obtener_Categoria();
         $data['empresa'] = $this->Choferes->obtener_Empresa();
+        /* lista todos los transportistas para los desplegable empresa de los administradores */
+        $data['empresa_admins'] = $this->Transportistas->Listar_Transportistas();
+        $data['empr_id'] = empresa();
         $this->load->view('choferes/registrar_chofer',$data);
     }
 
