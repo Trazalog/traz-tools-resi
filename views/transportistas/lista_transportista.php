@@ -4,7 +4,7 @@
             <th>Acciones</th>
             <th>Nombre / Razón social</th>
             <th>Usuario Vinculado</th>
-            <th>Descripción</th>
+            <th>CUIT</th>
             <th>Registro</th>
     </thead>
     <tbody>
@@ -20,7 +20,7 @@
                     echo   '</td>';
                     echo    '<td>'.$fila->razon_social.'</td>';
                     echo    '<td>'.$fila->user_id.'</td>';
-                    echo    '<td>'.$fila->descripcion.'</td>';
+                    echo    '<td>'.$fila->cuit.'</td>';
                     echo    '<td>'.$fila->registro.'</td>';                       
                     echo '</tr>';
                 }
@@ -38,6 +38,7 @@
 			$(".oculta_info").removeAttr("style");
 			$(".oculta_edit").attr("style","display:none");
 			$(".esconder").attr("style","left: -2rem; top: -2rem; "); 
+			$('.frm-new .edit-padding').removeClass('edit-padding');
 			llenarModal(datajson);	
 			blockEdicion();	
 		});
@@ -49,6 +50,7 @@
 			$(".oculta_info").attr("style","display:none");
 			$(".oculta_edit").removeAttr("style");
 			$(".esconder").attr("style","display:none");
+			$('.frm-new .edit-padding').removeClass('edit-padding');
 			llenarModal(datajson);
 			habilitarEdicion();
 		});
@@ -69,7 +71,6 @@
 
 	//llena modal Editar
 		function llenarModal(datajson){
-
 			data = JSON.parse(datajson);
 			$("input#tran_id").val(data.tran_id);			
 			$("input#razon_social_edit").val(data.razon_social);			
@@ -95,7 +96,7 @@
 				// local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
 				return local.toJSON().slice(0, 10);
 			});
-			$('input#fec_baja_efectiva').val(new Date().toDateInputValue());
+			$('input#fec_baja_efectiva_edit').val(new Date().toDateInputValue());
 		
 			$.ajax({
 					type: "POST",		
@@ -119,6 +120,8 @@
 							$('select#tica_edit').val(opcGuardadas);
 					}
 			});
+
+			llenarFormDinamico(data.transportistas_formularios.transportista_formulario, $('#modalEdit .frm-new'), true);
 		}
 
 	
@@ -263,4 +266,59 @@
 	// inicializo tabla
 		DataTable($('#tabla_transportistas'));
 
+	// llena datos del form dinamico asociado al generador
+	function llenarFormDinamico(data, $formContenedor, modoEdicion) {  
+		// Limpiar valores
+		$formContenedor.find('input').val('');
+		$formContenedor.find('select').val('').trigger('change');
+
+		// Llenar valores
+		$.each(data, function(index, item) {
+			let label = item.label.toLowerCase().trim();
+			let valor = item.valor;
+			switch(label) {
+				case 'evaluador':
+                let $sel = $formContenedor.find('select[name="evaluadores_resi"]');
+                $sel.val(valor).trigger('change');
+                if (!modoEdicion) {
+                    $sel.prop('disabled', true);
+                    if ($sel.hasClass('select2-hidden-accessible')) {
+                        $sel.select2({disabled: true});
+                    }
+                }else {
+                    $sel.prop('disabled', false);
+                    if ($sel.hasClass('select2-hidden-accessible')) {
+                        $sel.select2({disabled: false});
+                    }
+                }
+                break;
+
+            case 'responsable técnico':
+                let $sele = $formContenedor.find('select[name="consultor_resi"]');
+                $sele.val(valor).trigger('change');
+                if (!modoEdicion) {
+                    $sele.prop('disabled', true);
+                    if ($sele.hasClass('select2-hidden-accessible')) {
+                        $sele.select2({disabled: true});
+                    }
+                }else {
+                    $sele.prop('disabled', false);
+                    if ($sele.hasClass('select2-hidden-accessible')) {
+                        $sele.select2({disabled: false});
+                    }
+                }
+                break;
+			case 'domicilio legal':
+                let $domicilio_legal = $formContenedor.find('#domicilio_legal');
+                $domicilio_legal.val(valor);
+                if (!modoEdicion) $domicilio_legal.prop('readonly', true);
+                else $domicilio_legal.prop('readonly', false);
+                break;     
+
+				
+			}
+			
+			
+		});
+	}
 </script>

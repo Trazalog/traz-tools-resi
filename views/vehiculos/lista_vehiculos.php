@@ -160,6 +160,7 @@ function ExtraerImagen($data){
 
 //Modal Editar
 $(".btnEditar").click(function(e){
+    $('.frm-edit .edit-padding').removeClass('edit-padding');
     $("#modalEdit").modal("show");
     var data = JSON.parse($(this).parents("tr").attr("data-json")); 
     console.table(data);
@@ -191,12 +192,15 @@ $(".btnEditar").click(function(e){
     console.table($("#id_fecha_ingreso").val());
     var tranid = data.tran_id; 
     $("#e_tran_id").val(tranid);
-    $("#taraedit").val(data.tara); 
+    $("#taraedit").val(data.tara);
+    $("#e_dominio").attr("readonly","readonly");
     ExtraerImagen(data);
+     llenarFormDinamico(data.formularios.formulario, $('#modalEdit .frm-new'), true)
     });
 
 //Modal Info
 $(".btnInfo").click(function(e){
+    $('.frm-edit .edit-padding').removeClass('edit-padding');
     $("#modalEdit").modal("show"); 
     var data = JSON.parse($(this).parents("tr").attr("data-json")); 
     console.table(data);
@@ -208,7 +212,7 @@ $(".btnInfo").click(function(e){
     }
     $(".titulo").text('Informacion Vehiculo');
     $('#btnsave_e').hide();
-    $(".redimensionarDominio").attr("style","margin-top: -1rem;");
+    $(".redimensionarDominio").attr("style","margin-top: 1rem;");
     $(".redimensionarCodigo").attr("style","margin-top: 1rem;");
     $(".habilitar").attr("readonly","readonly"); 
     $("#div_ver").removeAttr("style");
@@ -243,6 +247,7 @@ $(".btnInfo").click(function(e){
     } 
     $("#taraedit").val(data.tara); 
     ExtraerImagen(data);
+    llenarFormDinamico(data.formularios.formulario, $('#modalEdit .frm-new'), false)
     });
 
 
@@ -252,6 +257,48 @@ $(".btnInfo").click(function(e){
     $('#btndelete').show();    
     $("#id_vehiculo").val(data.equi_id);
 });
+
+
+// llena datos del form dinamico asociado al generador
+	function llenarFormDinamico(data, $formContenedor, modoEdicion) {  
+		// Limpiar valores
+		$formContenedor.find('input').val('');
+		$formContenedor.find('select').val('').trigger('change');
+		// Llenar valores
+		$.each(data, function(index, item) {
+			let label = item.label.toLowerCase().trim();
+			let valor = item.valor;
+
+			switch(label) {
+				case 'tipo de movilidad':
+                let $movilidad = $formContenedor.find('select[name="movilidad"]');
+                $movilidad.val(valor).trigger('change');
+                if (!modoEdicion) {
+                    $movilidad.prop('disabled', true);
+                    if ($movilidad.hasClass('select2-hidden-accessible')) {
+                        $movilidad.select2({disabled: true});
+                    }
+                }else {
+                    $movilidad.prop('disabled', false);
+                    if ($movilidad.hasClass('select2-hidden-accessible')) {
+                        $movilidad.select2({disabled: false});
+                    }
+                }
+                break;
+
+                case 'modelo':
+                let $modelo = $formContenedor.find('#modelo');
+                $modelo.val(valor);
+                if (!modoEdicion) $modelo.prop('readonly', true);
+                else $modelo.prop('readonly', false);
+                break;     
+
+				
+			}
+			
+			
+		});
+	}
 </script>
 <script>
     DataTable($('#tabla_vehiculos'))

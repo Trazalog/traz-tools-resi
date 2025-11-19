@@ -747,7 +747,7 @@ $('#formGeneradoresEdit').bootstrapValidator({
         var datos_tipo_carga = $("#tica_id").val();
 
         //validacion Evaluador form dinamico
-        //if (!validaFormDinamico('.frm-new')) return;
+        if (!validaFormDinamico('.frm-new')) return;
 
         if ($("#formGeneradores").data('bootstrapValidator').isValid()) {
             wo();

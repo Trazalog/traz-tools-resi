@@ -190,10 +190,10 @@
 						<!--_____________________________________________________________-->
 
 						<!--Habilitacion-->
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label for="Habilitacion">Habilitación:</label>
 							<input type="text" class="form-control habilitar" id="habilitacion_edit" name="habilitacion">
-						</div>
+						</div> -->
 						<!--_____________________________________________________________-->
 					</div>
 
@@ -338,7 +338,8 @@ $("#cargar_tabla").load("<?php echo RESI; ?>general/Chofer/Listar_Chofer");
 //guardar chofer	
 function Guardar_Chofer() {
     var datos = new FormData($('#formChofer')[0]);
-    datos = formToObject(datos);		
+    datos = formToObject(datos);
+	datos.habilitacion = "Habilitado";		
     var aux = "";
     aux = $("#input_aux_img").val();
     if(aux != ""){
@@ -396,6 +397,7 @@ $("#btnsave").on("click", function() {
 			var chofer = new FormData($('#frm_chofer_edit')[0]);
 			chofer = formToObject(chofer);
 			chofer.imagen = $("#input_aux_img64").val(); 
+			chofer.habilitacion = "Habilitado";
 			var aux = 0;
 			if($("#nombre_edit").val() != ""){
 				if($("#apellido_edit").val() != ""){
@@ -408,9 +410,9 @@ $("#btnsave").on("click", function() {
 											if($("#carnet_edit").val() != ""){
 												if($("#cach_id_edit").val() != ""){
 													if($("#vencimiento_edit").val() != ""){
-														if($("#habilitacion_edit").val() != ""){
+														
 															aux = 1;
-														}
+														
 													}
 												}
 											}

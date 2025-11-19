@@ -31,6 +31,8 @@
         $data["transportista"] = $this->Vehiculos->Obtener_Transportista();
         $data['Rsu'] = $this->Vehiculos->obtener_RSU();
         $data['tran_id'] = $this->Choferes->getIDTransportista();//Solo debe poder seleccionarse el transportista que esta logueado
+        $data['empr_id'] = empresa();
+        $data['form_id'] = $this->Vehiculos->obtener_form_vehiculo();  
         $this->load->view('vehiculos/registrar_vehiculo',$data);
     }
 
@@ -39,7 +41,7 @@
     * @param array datos vehiculo
     * @return string "ok, error"
     */
-    function Guardar_Vehiculo(){
+     function Guardar_Vehiculo(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | Guardar_Vehiculo()');
         $datos =  $this->input->post('datos');
 
@@ -78,12 +80,14 @@
             $resp = $this->Contenedores->Guardar_tipo_carga($tipocarga);
         }
         unset($datos['optionsTolva'], $datos['capacidad'], $datos['rsu']);
-        
         $resp = $this->Vehiculos->Guardar_Vehiculos($datos);
 
-        $datos;
-        if($resp == 1){
-            echo "ok";
+        //$datos;
+        if($resp){
+           echo json_encode([
+            	"status" => "ok",
+            	"equi_id" => $resp  
+        	]);
         }else{
             echo "error";
         }
@@ -153,5 +157,44 @@
         echo json_encode($dato);
     }
 
+
+      	/**
+	*verifica si ya fue cargado el dominio
+	* @param 
+	* @return true,false
+	*/  
+	
+	function valida_dominio(){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | valida_dominio()');  
+        $dominio = $this->input->get('dominio');
+        $data = $this->Vehiculos->valida_Dominio($dominio);
+        echo $data;
+	}
+
+     /**
+	*Actualiza un transportista en especifico 
+	* @param 
+	* @return string "ok","error"
+	*/  
+	public function set_InfoId_vehiculo(){
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | set_InfoId_vehiculo()');
+		$equi_id =  $this->input->post('equi_id');
+		$info_id = $this->input->post('info_id');
+		$datos = [
+        	'equi_id' => $equi_id,
+        	'info_id' => $info_id
+    	];
+		// actualiza los datos del transportista
+		$resp = $this->Vehiculos->Set_InfoId_Vehiculo($datos);
+		if($resp == 1){
+            echo "ok";
+        }else{
+            log_message('ERROR','#TRAZA|Transportista|set_InfoId_transportista() >> $resp: '.$resp); 
+            echo "error";
+        }
+	}  
+
     }
+
+    
 ?>

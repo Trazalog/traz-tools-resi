@@ -111,4 +111,50 @@ class Transportistas extends CI_Model{
         return $aux->valores->valor;
     }
 
+
+         /**
+    * Obtiene formulario asociado a transportista
+    * @param  
+    * @return array valor , form_id
+    */
+    public function obtener_form_transportista(){   
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportistas | obtener_form_transportista()');  
+        $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/configuraciones_log");
+        $aux =json_decode($aux["data"]);
+        $vals = $aux->valores->valor;
+        //obtengo si es transportista
+        foreach ($vals as $v) {
+                if (isset($v->valor) && $v->valor === 'form_transportista') {
+                    $data = isset($v->valor2) ? $v->valor2 : null;
+                    break;
+                }
+            }
+        return $data;
+    }
+
+
+     /**
+    * Actualiza un  transportista
+    * @param  array data
+    * @return array int status
+    */
+    function Set_InfoId_Transportista($data){
+        log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportistas | Set_InfoId_Transportista()');
+        $post["transportista_info_id"] = $data;
+        $aux = $this->rest->callAPI("PUT",REST_RESI."/transportista/infoId", $post);
+        $aux =json_decode($aux["status"]);
+        return $aux;
+    }
+
+            /**
+    * verifica si existe el cuit en base de datos
+    * @param  
+    * @return boolean true,false
+    */
+    function valida_Cuit($cuit){
+        $aux = $this->rest->callAPI("GET",REST_RESI."/valida/transportista/".$cuit);
+        $aux =json_decode($aux["data"]);
+        return $aux->resultado->existe;
+	}
+
 }

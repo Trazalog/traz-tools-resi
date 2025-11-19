@@ -6,7 +6,6 @@
 
         <th>Acciones</th>
         <th>Codigo / Registro</th>
-        <th>Estado</th>
         <th>Capacidad</th>
         <th>Habilitacion</th>
 
@@ -29,7 +28,6 @@
                                 
                             echo   '</td>';
                             echo    '<td>'.$fila->codigo.'</td>';
-                            echo    '<td>'.substr("$fila->esco_id",17).'</td>'; //funcion substr("cadena de caracteres,n° posición del carácter desde la cual se comenzará la extracción") 17 por que hay que obviar estado_contenedor (0-16)
                             echo    '<td>'.$fila->capacidad.'</td>';
                             echo    '<td>'.$fila->habilitacion.'</td>';
                             echo '</tr>';
@@ -126,6 +124,22 @@
                                             
                                                 <input type="text" class="form-control  ocultarInfofecha" name="fec_alta" id="fecalta" style="width: 35rem;" readonly>
                                         </div>
+
+                                        <div class="form-group">
+                                                <label for="CircR" name="img">Imagen:</label>
+                                                <input type="file" class="ocultar" name=img id="img_file" onchange="convert()" style="font-size: smaller" id="files">
+                                                <input type="text" id="input_aux_img64" style="display:none" >
+                                                <input type="text" id="input_aux_zonaID" style="display:none" >      
+                                                <br>                      
+                                                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>  
+                                                <br>        
+                                                <img src="" alt="no hay imagen! cargue una" id="img_base" width="" height="">
+                                                
+                                   
+                                 
+                                   
+                                   
+                                        </div>
    
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -142,7 +156,7 @@
                                         <!--_____________________________________________-->
                                         <br>
                                         <!--Estado-->
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label for="esco_id">Estado:</label>
                                             <br>
                                             <select class="form-control select2 select2-hidden-accesible selectores" name="esco_id" id="Estados" style="width: 35rem;">
@@ -154,7 +168,7 @@
                                                 ?>
                                             </select>
                                             <input type="text" class="form-control ocultarInfo" name="" id="estadoInfo" style="display:none" style="width: 35rem;">
-                                        </div>
+                                        </div> -->
                                         <br>
                                          <!--Habilitacion-->
                                         <div class="form-group">
@@ -171,7 +185,7 @@
                                             <input type="text" class="form-control ocultarInfo" name="" id="habilitacionInfo" style="display:none" style="width: 35rem;">
                                         </div>    
                                         <br>
-                                        <div class="form-group ocultar ">
+                                        <div class="form-group ocultar " style="margin-bottom: 15px;">
                                             <label for="ticaid">Tipo de residuo:</label>
                                             <br>
                                             <div class="input-group date">
@@ -184,7 +198,7 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <div class="form-group ocultar_Info " style="display:none">
+                                        <div class="form-group ocultar_Info tipoResiduos" style="display:none">
                                             <label for="tipoResiduos">Tipo de residuo:</label>
                                             <br>
                                             <div class="input-group date">
@@ -195,7 +209,7 @@
                                             </div>  
                                         </div>  
                                         <br>
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                                 <label for="CircR" name="img">Imagen:</label>
                                                 <input type="file" class="ocultar" name=img id="img_file" onchange="convert()" style="font-size: smaller" id="files">
                                                 <input type="text" id="input_aux_img64" style="display:none" >
@@ -209,7 +223,7 @@
                                  
                                    
                                    
-                                        </div>
+                                        </div> -->
                                         
                                   
                                                                                
@@ -227,6 +241,17 @@
                         </form>
                     <!-- </div> -->
                 <!-- </form> -->
+
+                <!-- FORMULARIO DINÁMICO -->
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    
+                            <?php
+                                echo (!empty($form_id)) ? '<div class="frm-new frm-edit" data-form="'.$form_id.'"></div>' : '<div class="frm-new" data-form="0"></div>';
+                            ?>
+                        <input type="hidden" id="FormIdEdit" value="<?php echo $form_id; ?>">
+                    
+
+                </div>
 
                 <!--__________________ FIN FORMULARIO MODAL ___________________________-->
 
@@ -305,6 +330,8 @@
 <!---//////////////////////////////////////--- FIN MODAL DESCRIPCION ---///////////////////////////////////////////////////////-----> 
 
 <script>
+detectarForm();
+initForm();
 $(document).ready(function(){		
                 var aux= "";	
 				$("#img_base").val(aux);
@@ -479,6 +506,7 @@ $(".btnInfo").click(function(e){
     $(".ocultar_Info").removeAttr("style");
     $(".ocultarInfo").removeAttr("style");
     $(".ocultarInfo").attr("style","width: 39rem;");
+    $(".tipoResiduos").attr("style","margin-bottom: 15px;");
     $(".ocultarInfofecha").removeAttr("style");
     $(".ocultarInfofecha").attr("style","width: 35rem;");
     $('#btnsave').hide();
@@ -488,11 +516,11 @@ $(".btnInfo").click(function(e){
     $("#Añoelab").val(data.anio_elaboracion.slice(0, 10)); // saco hs y minutos
     $("#fecalta").val(data.fec_alta.slice(0, 10));
     $("#Tara").val(data.tara);
-    $("#estadoInfo").val(data.esco_id.substr(17,30));
+    /* $("#estadoInfo").val(data.esco_id.substr(17,30)); */
     $("#cargaInfo").val();
     $("#habilitacionInfo").val(data.habilitacion);
     $(".titulo").text('Informacion Contenedor');
-    $("#estadoInfo").attr("readonly","readonly"); 
+    /* $("#estadoInfo").attr("readonly","readonly");  */
     $("#habilitacionInfo").attr("readonly","readonly"); 
     $(".esconder").attr("style","left: 0rem; top: 1rem; ");
     $("#tic_id_info").find('option').remove();
@@ -517,7 +545,7 @@ $(".btnInfo").click(function(e){
             } 
         
         }
-  
+llenarFormDinamico(data.formularios.formulario, $('#modalEdit .frm-new'), false)  
 ExtraerImagen(data);
 });
 
@@ -560,9 +588,9 @@ console.table($('input#fec_elab_edit').val());
 $("#fec_elab_edit").attr("style","width: 31rem;");
 $("#Tara").val(data.tara);
 $("#cont_id").val(data.cont_id);
-$("#Estados")[0][0].selected = "false";
+/* $("#Estados")[0][0].selected = "false";
 $("#Estados")[0][0].text = data.esco_id.substr(17,30);
-$("#Estados")[0][0].value = data.esco_id;   
+$("#Estados")[0][0].value = data.esco_id;    */
 $("#Habilitacion")[0][0].selected = "false"; 
 $("#Habilitacion")[0][0].text = data.habilitacion;
 $("#Habilitacion")[0][0].value = data.habil_id;
@@ -586,6 +614,7 @@ for(var i=0; i <= datacarga.length-1; i++){
     } 
  
 }
+llenarFormDinamico(data.formularios.formulario, $('#modalEdit .frm-new'), true)
 ExtraerImagen(data);
 });
 
@@ -611,14 +640,15 @@ $("#btnsave").click(function(e){
     datos.usuario_app = "hugoDS"; 
     datos.imagen = $("#input_aux_img64").val();
     var cont_id = $("#cont_id").val();
-    if($("#Estados").val() != null){   
+    datos.esco_id = 'estado_contenedorINGRESADO';
+/*     if($("#Estados").val() != null){   
         console.table($("#Estados").val());
         datos.esco_id = $("#Estados").val();
     }else{
         console.table($("#Estados")[0][0].value);
         datos.esco_id = $("#Estados")[0][0].value;
     }
-    
+     */
     if($("#Habilitacion").val() != null){
         console.table($("#Habilitacion").val());
         datos.habilitacion = $("#Habilitacion").val();
@@ -635,9 +665,7 @@ $("#btnsave").click(function(e){
                     if($("#Tara").val()!=""){
                         if($("#tic_id").val()!=""){
                             if($("#Habilitacion").val()!=""){
-                                if($("#Estados").val()!=""){
                                     aux = 1;
-                                }
                             }
                         }
                     }
@@ -653,15 +681,35 @@ $("#btnsave").click(function(e){
                 type: "POST",
                 data: {datos, deletetipo, datos_tipo_carga, cont_id },
                 url: "<?php echo RESI; ?>general/Contenedor/Actualizar_Contenedor",
-                success: function (r) {
-                    wc();
+                success:async function (r) {
                     console.table(r);
                     if (r == "ok") {
-                        $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
-                        alertify.success("Contenedor actualizado con éxito");
-                        $("#modalEdit").modal('hide');
-                        $('#formContenedoresedit').data('bootstrapValidator').resetForm();
-                        $(".esconder").attr("style","left: 0rem; top: 1rem; ");
+                        var $dynContainer = $("#modalEdit").find('.frm-new.frm-edit');
+
+                        var $form = $dynContainer.is('form') ? $dynContainer : $dynContainer.find('form').first();
+                        // Llamar nueva función corregida
+                        newInfoID = await editarFormulario($form);
+                        if(newInfoID){
+                             $.ajax({
+                                            type: "POST",
+                                            url: "<?php echo RESI; ?>general/Contenedor/set_InfoId_contenedor",
+                                            data: { cont_id: datos.cont_id, info_id: newInfoID },
+                                            success: async function (res) {
+                                                if (res === "ok") {
+                                                    
+                                                    $("#tabla").load("<?php echo RESI; ?>general/Contenedor/Listar_Contenedor_Tabla");
+                                                    $("#modalEdit").modal('hide');
+                                                    wc();
+                                                    alertify.success("Contenedor actualizado con éxito");
+                                                    $('#formContenedoresedit').data('bootstrapValidator').resetForm();
+                                                    $(".esconder").attr("style","left: 0rem; top: 1rem; ");
+                                                } else {
+                                                    wc();
+                                                    alertify.error("Error al actualizar Generador con info_id");
+                                                }
+                                            }
+                                        });
+                            }
                     } else {
                         wc();
                         alertify.error("Error al Actualizar Contenedor");
@@ -843,6 +891,31 @@ $("#btn_cerrar_arriba").click(function(e){
    
     $('#formContenedoresedit').data('bootstrapValidator').resetForm();
 });
+
+
+
+// llena datos del form dinamico asociado al generador
+	function llenarFormDinamico(data, $formContenedor, modoEdicion) {  
+		// Limpiar valores
+		$formContenedor.find('input').val('');
+		$formContenedor.find('select').val('').trigger('change');
+		// Llenar valores
+		$.each(data, function(index, item) {
+			let label = item.label.toLowerCase().trim();
+			let valor = item.valor;
+			switch(label) {
+         
+                case 'vigente hasta':
+                let $vigenteHasta = $formContenedor.find('#vigenteHasta');
+                $vigenteHasta.val(valor);
+                
+                break;     
+				
+			}
+			
+			
+		});
+	}
 </script>
 
 <script>
