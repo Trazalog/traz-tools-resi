@@ -218,7 +218,7 @@ class Generadores extends CI_Model{
     * @return boolean true,false
     */
     function valida_Registro($registro){
-        $aux = $this->rest->callAPI("GET",REST_RESI."/validaRegistroTransportista/".$registro);
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/validaRegistroTransportista/".$registro);
         $aux =json_decode($aux["data"]);
         return $aux->resultado->existe;
 	}

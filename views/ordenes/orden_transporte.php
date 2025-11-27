@@ -299,7 +299,30 @@
 </div>
 <!--_____________________________________________________________-->
 <!-- REGISTRAR Orden Transporte-->
+
+
+
+<!--- BOX TABLA --->
+	<div class="box box-primary">
+			<div class="box-body">
+					<div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap">
+							<div class="row">
+									<div class="col-sm-6"></div>
+									<div class="col-sm-6"></div>
+							</div>   
+							<!--__________________TABLA___________________________-->
+							<div class="row"><div class="col-sm-12 table-scroll" id="cargar_tabla"></div>
+							<!--__________________TABLA___________________________-->
+        </div>
+  </div>
+<!--- FIN BOX TABLA --->
+
+
+
 <script>
+
+$("#cargar_tabla").load("<?php echo RESI; ?>estructura/Ordentransporte/View_Listar");
+
 function  obtenerTemplateOT(){
     var sotrid = $("#sotr_id").val();
     $.ajax({
@@ -572,7 +595,7 @@ function Guardar_Orden_transporte(){
         alert("ATENCION!!! no se puede generar la orden de trabajo sin contenedores asignados");
     }
 }
-$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Ordentransporte/lista_orden_transporte");
+//$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Ordentransporte/lista_orden_transporte");
 </script>
 
 

@@ -36,7 +36,7 @@ class Consultores extends CI_Model{
     * @return boolean true,false
     */
     function valida_Registro($registro){
-        $aux = $this->rest->callAPI("GET",REST_RESI."/validaRegistroConsultor/".$registro);
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/validaRegistroConsultor/".$registro);
         $aux =json_decode($aux["data"]);
         return $aux->resultado->existe;
 	}
@@ -48,7 +48,7 @@ class Consultores extends CI_Model{
     */
     function Guardar_Consultor($datos){
         $post["_post_consultores"] = $datos;
-        $aux = $this->rest->callAPI("POST",REST_RESI."/consultor", $post);
+        $aux = $this->rest->callAPI("POST",REST_RESI2."/consultor", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
 	}
@@ -61,7 +61,7 @@ class Consultores extends CI_Model{
     */
     function Listar_Consultores(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Consultores | Listar_Consultores()');  
-        $aux = $this->rest->callAPI("GET",REST_RESI."/consultores");
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/consultores");
         $aux =json_decode($aux["data"]);       
         return $aux->consultores->consultor;
     }
@@ -75,7 +75,7 @@ class Consultores extends CI_Model{
     function actualizar_Consultor($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Consultores | actualizar_Consultor()');
         $post["consultores"] = $data;
-        $aux = $this->rest->callAPI("PUT",REST_RESI."/consultores", $post);
+        $aux = $this->rest->callAPI("PUT",REST_RESI2."/consultores", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
     }
@@ -89,7 +89,7 @@ class Consultores extends CI_Model{
     function eliminar_Consultor($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Consultores | eliminar_Consultor()');
         $post["estado"]= $data;
-        $aux = $this->rest->callAPI("PUT",REST_RESI."/consultorEstado", $post);
+        $aux = $this->rest->callAPI("PUT",REST_RESI2."/consultorEstado", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
     }
