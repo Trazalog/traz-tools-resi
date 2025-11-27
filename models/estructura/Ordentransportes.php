@@ -7,13 +7,18 @@ class Ordentransportes extends CI_Model
 		parent::__construct();
     }
 
-    // Funcion Listar Ordenes Transporte (MODIFICAR)
-    function Listar_ordenes_transporte()
+    // Funcion Listar Ordenes Transporte Paginados
+    function Listar_ordenes_transporte($start, $length, $search, $orderColumn, $order)
     {
+        $length = str_replace(' ','%20',$length);
+        $start = str_replace(' ','%20',$start);
+        $search = str_replace(' ','%20',$search);
+        $orderColumn = str_replace(' ','%20',$orderColumn);
+        $order = str_replace(' ','%20',$order);
         
-        $aux = $this->rest->callAPI("GET",REST_RESI."/RECURSO");
+        $aux = $this->rest->callAPI("GET",REST_RESI."/ordenes/transporte/$start/$length/$search/$order");
         $aux =json_decode($aux["data"]);       
-        return $aux->Ordenes->Orden;
+        return $aux->ordenes_transportes->orden_transporte;
     }
     
     // Funcion Guardar Orden
@@ -207,5 +212,33 @@ class Ordentransportes extends CI_Model
         return $aux->templatesOrdenTransporte->templateOrdenTransporte;	
     }
 
-}
+    public function Total_ordenes_transporte() {
+        $response = $this->rest->callAPI("GET", REST_RESI."/TotalOrdenTransporte");
+        $result = json_decode($response["data"]);
+        return $result->totales->total;
+    }
 
+    public function Total_ordenes_transporte_filtrado($search) {
+        $search = str_replace(' ','%20',$search);
+        $aux = $this->rest->callAPI("GET", REST_RESI . "/TotalOrdenTransporteFiltrado/$search");
+        $result = json_decode($aux["data"]);
+        return $result->totales->total;
+    }
+
+    public function getSolicitante($sotr_id){
+         log_message('INFO','#TRAZA|Ordentransportes|solicitanteTransporte >> ');
+        $aux = $this->rest->callAPI("GET",REST_RESI."/solicitanteTransporte/$sotr_id");
+        $aux =json_decode($aux["data"]);
+        return $aux->solicitante_transportistas->solicitante_transportista;	
+    }
+    
+
+    
+    public function ContenedoresEntregadosporOrtrId($ortr_id){
+        log_message('INFO','#TRAZA|Ordentransportes|ContenedoresEntregadosporOrtrId >> ');
+        $aux = $this->rest->callAPI("GET",REST_RESI."/contenedores/entregadosPorOrdenTransporte/$ortr_id");
+        $aux =json_decode($aux["data"]);
+        return $aux->contenedores->contenedor;	
+    }
+
+}

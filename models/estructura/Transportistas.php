@@ -141,7 +141,7 @@ class Transportistas extends CI_Model{
     function Set_InfoId_Transportista($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Transportistas | Set_InfoId_Transportista()');
         $post["transportista_info_id"] = $data;
-        $aux = $this->rest->callAPI("PUT",REST_RESI."/transportista/infoId", $post);
+        $aux = $this->rest->callAPI("PUT",REST_RESI2."/transportista/infoId", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
     }
@@ -152,7 +152,7 @@ class Transportistas extends CI_Model{
     * @return boolean true,false
     */
     function valida_Cuit($cuit){
-        $aux = $this->rest->callAPI("GET",REST_RESI."/valida/transportista/".$cuit);
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/valida/transportista/".$cuit);
         $aux =json_decode($aux["data"]);
         return $aux->resultado->existe;
 	}

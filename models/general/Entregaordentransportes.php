@@ -466,7 +466,7 @@ class Entregaordentransportes extends CI_Model {
     function obtenerDataCamionPesado($equi_id)
     {
       log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | obtenerDataCamionPesado()');
-      $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculo/equi/".$equi_id);
+      $aux = $this->rest->callAPI("GET",REST_RESI2."/vehiculo/equi/".$equi_id);
       $aux =json_decode($aux["data"]);
       return $aux->equipos->equipo;
     }

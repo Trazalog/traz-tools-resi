@@ -97,7 +97,7 @@
                 <!--Adjuntar imagen--> 
                 <div class="form-group">
                             
-                                <label for="img_File">Seleccione Imagen</label>
+                                <label for="img_File">Seleccione Imagen  <strong class="text-danger"> (Formato JPEG)*</strong></label>
                                 <input type="file" name="imagen" id="img_File" onchange="convertA()" style="font-size: smaller">
                                 <input type="text" id="input_aux_img" style="display:none" >
                                 <img src="" alt="" id="imagen" width="" height="">
@@ -280,22 +280,27 @@ async function convertA(){
     if (file) {
         var archivo = await GetFile(file);
         console.table(archivo);
-        if(archivo.fileType == "image/jpeg"){
-            var cod = "data:image/jpeg;base64,"+archivo.base64StringFile;
-            //var cod = "data:image/png;base64,"+archivo.base64StringFile;
-            $("#input_aux_img").val(cod);
-            $("#imagen").attr("src",$("#input_aux_img").val());
-            $("#imagen").attr("width",100);
-            $("#imagen").attr("height",100);
-        }else{
-            if(archivo.fileType == "application/pdf"){
-                var cod = "data:application/pdf;base64,"+archivo.base64StringFile;
+        if(archivo.fileType == "image/png"){
+             alertify.error("Debe ingresar Imagen en Formato JPEG");
+        }
+        else{
+            if(archivo.fileType == "image/jpeg"){
+                var cod = "data:image/jpeg;base64,"+archivo.base64StringFile;
+                //var cod = "data:image/png;base64,"+archivo.base64StringFile;
+                $("#input_aux_img").val(cod);
+                $("#imagen").attr("src",$("#input_aux_img").val());
+                $("#imagen").attr("width",100);
+                $("#imagen").attr("height",100);
+            }else{
+                if(archivo.fileType == "application/pdf"){
+                    var cod = "data:application/pdf;base64,"+archivo.base64StringFile;
+                }
+                
             }
             
+            $("#input_aux_img").val(cod);
+            console.table($("#input_aux_img").val());
         }
-        
-        $("#input_aux_img").val(cod);
-        console.table($("#input_aux_img").val());
     }    
 }
 </script>
@@ -434,7 +439,7 @@ async function convertA(){
                     }
                 });
             }else{
-                alert("ATENCION!!! No Cargo una Imagen ");
+                alert("ATENCION!!! No Cargo una Imagen o la imagen no es del formato correcto");
             }
         }else{
             alert("ATENCION!!! Hay campos sin completar");

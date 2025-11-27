@@ -123,7 +123,7 @@ class Vehiculos extends CI_Model
     * @return boolean true,false
     */
     function valida_Dominio($dominio){
-        $aux = $this->rest->callAPI("GET",REST_RESI."/valida/dominio/".$dominio);
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/valida/dominio/".$dominio);
         $aux =json_decode($aux["data"]);
         return $aux->resultado->existe;
 	}
@@ -136,7 +136,7 @@ class Vehiculos extends CI_Model
     function Set_InfoId_Vehiculo($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculos | Set_InfoId_Vehiculo()');
         $post["equipo_info_id"] = $data;
-        $aux = $this->rest->callAPI("PUT",REST_RESI."/equipo/infoId", $post);
+        $aux = $this->rest->callAPI("PUT",REST_RESI2."/equipo/infoId", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
     }

@@ -167,7 +167,7 @@ class Contenedores extends CI_Model
     * @return boolean true,false
     */
     function valida_Codigo($codigo){
-        $aux = $this->rest->callAPI("GET",REST_RESI."/contenedor/validaCodigo/".$codigo);
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/contenedor/validaCodigo/".$codigo);
         $aux =json_decode($aux["data"]);
         return $aux->resultado->existe;
 	}
@@ -201,7 +201,7 @@ class Contenedores extends CI_Model
     function set_InfoId_Contenedor($data){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedores | set_InfoId_Contenedor()');
         $post["contenedor_info_id"] = $data;
-        $aux = $this->rest->callAPI("PUT",REST_RESI."/contenedor/infoId", $post);
+        $aux = $this->rest->callAPI("PUT",REST_RESI2."/contenedor/infoId", $post);
         $aux =json_decode($aux["status"]);
         return $aux;
     }

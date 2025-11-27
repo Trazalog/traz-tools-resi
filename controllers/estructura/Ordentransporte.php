@@ -39,12 +39,65 @@ class Ordentransporte extends CI_Controller {
     $this->load->view('ordenes/orden_transporte',$data);  
   }
   
-  // ---------------- Funcion Listar Ordentransporte
+  /**
+	* Genera el listado de ordenes de transporte paginados
+	* @param integer;integer;string start donde comienza el listado; length cantidad de registros; search cadena a buscar
+	* @return array listado paginado y la cantidad
+	*/
   function Listar_OrdenTransporte(){
-    $data['ordenes'] = $this->Ordentransportes->Listar_ordenes_transporte();
-    $this->load->view('layout/Ordenes/lista_orden_transporte',$data); 
-      
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | Listar_OrdenTransporte()');
+      $start  = $this->input->get('start');  // offset
+      $length = $this->input->get('length'); // limit
+      $draw   = $this->input->get('draw');   
+
+      if (!$start)  $start  = 0;
+      if (!$length) $length = 10;
+
+      $search = $this->input->get("search")["value"];
+
+      //ORDEN
+      $orderColIndex = $this->input->get("order")[0]["column"];
+      $orderDir      = $this->input->get("order")[0]["dir"];
+      $columns       = $this->input->get("columns");
+
+      $orderColumn   = $columns[$orderColIndex]["data"]; // ejemplo: "ortr_id"
+
+      if(!$search){
+        // CANTIDAD TOTAL DE ORDENES DE TRANSPORTE
+        $total   = $this->Ordentransportes->Total_ordenes_transporte();
+        $search = "todos";
+      }
+      else{
+          // Total filtrado
+          $total = $this->Ordentransportes->Total_ordenes_transporte_filtrado($search);
+      }
+     
+      $ordenes = $this->Ordentransportes->Listar_ordenes_transporte($start, $length, $search, $orderColumn, $orderDir);
+       
+      if (!$ordenes || !is_array($ordenes)) {
+        $ordenes = array();
+      }
+
+      // RESPUESTA PARA DATATABLES
+      $output = array(
+          "draw"            => intval($draw),
+          "recordsTotal"    => intval($total[0]->total),
+          "recordsFiltered" => intval($total[0]->total),
+          "data"            => $ordenes
+      );
+
+      echo json_encode($output);
   }
+
+  /**
+	* CARGA LA VISTA DEL LISTADO DE ORDENES DE TRANSPORTE
+	* @return view
+	*/
+  function View_Listar() {
+      log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | View_Listar()');
+      $this->load->view('ordenes/lista_orden_transporte');
+  }
+  
   // ---------------- Funcion Cargar vista Recepcion de Orden y Datos
   function templateRecepcionOrden(){          
     $this->load->view('layout/Ordenes/recepcion_de_orden', $data);
@@ -75,6 +128,13 @@ class Ordentransporte extends CI_Controller {
 
   function Obtenerteot(){
     $resp = $this->Ordentransportes->ObtenerTeot($this->input->post('sotr_id'));
+    echo json_encode($resp);
+  }
+
+  function dataDetalleOT(){
+    $resp['solicitante_transporte'] = $this->Ordentransportes->getSolicitante($this->input->post('sotr_id'));
+    $resp['transportista'] = $this->Ordentransportes->Obtenertranspo_id($this->input->post('tran_id'));
+    $resp['contenedores'] = $this->Ordentransportes->ContenedoresEntregadosporOrtrId($this->input->post('ortr_id'));
     echo json_encode($resp);
   }
 }
