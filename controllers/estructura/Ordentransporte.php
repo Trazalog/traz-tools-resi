@@ -9,7 +9,6 @@ class Ordentransporte extends CI_Controller {
   // ---------------- Funcion Cargar vista Orden de transporte y Datos
   function templateOrdentransporte(){
     log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | templateOrdentransporte()');
-
     $data['Tiporesiduo'] = $this->Ordentransportes->obtener_Tipo_residuo();
     $data['numero'] = $this->Ordentransportes->obtener_numero_orden();
     $data['chofer'] = $this->Ordentransportes->obtenerChofer();
@@ -46,6 +45,8 @@ class Ordentransporte extends CI_Controller {
 	*/
   function Listar_OrdenTransporte(){
       log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | Listar_OrdenTransporte()');
+       //CODIGO PARA FILTRAR POR generador
+      $sotr_id = usrIdGeneradorByNick();
       $start  = $this->input->get('start');  // offset
       $length = $this->input->get('length'); // limit
       $draw   = $this->input->get('draw');   
@@ -64,15 +65,15 @@ class Ordentransporte extends CI_Controller {
 
       if(!$search){
         // CANTIDAD TOTAL DE ORDENES DE TRANSPORTE
-        $total   = $this->Ordentransportes->Total_ordenes_transporte();
+        $total   = $this->Ordentransportes->Total_ordenes_transporte($sotr_id);
         $search = "todos";
       }
       else{
           // Total filtrado
-          $total = $this->Ordentransportes->Total_ordenes_transporte_filtrado($search);
+          $total = $this->Ordentransportes->Total_ordenes_transporte_filtrado($search, $sotr_id);
       }
-     
-      $ordenes = $this->Ordentransportes->Listar_ordenes_transporte($start, $length, $search, $orderColumn, $orderDir);
+  
+      $ordenes = $this->Ordentransportes->Listar_ordenes_transporte($start, $length, $search, $orderColumn, $orderDir, $sotr_id);
        
       if (!$ordenes || !is_array($ordenes)) {
         $ordenes = array();

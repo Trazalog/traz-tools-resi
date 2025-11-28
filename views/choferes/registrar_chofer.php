@@ -265,6 +265,15 @@ $(document).ready(function(){
     var aux= "";	
     $("#img_base").val(aux);
     $(".fa-spinner").hide();
+
+	const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0'); // Meses 0-11
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    const fechaMin = `${yyyy}-${mm}-${dd}`;
+
+    // Asignar fecha mínima al input
+    document.getElementById('vencimiento').setAttribute('min', fechaMin);
     
 });
 	//////// Tratamiento de Imagen en Registrar nuevo circuito

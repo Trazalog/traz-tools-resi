@@ -345,23 +345,7 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>1266555</td>
-                            <td>HGG234</td>
-                            <td>PRIVADO</td>
-
-                            <td>10000</td>
-                            <td>100</td>
-                            <td>9900</td>
-
-                            <td>21/05/26</td>
-                            <td>23:00</td>
-
-                            <td>21/05/26</td>
-                            <td>23:00</td>
-
-                            <td>soy observacion</td>
-                        </tr>
+                        
                     </tbody>
 
                 </table>
@@ -381,4 +365,8 @@
         La totalidad de los datos presentados en esta orde de transporte revisten el carácter de Declaración Jurada, debiendo reflejar su contenido, la realidad de los items declarados.
     </h5>
 
+</div>
+
+<div class='modal-footer'>
+            <button type='submit' class='btn btn-danger pull-right no-print' id='btnImprimir' onclick="imprimirModal()">Imprimir</button>
 </div>

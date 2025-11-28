@@ -317,7 +317,7 @@ async function convertA(){
         var aleatorio = Math.round(Math.random() * (100 - 1) + 1);
         $("#nro").val(aleatorio);
         $("#botonAgregar").attr("disabled", "");
-         
+        document.getElementById('vigenteHasta').min = new Date().toISOString().split('T')[0];
         /* Si la empresa esta como admin o authorizada puede seleccionar otros transportistas, si no lo es se selecciona el transportista por defecto asociado al usuario logeado*/
         var empr_id = <?php echo $empr_id; ?>;
         var empresas = JSON.parse('<?php echo EMPRESAS_RESI_ADMIN; ?>');
@@ -603,7 +603,7 @@ function validarFormularioContenedor() {
     const tara = $("#tara").val()
     const ticco_id = $("#ticco_id").val();
     const habilitacion = $("#habilitacion").val();
-
+    const vigenteHasta = $("#vigenteHasta").val();
 
     if (!codigo) {
         alertify.error("Debe ingresar Numero de registro");
@@ -653,6 +653,21 @@ function validarFormularioContenedor() {
         return false;
     }
 
+    // Validación de vigenteHasta
+    if (!vigenteHasta) {
+        alertify.error("Debe ingresar fecha vigente hasta");
+        $("#vigenteHasta").focus();
+        return false;
+    } else {
+        const hoy = new Date();
+        hoy.setHours(0,0,0,0); // eliminamos horas para comparar solo fechas
+        const fechaVigente = new Date(vigenteHasta);
+        if (fechaVigente < hoy) {
+            alertify.error("La fecha 'Vigente Hasta' debe ser mayor o igual a la fecha actual");
+            $("#vigenteHasta").focus();
+            return false;
+        }
+    }
 
 
     return true; 
