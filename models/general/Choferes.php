@@ -28,6 +28,18 @@ class Choferes extends CI_Model{
     }
 
     /**
+    * Trae listado de Todos los Choferes
+    * @param integer
+    * @return array todos los choferes 
+    */
+    function Listar_ChoferesAll(){
+        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Choferes | Listar_Choferes()');
+        $aux = $this->rest->callAPI("GET",REST_RESI."/choferes");
+        $aux =json_decode($aux["data"]);
+        return $aux->choferes->chofer;
+    }
+
+    /**
     * Crea un chofer nuevo
     * @param array datos chofer
     * @return int tran_id (id de chofer nuevo)

@@ -102,8 +102,17 @@ class Contenedor extends CI_Controller {
     function Listar_Contenedor(){
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Listar_Contenedor()');
         //CODIGO PARA FILTRAR POR TRANSPORTISTA
-        $tran_id = usrIdTransportistaByNick();
-        $conte =  $this->Contenedores->ObtenerContxTranid($tran_id);
+
+        $empresa = empresa();
+        $empresasAdmin = json_decode(EMPRESAS_RESI_ADMIN, true);
+        if (in_array($empresa, $empresasAdmin)) {
+            // Solo cargar choferes si la empresa es RESI ADMIN
+            $conte = $this->Contenedores->Listar_Contenedor();
+        }else{
+            $tran_id = usrIdTransportistaByNick();
+            $conte =  $this->Contenedores->ObtenerContxTranid($tran_id);
+        }
+        
         $arregloEq = array();
         if($conte != null){
             $cant = count($conte);

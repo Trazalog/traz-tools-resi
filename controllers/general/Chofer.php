@@ -62,7 +62,15 @@ class Chofer extends CI_Controller {
         log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Chofer | Listar_Chofer()');
         $this->load->model('estructura/Ordentransportes');
         $tran_id = $this->Choferes->getIDTransportista();
-        $data["choferes"] = $this->Choferes->Listar_Choferes($tran_id);
+        $empresa = empresa();
+        $empresasAdmin = json_decode(EMPRESAS_RESI_ADMIN, true);
+        if (in_array($empresa, $empresasAdmin)) {
+            // Solo cargar choferes si la empresa es RESI ADMIN
+            $data["choferes"] = $this->Choferes->Listar_ChoferesAll();
+        }
+        else{
+            $data["choferes"] = $this->Choferes->Listar_Choferes($tran_id);
+        }
         $this->load->view('choferes/lista_choferes',$data);
     }
     // _________________________________________________________

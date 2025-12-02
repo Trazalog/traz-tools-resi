@@ -323,6 +323,39 @@ function OK(){
         }
 		var dominio = $("#camion_id option:selected" ).text();
 		var table = $('#tbl_contenedoresagregados').DataTable();
+
+        // VALIDAR SI EL CONTENEDOR YA EXISTE EN LA TABLA
+        var contenedorId = entregaCont.cont;
+        var contenedorYaExiste = false;
+
+        // Recorrer todas las filas de la tabla
+        table.rows().every(function(rowIdx, tableLoop, rowLoop) {
+                // Obtener el nodo DOM de la fila
+                var node = this.node();
+                if(node) {
+                //obtenemos el atributo del elemento tr
+                var existingDataJson = $(node).attr('data-json');
+       
+                if(existingDataJson) {
+                    try {
+                        var existingData = JSON.parse(existingDataJson);
+                        if(existingData.cont == contenedorId) {
+                            contenedorYaExiste = true;
+                            return false; 
+                        }
+                    } catch(e) {
+                        console.error("Error al parsear JSON:", e);
+                    }
+                }
+            }
+        });
+
+        // Si el contenedor ya existe, mostrar mensaje y no agregar
+        if(contenedorYaExiste) {
+            error("Error", "ATENCIÓN: El contenedor " + jsonContenedor.codigo + " ya está en asignado");
+            return;
+        }
+
 				var row =  `<tr data-json='${JSON.stringify(entregaCont)}'> 
 							<td> <i class='fa fa-fw fa-minus text-light-blue' style='cursor: pointer; margin-left: 15px;' title='Nuevo'></i> </td>
 							<td style='display:none;'>${entregaCont.tica_id}</td>
