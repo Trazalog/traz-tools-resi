@@ -76,7 +76,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input type="date" class="form-control"   name="fecha" id="Fecha" value="<?php echo date("Y-m-d");?>" >
+                                        <input type="date" class="form-control"   name="fecha" id="Fecha" value="<?php echo date("Y-m-d");?>" min="<?php echo date('Y-m-d'); ?>" >
                                         <input type="text" style="display:none" value="<?php echo $sotrid?>" id="sotr_id" >
                                     </div>
                                 </div>
