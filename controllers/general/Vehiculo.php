@@ -194,6 +194,28 @@
         }
 	}  
 
+    /**
+	*Pantalla de OT al escanear qr transportista con token 
+	* @param 
+	* @return view vista_cliente
+	*/  
+
+    public function vistaCliente(){
+
+        //obtengo id de equipo de la url
+        $url_info= $_SERVER["REQUEST_URI"];
+
+        $components = parse_url($url_info);
+
+        parse_str($components['query'], $results);
+
+        $equi_id =$results['id'];
+        //datos de la ot asociada al equipo
+        $data['dataOt'] = $this->Vehiculos->getDataOtporEquiId($equi_id);
+		return $this->load->view(RESI.'vehiculos/vista_cliente',$data);
+
+    }
+
     }
 
     
