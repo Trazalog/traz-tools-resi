@@ -15,7 +15,10 @@
                 echo    '<td>';
                 echo    '<button type="button" title="Editar" class="btn btn-primary btn-circle btnEditar" data-toggle="modal" ><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp
                         <button type="button" title="Info" class="btn btn-primary btn-circle btnInfo" data-toggle="modal" ><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>&nbsp 
-                        <button type="button" title="eliminar" class="btn btn-primary btn-circle btnEliminar" data-toggle="modal" data-target="#modalBorrar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp';
+                        <button type="button" title="eliminar" class="btn btn-primary btn-circle btnEliminar" data-toggle="modal" data-target="#modalBorrar"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp
+                        <button type="button" title="QR" class="btn btn-primary btn-circle btnQR">
+                            <span class="fa fa-qrcode" aria-hidden="true" style="font-size:16px;" onclick="QR(this)"></span>
+                        </button>&nbsp';
                 echo   '</td>';
                 echo    '<td>'.$fila->dominio.'</td>';
                 echo    '<td>'.$fila->descripcion.'</td>';                       
@@ -27,6 +30,11 @@
         </tbody>
     </table>
     <!--__________________FIN TABLA___________________________-->
+
+<?php
+// carga el modal de impresion de QR
+$this->load->view(COD . 'componentes/modalResiduos');
+?>    
 <script>
 //Convertir a base64 el archivo Imagen
 function getFile(file){
@@ -299,6 +307,117 @@ $(".btnInfo").click(function(e){
 			
 		});
 	}
+
+
+        //////////////////////////////////////////
+    // Configuracion y creacion código QR
+    // Características para generacion del QR
+   async function QR(e) {
+
+        wo();
+        //Limpio el modal
+        $("#infoEtiqueta").empty();
+        $("#contenedorCodigo").empty();
+        $("#infoFooter").empty();
+
+        // configuración de código QR
+        var config = {};
+        config.titulo = "Código QR";
+        config.pixel = "7";
+        config.level = "L";
+        config.framSize = "2";
+
+        //Obtengo los datos del lote
+        datos = $(e).closest('tr').attr('data-json');
+        var datosVehiculo = JSON.parse(datos);
+
+        let modelo = "";
+
+        if(datos.formularios == null){
+            datosVehiculo.modelo = '';  
+        }
+        else {
+            datosVehiculo.formularios.formulario.forEach(f => {
+                if (f.label === "Modelo") {
+                    modelo = f.valor;
+                }
+            });
+            datosVehiculo.modelo = modelo;
+        }
+
+        link = await crearUrlQr(datosVehiculo.equi_id);
+
+        //Cargo la vista del QR con datos en el modal
+        $("#infoEtiqueta").load("<?php echo RESI ?>general/CodigoQR/cargaModalQRVehiculo", datosVehiculo);
+        var dataQR = {};
+        dataQR.link = link;
+        await logoEmpresa();
+
+        // agrega codigo QR al modal impresion
+        getQR(config, dataQR, 'codigosQR/Traz-tools-resi/vehiculos');
+
+        // levanta modal completo para su impresion
+        verModalImpresion();
+    }
+
+
+    //trae el logo de la empresa si esta cargado en core.tablas
+    async function logoEmpresa() {
+
+        try {
+        // Realizar la llamada AJAX de manera sincrónica usando fetch
+        const response = await $.ajax({
+            type: 'POST',
+            data: {},
+            url: '<?php echo base_url(RESI) ?>general/CodigoQR/getLogoEmpresa'
+        });
+
+        // Parsear los datos obtenidos en la respuesta
+        const resp = JSON.parse(response);
+
+        //si tiene logo lo pega sino elimina el selector 
+        if(resp)
+            document.getElementById('logo').src = resp;
+        else 
+            document.querySelector('.logo-container').remove();
+
+      
+        wc();
+
+    } catch (error) {
+        wc();
+    }
+    }
+
+
+function crearUrlQr(equi_id) {
+    return new Promise((resolve, reject) => {
+        var datos = {};
+        datos.id = equi_id;
+        datos.funcion = 'RESI.vehiculo';
+
+        $.ajax({
+            type: 'POST',
+            data: datos,
+            url: '<?php echo COD ?>Url/generarLink',
+            success: function(data) {
+                url = JSON.parse(data);
+
+                console.log("la url es:" + url.url);
+
+                dato_linck = url.url;
+                $('#url_link').val(dato_linck);
+
+                resolve(dato_linck);
+            },
+            error: function(err) {
+                reject(err);
+                wc();
+                error('', "Se produjo un error al cerrar la tarea");
+            }
+        });
+    });
+}
 </script>
 <script>
     DataTable($('#tabla_vehiculos'))

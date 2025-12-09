@@ -142,6 +142,12 @@ class Vehiculos extends CI_Model
     }
 
 
+	function getDataOtporEquiId($equi_id)
+	{
+		$aux = $this->rest->callAPI("GET",REST_RESI2."/orden/transporte/equipo/".$equi_id);
+    	$data =json_decode($aux["data"]);
+    	return $data->orden_transportes->orden_transporte;
+	}
 }
 
 ?>

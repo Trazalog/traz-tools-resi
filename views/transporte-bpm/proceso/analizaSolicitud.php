@@ -11,6 +11,7 @@
 			<tr>
 				<th>Tipo Residuo</th>
 				<th>Cantidad Solicitada</th>
+				<th>Mts3</th>
 				<th>Cantidad Propuesta</th>
 			</tr>
 		</thead>
@@ -21,6 +22,7 @@
 						echo "<tr data-json='".json_encode($fila)."'>";
 							echo "<td>".$fila->valor."</td>";
 							echo "<td>".$fila->cantidad."</td>";
+							echo "<td>".$fila->volumen."</td>";
 							echo "<td> <input id='' style='border:none;' placeholder='Ingrese cantidad'> </td>";
 						echo '</tr>';
 					}
