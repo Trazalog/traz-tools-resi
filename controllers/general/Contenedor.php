@@ -42,8 +42,8 @@ class Contenedor extends CI_Controller {
         log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Contenedor | Guardar_Contenedor()'); 
         // datos de la vista  
         $datos =  $this->input->post('datos');
-        $tran_id = usrIdTransportistaByNick();
-        $datos['tran_id'] = $tran_id;
+        //$tran_id = usrIdTransportistaByNick();
+        //$datos['tran_id'] = $tran_id;
         $datos_tipo_carga = $this->input->post('datos_tipo_carga');
          // 1 guarda contenedor y devuelve su id
         $cont_id = $this->Contenedores->Guardar_Contenedor($datos)->respuesta->cont_id;

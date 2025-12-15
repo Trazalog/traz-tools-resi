@@ -595,7 +595,7 @@ function Guardar_Orden_transporte(){
         alert("ATENCION!!! no se puede generar la orden de trabajo sin contenedores asignados");
     }
 }
-//$("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Ordentransporte/lista_orden_transporte");
+
 </script>
 
 

@@ -134,22 +134,46 @@
 </style>
 <!-- FIN ESTILOS PARA LA IMPRESION -->
 
+
+<!-- LISTADO DE ORDENES DE TRABAJO SEGUN USUARIO ADMIN O TRANSPORTISTA -->
+<?php 
+$empresas_admin = EMPRESAS_RESI_ADMIN;
+$isAdmin = in_array($empr_id, json_decode($empresas_admin));
+?>
+
+<?php if ($isAdmin): ?>
 <!-- __________________HEADER TABLA___________________________ -->
 
 <table id="tabla_orden_transporte" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Acciones</th>
-            <th>N° Orden de Transporte</th>
-            <th>Transportista</th>
             <th>Fecha</th>
+            <th>N° Orden de Transportes</th>
+            <th>Generador</th>
+            <th>Transportista</th>
             <th>Chofer</th>
+            <th>Sitio de Disposición</th>
+        </tr>
+    </thead>
+</table>
+
+<?php else: ?>
+<table id="tabla_orden_transporte" class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Acciones</th>
+            <th>Fecha</th>
+            <th>N° Orden de Transporte</th>
+            <th>Generador</th>
+            <th>Chofer</th>
+            <th>Sitio de Disposición</th>
         </tr>
     </thead>
 </table>
 
 <!-- __________________FIN TABLAa___________________________ -->
-
+<?php endif; ?>
 
 <!-- Modal detalles ot -->
 <div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog">
@@ -198,20 +222,39 @@
                     "orderable": false,
                     "searchable": false
             },
-            { "data": "ortr_id" },
-            { "data": "transportista" },
-            {
-                "data": "fec_alta",
-                "render": function(data) {
-                    return data.split("T")[0];
-                }
-            },
-            {
-                "data": null,
-                "render": function(data, type, row, meta) {
-                    return `${row.chofer} ${row.apellidoChofer}`;
-                }
-            }
+
+            <?php if ($isAdmin): ?>
+                {
+                    "data": "fec_alta",
+                    "render": function(data) { return data.split("T")[0]; }
+                },
+                { "data": "ortr_id" },
+                { "data": "generador" },
+                { "data": "transportista" },
+                {
+                    "data": null,
+                    "render": function(data, type, row) {
+                        return `${row.chofer} ${row.apellidoChofer}`;
+                    }
+                },
+                { "data": "difi_descripcion" }
+
+            <?php else: ?>    
+                {
+                    "data": "fec_alta",
+                    "render": function(data) { return data.split("T")[0]; }
+                },
+                { "data": "ortr_id" },
+                { "data": "generador" },
+                {
+                    "data": null,
+                    "render": function(data, type, row) {
+                        return `${row.chofer} ${row.apellidoChofer}`;
+                    }
+                },
+                { "data": "difi_descripcion" }
+
+            <?php endif; ?>
 
         ],
         "language": {
