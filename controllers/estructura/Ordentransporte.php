@@ -49,7 +49,7 @@ class Ordentransporte extends CI_Controller {
       $sotr_id = usrIdGeneradorByNick();
       $start  = $this->input->get('start');  // offset
       $length = $this->input->get('length'); // limit
-      $draw   = $this->input->get('draw');   
+      $draw   = $this->input->get('draw');
 
       if (!$start)  $start  = 0;
       if (!$length) $length = 10;
@@ -63,6 +63,13 @@ class Ordentransporte extends CI_Controller {
 
       $orderColumn   = $columns[$orderColIndex]["data"]; // ejemplo: "ortr_id"
 
+      /* si es admin tiene que traer todos los datos de todas las empresas */
+      $empresas_admin = EMPRESAS_RESI_ADMIN;
+      $isAdmin = in_array(empresa(), json_decode($empresas_admin));
+      if($isAdmin){
+        $sotr_id = 'todos';
+      }
+
       if(!$search){
         // CANTIDAD TOTAL DE ORDENES DE TRANSPORTE
         $total   = $this->Ordentransportes->Total_ordenes_transporte($sotr_id);
@@ -72,7 +79,7 @@ class Ordentransporte extends CI_Controller {
           // Total filtrado
           $total = $this->Ordentransportes->Total_ordenes_transporte_filtrado($search, $sotr_id);
       }
-  
+
       $ordenes = $this->Ordentransportes->Listar_ordenes_transporte($start, $length, $search, $orderColumn, $orderDir, $sotr_id);
        
       if (!$ordenes || !is_array($ordenes)) {
@@ -96,7 +103,8 @@ class Ordentransporte extends CI_Controller {
 	*/
   function View_Listar() {
       log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Ordentransporte | View_Listar()');
-      $this->load->view('ordenes/lista_orden_transporte');
+      $data['empr_id'] = empresa();
+      $this->load->view('ordenes/lista_orden_transporte', $data);
   }
   
   // ---------------- Funcion Cargar vista Recepcion de Orden y Datos
