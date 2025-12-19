@@ -317,7 +317,7 @@ async function convertA(){
         var aleatorio = Math.round(Math.random() * (100 - 1) + 1);
         $("#nro").val(aleatorio);
         $("#botonAgregar").attr("disabled", "");
-        document.getElementById('vigenteHasta').min = new Date().toISOString().split('T')[0];
+        //document.getElementById('vigenteHasta').min = new Date().toISOString().split('T')[0];
         /* Si la empresa esta como admin o authorizada puede seleccionar otros transportistas, si no lo es se selecciona el transportista por defecto asociado al usuario logeado*/
         var empr_id = <?php echo $empr_id; ?>;
         var empresas = JSON.parse('<?php echo EMPRESAS_RESI_ADMIN; ?>');

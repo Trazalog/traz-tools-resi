@@ -93,7 +93,7 @@
 			datajson = $(this).attr("data-json");
 			data = JSON.parse(datajson); 
 			var solicit= $(this).find("td").eq(1).html();			
-			var propuesta= $(this).find("td").eq(2).find("input").val();
+			var propuesta= $(this).find("td").eq(3).find("input").val();
 			var tmp = {};
 			tmp.soco_id = data.soco_id;
 			tmp.tica_id = data.tica_id;
