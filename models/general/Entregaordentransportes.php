@@ -45,7 +45,13 @@ class Entregaordentransportes extends CI_Model {
   public function map($tarea){   
     $data['descripcion'] = 'Ingreso de contenedores a PTA';
 
-    $aux_OT = $this->obtenerInfoEntrega($tarea);
+    //traigo otra info si es certifica vuelco
+    if($tarea->nombreTarea == 'Certifica Vuelco'){
+       $aux_OT = $this->obtenerInfoEntregaCertificaVuelco($tarea);
+    }
+    else{
+      $aux_OT = $this->obtenerInfoEntrega($tarea);
+    }
     $deposito = $this->obtenerDeposito($aux_OT->ortr_id);
 
     $aux = new StdClass();
@@ -60,12 +66,13 @@ class Entregaordentransportes extends CI_Model {
 
     $aux = new StdClass();
     $aux->color = 'primary';
-    $aux->texto = 'Dominio: '.$aux_OT->dominio;
+    $dominio = ($aux_OT->dominiopesado) ? $aux_OT->dominiopesado : $aux_OT->dominio;
+    $aux->texto = 'Dominio: '.$dominio;
     $data['info'][] = $aux;
 
     $aux = new StdClass();
     $aux->color = 'primary';
-    $aux->texto = 'Deposito: '.$deposito->descripcion;
+    $aux->texto = 'Sector de Descarga: '.$deposito->descripcion;
     $aux->depo_id = $deposito->depo_id;
     $data['info'][] = $aux;
 
@@ -147,7 +154,7 @@ class Entregaordentransportes extends CI_Model {
         $tarea->infoOT = $this->obtenerInfoOTIncidencia($tarea->caseId);
         $tarea->tipoCarga = $this->obtenerTipoCarga();
         $tarea->tipoIncidencia = $this->obtenerTipoIncidencia();
-        $tarea->infoOTransporte = $this->obtenerInFoOTransporte($tarea->caseId);
+        $tarea->infoOTransporte = $this->obtenerInFoOTransporteVuelco($tarea->caseId);
         $tarea->TamDeposito = $this->obtenerTamañoDeposito($tarea->infoOTransporteCont[0]->depo_id);
         $tarea->Recipientes = $this->obtenerRecipientes($tarea->infoOTransporteCont[0]->depo_id);
         $tarea->tipoValorizado = $this->obtenerValorizado();
@@ -225,6 +232,18 @@ class Entregaordentransportes extends CI_Model {
   function obtenerInFoOTransporte($caseId){
     log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporte($caseId)");
     $aux = $this->rest->callAPI("GET",REST_RESI."/ordenTransporte/info/entrega/case/".$caseId);
+    $aux =json_decode($aux["data"]);
+    return $aux->ordenTransporte;    
+  }
+
+    /**
+  * Obtiene la info de la orden de transporte
+  * @param string case_id
+  * @return array info de orden transporte
+  */
+  function obtenerInFoOTransporteVuelco($caseId){
+    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporteVuelco($caseId)");
+    $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenTransporte/vuelco/info/entrega/case/".$caseId);
     $aux =json_decode($aux["data"]);
     return $aux->ordenTransporte;    
   }
@@ -342,6 +361,21 @@ class Entregaordentransportes extends CI_Model {
     return $aux_OT;
   }
 
+  /**
+  * Devuelve info de Orden de Transporte para configuracion Bandeja Entrada cuando es Certifica Vuelco 
+  * @param array $tarea con info de tarea BPM 
+  * @return array con info de solicitud de transporte
+  */
+  function obtenerInfoEntregaCertificaVuelco($tarea){
+    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoEntregaCertificaVuelco(".json_encode($tarea).")");
+    $case_id = $tarea->caseId;
+    $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenTransporte/vuelco/info/entrega/case/".$case_id);
+    $data =json_decode($aux["data"]);
+    $aux_OT = $data->ordenTransporte;
+    return $aux_OT;
+  }
+
+  
   /**
   * Devuelve deposito donde se descargara el contenedor (info en bandeja de entrada)
   * @param int ortr_id

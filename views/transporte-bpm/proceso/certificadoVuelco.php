@@ -4,12 +4,13 @@
 <!--_________________SEPARADOR_________________-->
 <div class="col-md-12 ">
 	<!--_____________ Camion _____________-->
-    <div class="col-md-4">
+    <div class="col-md-6">
 		<div class="form-group">															
 			<label for="Camion" class="col-sm-4 control-label">Camion:</label>
             
-			<!-- <div class="col-sm-8"> -->
-				<input type="text" class="form-control habilitar" style="width: 35rem;" name="Camion" value="<?php echo $infoOTransporte->dominio?>" id="camion_id" readonly> 
+			<!-- <div class="col-sm-8"> -->   
+                <?php $dominio = ($infoOTransporte->dominiopesado) ? $infoOTransporte->dominiopesado : $infoOTransporte->dominio ?>
+				<input type="text" class="form-control habilitar" name="Camion" value="<?php echo $dominio ?>" id="camion_id" readonly> 
                 <input type="text" style="display:none" id="dato_cont_id" value="<?php echo $infoOTransporteCont[0]->cont_id?>">
                 <input type="text" style="display:none" id="reci_id">
                 <input type="text" style="display:none" id="id_reci_mov">
@@ -17,11 +18,28 @@
 		</div>
     </div>
 	<!--__________________________-->
-    <div class="col-md-4">
+    <div class="col-md-6">
+		<div class="form-group">															
+			<label for="contenedor" class="col-sm-4 control-label">Contenedor:</label>
+            <input type="text" class="form-control habilitar" name="contenedor" value="<?php echo $infoOTransporteCont[0]->descripcion ?>" id="contenedor" readonly> 
+		</div>
+    </div>
+	<!--__________________________-->
+</div>
+
+<div class="col-md-12 ">
+
+    <div class="col-md-6">
+		<div class="form-group">															
+			<label for="tiporesiduo" class="col-sm-4 control-label">Tipo de residuo:</label>
+            <input type="text" class="form-control habilitar" name="tiporesiduo" value="<?php echo $infoOTransporteCont[0]->tipo_carga ?>" id="tiporesiduo" readonly> 
+		</div>
+    </div>
+    <div class="col-md-6">
         <div class="form-group">
-            <label for="valorizado" style="margin-left: 11rem;">Valorizado:</label>
+            <label for="valorizado" >Valorizado:</label>
             <br>
-            <select class="form-control select2 select2-hidden-accesible" style="margin-left: 11rem; width:35rem;" name="valorizado" id="valorizado_id">
+            <select class="form-control select2 select2-hidden-accesible"  name="valorizado" id="valorizado_id">
                 <option value="" disabled selected>-Seleccione opción-</option>
                 <?php
                     foreach ($tipoValorizado as $l) {
