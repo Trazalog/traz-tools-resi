@@ -322,7 +322,7 @@ $(".btnInfo").click(function(e){
 
         // configuración de código QR
         var config = {};
-        config.titulo = "Código QR";
+        config.titulo = "Vehiculo";
         config.pixel = "7";
         config.level = "L";
         config.framSize = "2";
