@@ -200,35 +200,36 @@
             </div>
             <form id="formEditDatos" method="POST" autocomplete="off" class="registerForm">
                 <div class="modal-body">
+                    <input type="number" class="form-control" id="teot_id" name="teot_id" hidden>
 
                     <div class="row">
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
-                                <label for="nroo" class="form-label">Nro:</label>
-                                <input type="number" size="10" type="text" name="nro" id="nroo" min="0"
+                                <label for="nroedit" class="form-label">Nro:</label>
+                                <input type="number" size="10" type="text" name="nro" id="nroedit" min="0"
                                     class="form-control" auto required pattern="^(0|[1-9][0-9]*)$">
                             </div>
                             <div class="form-group">
-                                <label for="zonaa" class="form-label">Zona:</label>
-                                <select class="form-control select2 select2-hidden-accesible" id="zonaa" name="zona"
+                                <label for="zonaedit" class="form-label">Zona:</label>
+                                <select class="form-control select2 select2-hidden-accesible" id="zonaedit" name="zona"
                                     required>
                                     <option value="" disabled selected>-Seleccione opcion-</option>
                                     <?php
-                                                         foreach ($zona as $i) {
-                                                            echo '<option>'.$i->descripcion.'</option>';
-                                                        }
+                                                          foreach ($zona as $i) {
+                                                            echo '<option value="'.$i->zona_id.'">'.$i->nombre.'</option>';
+                                                            }
                                                         ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="tiporesiduoo" class="form-label">Tipo de residuo:</label>
-                                <select class="form-control select2 select2-hidden-accesible" id="tiporesiduoo"
+                                <select class="form-control select2 select2-hidden-accesible" id="tiporesiduoedit"
                                     name="tiporesiduo" required>
                                     <option value="" disabled selected>-Seleccione opcion-</option>
                                     <?php
                                                                  foreach ($tipoResiduo as $i) {
-                                                                     echo '<option>'.$i->descripcion.'</option>';
-                                                                 }
+                                                                     echo '<option value="'.$i->tabl_id.'">'.$i->descripcion.'</option>';
+                                                                }
                                                         ?>
                                 </select>
                             </div>
@@ -241,25 +242,25 @@
                             </div>
                             <div class="form-group">
                                 <label for="dispfinall" class="form-label">Disposicion final:</label>
-                                <select class="form-control select2 select2-hidden-accesible" id="dispfinall"
+                                <select class="form-control select2 select2-hidden-accesible" id="dispfinaledit"
                                     name="dispfinal" required>
                                     <option value="" disabled selected>-Seleccione opcion-</option>
                                     <?php
                                                              foreach ($disposicionFinal as $i) {
-                                                                 echo '<option>'.$i->descripcion.'</option>';
-                                                                 }
+                                                                echo '<option value="'.$i->tabl_id.'">'.$i->descripcion.'</option>';
+                                                            }
                                                             ?>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="circuitoo" class="form-label">Circuito:</label>
-                                <select class="form-control select2 select2-hidden-accesible" id="circuitoo"
+                                <select class="form-control select2 select2-hidden-accesible" id="circuitoedit"
                                     name="circuito" required>
                                     <option value="" disabled selected>-Seleccione opcion-</option>
                                     <?php
                                                                  foreach ($circuito as $i) {
-                                                                     echo '<option>'.$i->descripcion.'</option>';
-                                                                 }
+                                                                    echo '<option value="'.$i->circ_id.'">'.$i->descripcion.'</option>';
+                                                                }
                                                         ?>
                                 </select>
                             </div>
@@ -275,36 +276,40 @@
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
                                 <label for="selecempp" class="form-label">Empresa:</label>
-                                <select size="3" class="form-control" id="selecempp" name="empresa" required>
+                                <select size="3" class="form-control" id="empedit" name="empresa" required>
                                     <?php                                               
                                                 foreach ($empresa as $i) {
-                                                     echo '<option value="'.$i->nom->nom_emp.'" class="emp" data-json=\''.json_encode($i).'\'>'.$i->descripcion.'</option>';
-                                                    
+                                                         echo '<option class="empedit" data-json=\''.json_encode($i).'\' value="'.$i->tran_id.'">'.$i->razon_social.'</option>';
                                                 }
                                                 ?>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="registronn" class="form-label">Registro n°:</label>
-                                <input type="text" class="form-control" id="registronn" name="numreg" readonly>
+                                <label for="registroedit" class="form-label">Registro n°:</label>
+                                <input type="text" class="form-control" id="registroedit" name="numreg" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="choferr" class="form-label">Chofer:</label>
-                                <select class="form-control select2 select2-hidden-accesible" id="choferr" name="chofer"
+                                <label for="choferedit" class="form-label">Chofer:</label>
+                                <select class="form-control select2 select2-hidden-accesible" id="choferedit" name="chofer"
                                     required>
                                     <option value="" disabled selected>-Seleccione opcion-</option>
+                                    <?php
+                                            foreach ($chofer as $i) {
+                                                echo '<option value="'.$i->documento.'">'.$i->nombre.' '.$i->apellido.'</option>';
+                                            }
+                                                        ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6 col-xs-12">
                             <div class="form-group">
-                                <label for="selecmovv" class="form-label">Movilidad:</label>
-                                <select size="3" class="form-control" id="selecmovv" name="movilidad" required>
+                                <label for="selecmovedit" class="form-label">Movilidad:</label>
+                                <select size="3" class="form-control" id="movedit" name="movilidad" required>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="dominioo" class="form-label">Dominio:</label>
-                                <input type="text" class="form-control" name="dominio" id="dominioo" name="dominio"
+                                <label for="dominioedit" class="form-label">Dominio:</label>
+                                <input type="text" class="form-control" name="dominio" id="dominioedit" name="dominio"
                                     readonly>
                             </div>
                         </div>
@@ -312,7 +317,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-group text-right">
-                        <button type="submit" class="btn btn-primary" id="btnsave">Guardar</button>
+                        <button type="submit" class="btn btn-primary" id="btnsaveedit" onclick="actualizar(event)">Guardar</button>
                         <button type="button" class="btn btn-default" id="btnclose" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
@@ -385,7 +390,7 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group text-right">
-                    <button type="submit" class="btn btn-default" id="btnsave" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-default" id="" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -396,9 +401,10 @@
 <script>
     $("#cargar_tabla").load("<?php echo RESI; ?>/estructura/TemplateOrdenTransporte/Listar_templateOt");
     function clickedit(aux) {
+        debugger;
         //limpia los select para cargar datos especificos
         $("#selecempp").prop('selectedIndex', 0);
-        $('#selecmovv').find('option').remove();
+        $('#selecmovedit').find('option').remove();
         $('#choferr').find('option').remove();
 
         //se obtiene el valor de la empresa seleccionada
@@ -499,7 +505,7 @@
                     //$("#" + aux).hide(500);
                     /*var myTable = $('#example2').DataTable();
                     myTable.row(this).delete();*/
-                    var t = $('#example2').DataTable();
+                    var t = $('#cargar_tabla').DataTable();
                     t.row("#"+aux).remove().draw();
 
                 } else {
@@ -634,53 +640,11 @@
         guardar();
     });
 </script>
-<!-- script bootstrap validator -->
-<script>
-    $('#formEditDatos').bootstrapValidator({
-        message: 'This value is not valid',
-        /*feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },*/
-        excluded: ':disabled',
-        fields: {
-            empresa: {
-                message: 'la entrada no es valida',
-                validators: {
-                    notEmpty: {
-                        message: 'seleccione una opcion'
-                    }
-                    /*stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The username must be more than 6 and less than 30 characters long'
-                    },*/
-                }
-            },
-            movilidad: {
-                message: 'la entrada no es valida',
-                validators: {
-                    notEmpty: {
-                        message: 'seleccione una opcion'
-                    }
-                    /*stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The username must be more than 6 and less than 30 characters long'
-                    },*/
-                }
-            }
-        }
-    }).on('success.form.bv', function (e) {
-        e.preventDefault();
-        //se invoca a la funcion actualizar con el parametro auxedit que contiene el id de la fila seleccionada, a la que le vamos a actualizar los datos
-        actualizar(localStorage.getItem('auxedit'));
-    });
-</script>
+
 <!-- script actualiza datos -->
 <script>
-    function actualizar(aux) {
+    function actualizar(e) {
+        e.preventDefault();
         //datos para mostrar a modo de ejemplo para DEMO---------------
         //Serialize the Form
         var values = {};
@@ -705,6 +669,8 @@
         var num = getValue("nro");
 
         //se actualizan los datos en localStorage
+        var aux = parseInt(localStorage.getItem('aux'));
+
         localStorage.setItem('num' + aux, num);
         localStorage.setItem('tiporesiduo' + aux, tiporesiduo);
         localStorage.setItem('dispfinal' + aux, dispfinal);
@@ -715,15 +681,49 @@
         localStorage.setItem('movilidad' + aux, movilidad);
         localStorage.setItem('circuito' + aux, circuito);
         localStorage.setItem('zona' + aux, zona);
-        localStorage.setItem('empresa' + aux, empresa);
 
-        var t = $('#example2').DataTable();
+         // Crear objeto con todos los datos del formulario
+        var datosEdit = {
+            teot_id: $('#teot_id').val(),
+            nro: $('#nroedit').val(),
+            fecha: $('#fechaa').val(),
+            zona: $('#zonaedit').val(),
+            circuito: $('#circuitoedit').val(),
+            tiporesiduo: $('#tiporesiduoedit').val(),
+            dispfinal: $('#dispfinaledit').val(),
+            empresa: $('#empedit').val(),
+            movilidad: $('#movedit').val(),
+            chofer: $('#choferedit').val(),
+            numreg: $('#registroedit').val(),
+            dominio: $('#dominioedit').val()
+        };
+       /*  var t = $('#cargar_tabla').DataTable();
         //me permite editar una fila de dataTable indicando el id de la fila(aux) y pasando como parametro en data un array con los datos a editar
         t.row(aux).data([zona, circuito, empresa, movilidad, chofer, '<div class="text-center"><button type="button" title="ok" class="btn btn-primary btn-circle btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&nbsp<button type="button" title="editar" onclick="clickedit('+aux+')" class="btn btn-primary btn-circle" data-toggle="modal" data-target="#modalEdit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>&nbsp<button type="button" title="eliminar" onclick="borrar('+aux+')" id="delete" class="btn btn-primary btn-circle"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>&nbsp<button type="button" title="buscar" class="btn btn-primary btn-circle info" onclick="clickinfo('+aux+')" data-toggle="modal" data-target="#modalInfo"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button></div>']).draw();
+ */
 
-        //se cierra el modal y se indica que los datos se actualizaron con exito
-        $('#modalEdit').modal('toggle');
-        alertify.success("Actualizacion realizada con exito");
+        $.ajax({
+                type: "POST",
+                data: {datosEdit: datosEdit},
+                url: "<?php echo RESI; ?>estructura/TemplateOrdenTransporte/ActualizarTemplateOt",
+                success: function (r) {
+                    wc();
+                    console.table(r);
+                    if (r == "ok") {
+                        alertify.success("Template Actualizado con exito");
+                        $("#modalEdit").modal('hide'); 
+                        $("#cargar_tabla").load("<?php echo RESI; ?>estructura/TemplateOrdenTransporte/Listar_templateOt");
+
+                    } else {
+                    
+                        alertify.error("Error al Actualizar Template");
+                    }
+                }, 
+                error: function() {
+                     wc();                   
+                }
+            });
+
     }
 </script>
 <!-- script que cierra box con boton (x) -->
@@ -753,72 +753,86 @@
 </script>
 <!-- Script modal para mostrar por empresa las movilidades y choferes disponibles y por movilidad su respectiva informacion -->
 <script>
-    $(".emp").on('click', function () {
+    $("#selecemp").on("change", function () {
 
-        var json = this.dataset.json;
+    let json = $(this).find(":selected").data("json");
 
-        json = JSON.parse(json);
+    let html_mov = "";
+    let html_chof = "";
 
-        var html_mov = " ",
-            html_chof = "";
-
-        json.vehiculos.vehiculo.forEach(function (valor) {
-            html_mov += "<option class='movilito' value='" + valor.equi_id + "' data-reg='" + valor.registro + "' data-dom='" + valor
-                .dominio + "'>" + valor.nom_movil + "</option>"
-        });
-
-        json.choferes.chofer.forEach(function (valor) {
-            html_chof += "<option class='chof' value='" + valor.documento + "'>" + valor.nom_chofer + "</option>"
-        });
-
-        $('#selecmovv').html(html_mov);
-        $("#choferr").html("<option value='' disabled selected>-Seleccione opcion-</option>" + html_chof);
-
-        $("#registronn").val("");
-        $("#dominioo").val("");
+    json.vehiculos.vehiculo.forEach(function (valor) {
+        html_mov += `
+            <option value="${valor.equi_id}" 
+                    data-reg="${valor.registro}" 
+                    data-dom="${valor.dominio}">
+                ${valor.descripcion}
+            </option>`;
     });
 
-    $("#selecmovv").on('change', function () {
-        var sel = $(this).find(":selected");
-        $("#registronn").val(sel.data('reg'));
-        $("#dominioo").val(sel.data('dom'));
+    json.choferes.chofer.forEach(function (valor) {
+        html_chof += `
+            <option value="${valor.documento}">
+                ${valor.nom_chofer}
+            </option>`;
     });
+
+    $("#selecmov").html(html_mov);
+    $("#chofer").html(`<option value="" disabled selected>-Seleccione opción-</option>` + html_chof);
+
+    $("#registron").val("");
+    $("#dominio").val("");
+});
+
+$("#selecmov").on("change", function () {
+    let sel = $(this).find(":selected");
+    $("#registron").val(sel.data("reg"));
+    $("#dominio").val(sel.data("dom"));
+});
+
+
+/* $("#empedit").on("change", function () {
+debugger;
+    let json = $(this).find(":selected").data("json");
+
+    let htmlMov = "";
+    let htmlChof = "";
+
+    json.vehiculos.vehiculo.forEach(v => {
+        htmlMov += `
+            <option value="${v.equi_id}" 
+                    data-reg="${v.registro}" 
+                    data-dom="${v.dominio}">
+                ${v.descripcion}
+            </option>`;
+    });
+
+    json.choferes.chofer.forEach(c => {
+        htmlChof += `<option value="${c.documento}">${c.nom_chofer}</option>`;
+    });
+
+    $("#movedit").html(htmlMov);
+    $("#choferedit").html(`<option value="">Seleccione</option>` + htmlChof);
+
+    // 👉 restaurar valores del registro
+    let movSel = $("#empedit").data("movilidad");
+    let choSel = $("#empedit").data("chofer");
+
+    if (movSel) {
+        $("#movedit").val(movSel).trigger("change");
+    }
+    if (choSel) {
+        $("#choferedit").val(choSel);
+    }
+});
+
+$("#movedit").on("change", function () {
+    let sel = $(this).find(":selected");
+    $("#registroedit").val(sel.data("reg"));
+    $("#dominioedit").val(sel.data("dom"));
+});
+ */
 </script>
-<!-- Script para mostrar por empresa las movilidades y choferes disponibles y por movilidad su respectiva informacion -->
-<script>
-    $(".emp").on('click', function () {
 
-        var json = this.dataset.json;
-
-        json = JSON.parse(json);
-
-        var html_mov = " ",
-            html_chof = "";
-
-        json.vehiculos.vehiculo.forEach(function (valor) {
-            html_mov += "<option class='movilito' value='" + valor.equi_id + "' data-reg='" + valor.registro + "' data-dom='" + valor
-                .dominio + "'>" + valor.descripcion + "</option>"
-        });
-
-        json.choferes.chofer.forEach(function (valor) {
-            html_chof += "<option class='chof' value='" + valor.documento + "'>" + valor.nom_chofer + "</option>"
-        });
-
-        $('#selecmov').html(html_mov);
-        $("#chofer").html("<option value='' disabled selected>-Seleccione opcion-</option>" + html_chof);
-
-        $("#registron").val("");
-        $("#dominio").val("");
-    });
-
-    $("#selecmov").on('change', function () {
-
-        var sel = $(this).find(":selected");
-        $("#registron").val(sel.data('reg'));
-        $("#dominio").val(sel.data('dom'));
-
-    });
-</script>
 <!-- Script inicia variable auxiliar gloabal -->
 <script>
     $(document).ready(function () {
@@ -880,11 +894,13 @@
                 data: $("#formDatos").serialize(),
                 url: "<?php echo RESI; ?>estructura/TemplateOrdenTransporte/RegistrarTemplateOT",
                 success: function (r) {
-                    debugger;
-                    if (r === "ok") {
+
+                    if (r == "Ok") {
+                    
+                        $("#cargar_tabla").load("<?php echo RESI; ?>/estructura/TemplateOrdenTransporte/Listar_templateOt");
                         
                         //esta porcion de codigo me permite agregar una nueva fila a dataTable asignando al final un id unico a la fila agregada para luego identificarla
-                        var t = $('#example2').DataTable();
+                        /* var t = $('#cargar_tabla').DataTable();
                         var fila = t.row.add([
                             zona,
                             circuito,
@@ -897,7 +913,7 @@
                         t.draw(false);
 
                         aux = aux + 1;//incrementa en 1 la variable auxiliar, la cual indica el id de las filas que se agregan a la tabla
-                        localStorage.setItem('aux', aux);//actualiza la variable local aux para la proxima insercion
+                        localStorage.setItem('aux', aux); *///actualiza la variable local aux para la proxima insercion
 
                         $('#formDatos').data('bootstrapValidator').resetForm();
                         $("#formDatos")[0].reset();
