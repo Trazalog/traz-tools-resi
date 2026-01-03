@@ -111,7 +111,16 @@ class TemplateOrdenTransporte extends CI_Controller {
   {
     log_message('INFO','#TRAZA|Orden|ActualizarTemplateOt() >>'); 
     $datos =  $this->input->post('datosEdit');
-    $resp = $this->TemplateOrdenTransportes->actualizar_templateOT($datos);
+     $params = [
+                  'observaciones' => '',        
+                  'circ_id'       => $datos['circuito'],
+                  'equi_id'       => $datos['movilidad'],
+                  'chof_id'       => $datos['chofer'],
+                  'tica_id'       => $datos['tiporesiduo'],
+                  'difi_id'       => $datos['dispfinal'],
+                  'teot_id'       => $datos['teot_id']
+        ];
+    $resp = $this->TemplateOrdenTransportes->actualizar_templateOT($params);
     if($resp == 1 ){
         echo "ok";
     }else{

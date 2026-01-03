@@ -35,9 +35,11 @@
 
 <script>
 //Modal Editar
-$(".btnEditar").click(function(e){
+/* $(".btnEditar").click(function(e){
     var data = JSON.parse($(this).parents("tr").attr("data-json")); 
+    debugger;
     console.table(data);
+    $("#nroedit").val(data.circ_id);
     $("#tiporesiduoedit").val(data.tica_id);
     $("#dispfinaledit").val(data.difi_id);
     $("#circuitoedit").val();
@@ -46,26 +48,65 @@ $(".btnEditar").click(function(e){
     $("#teot_id").val(data.teot_id);
     $("#obsedit").val(data.observaciones);
     $("#circuitoedit").val(data.circ_id);
+    $("#zonaedit").val(data.zona_id);
     traerMovilidad(data.equi_id);
+    $("#dominioedit").val(data.dominio);
+
     
      });
+ */
+$(".btnEditar").click(function () {
+
+    let data = JSON.parse($(this).parents("tr").attr("data-json"));
+    console.table(data);
+    $("#teot_id").val(data.teot_id);
+
+    $("#nroedit").val(data.circ_id);
+    $("#tiporesiduoedit").val(data.tica_id);
+    $("#dispfinaledit").val(data.difi_id);
+    $("#circuitoedit").val(data.circ_id);
+    $("#zonaedit").val(data.zona_id);
+    $("#obsedit").val(data.observaciones);
+    //$("#choferedit").val(String(data.chof_id)).trigger('change');
+    if(data.chof_id) {
+        $('#choferedit').val(data.chof_id).trigger('change');
+    }
+
+    // seteamos empresa
+    $("#empedit").val(data.tran_id);
+
+    // cargamos movilidad y chofer
+    traerMovilidad(data.equi_id, data.chof_id);
+});
+
+$("#movedit").on("change", function () {
+    let dom = $(this).find(":selected").data("dom");
+    $("#dominioedit").val(dom);
+});
+
+
 
 //Modal Info
 $(".btnInfo").click(function(e){
+    
     var data = JSON.parse($(this).parents("tr").attr("data-json")); 
     console.table(data);
     if(data.zona != null)
-    {$("#zonainfo").val(data.zona);}else{
-        $("#zonainfo").val("Circuito - "+data.circuito+" - no posee zona asociada ");
+    {$("#zonita").val(data.zona);}else{
+        $("#zonita").val("Circuito - "+data.circuito+" - no posee zona asociada ");
     }
      
-     $("#dispofinalinfo").val(data.disposicion_final);
-     $("#tiporesinfo").val(data.tipo_carga);
-     $("#circinfo").val(data.circuito);
-     $("#empinfo").val(data.transportista);
-     $("#movinfo").val(data.equipo);
-     $("#chofinfo").val(data.nombre_chofer);
+     $("#dispofinal").val(data.disposicion_final);
+     $("#tipores").val(data.tipo_carga);
+     $("#circuit").val(data.circuito);
+     $("#empresita").val(data.transportista);
+     $("#movi").val(data.equipo);   
+     $("#chof").val(data.nombre_chofer);
      $("#obseinfo").val(data.observaciones);
+     $("#nro").val(data.teot_id);
+     $("#dom").val(data.dominio);
+     $("#fechita").val(data.fec_alta);
+
 
      
     
@@ -75,7 +116,7 @@ $(".btnEliminar").click(function(e){
     $("#id_templateot").val(data.teot_id);
 });
 
-function traerMovilidad($id_equipoo)
+/* function traerMovilidad($id_equipoo)
 {
     var empresa_id = $("#empedit").val();
     var resp;
@@ -101,7 +142,41 @@ function traerMovilidad($id_equipoo)
         }
 
     });
+} */
+function traerMovilidad(id_equipo) {
+
+    let empresa_id = $("#empedit").val();
+
+    $.ajax({
+        type: "POST",
+        url: "<?php echo RESI; ?>estructura/TemplateOrdenTransporte/ObtenerVehixtran_id",
+        data: { id_empresa: empresa_id },
+        dataType: "json",
+        success: function (resp) {
+
+            $("#movedit").empty();
+            //$("#choferedit").empty();
+            resp.forEach(item => {
+                $("#movedit").append(`
+                    <option value="${item.equi_id}"
+                        data-dom="${item.dominio}">
+                        ${item.marca} - ${item.dominio}
+                    </option>
+                `);
+
+                $("#registroedit").val(item.codigo);
+                
+            });
+
+            // Seleccionar valores correctos
+            $("#movedit").val(id_equipo).trigger("change");
+            
+    }
+    });
 }
+
+
+
 </script>
 
 <script>
