@@ -262,7 +262,7 @@ class Entregaordentransportes extends CI_Model {
 
   function obtenerContEntregadosSalida($caseId){
     log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerContEntregadosSalida($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/info/salida/case/".$caseId);
+    $aux = $this->rest->callAPI("GET",REST_RESI2."/contenedoresEntregadosV2/info/salida/case/".$caseId);
     $aux =json_decode($aux["data"]);
     return $aux->contenedor;    
   }
