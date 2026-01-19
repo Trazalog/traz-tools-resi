@@ -9,7 +9,8 @@
         <div class="col-md-4 col-md-6 mb-4 mb-lg-0">
             <div class="form-group">
                 <label for="dominio" class="form-label">Nro de Dominio:</label>
-                <input type="text" name="" id="dominio" min="0" class="form-control" value="<?php echo $infoOTransporte->dominio; ?>" readonly>                                      
+                <input type="text" name="" id="dominio" min="0" class="form-control" 
+                value="<?php echo $infoContenedores->dominio; ?>" readonly>                                      
             </div>
         </div>
         <!-- ________________________________________________________ -->
