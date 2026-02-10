@@ -707,7 +707,8 @@ async function convertA(){
                                         } else {
                                             //console.log(r);
                                             wc();
-                                            alertify.error("Error al Agregar Vehiculo");
+                                            error = resp.message;
+                                            alertify.error(error);
                                         }
                                     }
                                 });

@@ -1,23 +1,14 @@
 <?php
 
-require APPPATH . "/libraries/koolreport/core/autoload.php";
-
-//Specify some data processes that will be used to process
-// use \koolreport\processes\Group;
+require APPPATH . '/modules/' . RESI . "/libraries/koolreport/core/autoload.php";
 use \koolreport\processes\Sort;
 use \koolreport\processes\Limit;
-// use \koolreport\processes\RemoveColumn;
 use \koolreport\processes\OnlyColumn;
 
 //Define the class
 class Incidencia extends \koolreport\KoolReport
 {
-    // use \koolreport\clients\Bootstrap;
     use \koolreport\codeigniter\Friendship;
-    /*Filtros Avanzados*/
-    /*Enlace de datos entre los parámetros del informe y los Controles de entrada */
-    // use \koolreport\inputs\Bindable;
-    // use \koolreport\inputs\POSTBinding;
 
     function cacheSettings()
     {
@@ -28,63 +19,37 @@ class Incidencia extends \koolreport\KoolReport
 
     protected function settings()
     {
-        log_message('DEBUG', '#TRAZA| #PRODUCCION.PHP|#PRODUCCION|#SETTINGS| #INGRESO');
-        $json = $this->params;
-        $data = json_encode($json);
+        log_message('DEBUG', '#INCIDENCIA|SETTINGS');
 
-        return array(
-            "dataSources" => array(
-                "apiarray" => array(
+        $data = [];
+
+        if (!empty($this->params) && is_array($this->params)) {
+            foreach ($this->params as $row) {
+                $data[] = (array)$row;
+            }
+        }
+
+        return [
+            "dataSources" => [
+                "apiarray" => [
                     "class" => '\koolreport\datasources\ArrayDataSource',
                     "dataFormat" => "associate",
-                    "data" => json_decode($data, true),
-                )
-            )
-        );
-
-        // $data2 = json_encode("123");
-        // return array(
-        //     "dataSources" => array(
-        //         "apiarray2" => array(
-        //             "class" => '\koolreport\datasources\ArrayDataSource',
-        //             "dataFormat" => "associate",
-        //             "data" => json_decode($data2, true),
-        //         )
-        //     )
-        // );
+                    "data" => $data,
+                ]
+            ]
+        ];
     }
 
-    protected function setup()
-    {
-        log_message('DEBUG', '#TRAZA| #PRODUCCION.PHP|#PRODUCCION|#SETUP| #INGRESO');
-        $this->src("apiarray")
-            // ->pipe(new OnlyColumn(array(
-            //     "titulo", "stock", "unidad_medida", "estado"
-            // )))
-            ->pipe($this->dataStore("data_incidencia_table"));
 
-        $this->src("apiarray")
-            // ->pipe(new RemoveColumn(array(
-            //     "extraInfo","unwantedColumn"
-            // )))
-            ->pipe(new OnlyColumn(array(
-                "producto", "cantidad"
-            )))
-            ->pipe(new Sort(array(
-                "cantidad" => "desc"
-            )))
-            ->pipe(new Limit(
-                array(6)
-            ))
-            ->pipe($this->dataStore("data_KPIMunicipio"));
+protected function setup()
+{
+    $src = $this->src("apiarray");
 
-        // $this->src("apiarray")
-        //     ->pipe(new OnlyColumn(array(
-        //         "producto", "etapa"
-        //     )))
-        //     ->pipe($this->dataStore("data_produccion_clumnChart"));
-
-        // $this->src("apiarray2")
-        //     ->pipe($this->dataStore("ejemplo"));
+    if(!$src){
+        $this->dataStore("data_incidencia_table")->data([]);
+        return;
     }
+
+    $src->pipe($this->dataStore("data_incidencia_table"));
+}
 }

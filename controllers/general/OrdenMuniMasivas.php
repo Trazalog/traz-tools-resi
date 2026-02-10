@@ -14,6 +14,9 @@ class OrdenMuniMasivas extends CI_Controller {
       {
         parent::__construct();
         $this->load->model('general/OrdenesMuniMasivas');
+        $this->load->model('general/Pedidocontenedores');
+      //  $this->load->model('general/Retirocontenedores');
+
   }
     /**
     * Carga pantalla Contenedores y listado
@@ -48,23 +51,49 @@ class OrdenMuniMasivas extends CI_Controller {
         $aux = 0;
         foreach ($data["datos"] as $valor)
         {
-          $masivas["difi_id"] = $valor["difi_id"];
-          $masivas["sotr_id"] = $valor["sotr_id"];
-          $masivas["equi_id"] = $valor["equi_id"];
-          $masivas["chof_id"] = $valor["chof_id"];
-          $masivas["tran_id"] = $valor["tran_id"];
-          $masivas["usuario_app"] = "hugoDS";
-          $masivas["teot_id"] = $valor["teot_id"];
-          $cont["cont_id"] = $valor["cont_id"];
-          //$masivas["contenedores"] = $cont;
-          $masivas["contenedores"] = [
-              [
-                  "cont_id" => $valor["cont_id"]
-              ]
-          ];
-          $masivas["fec_retiro"] =  date('Y-m-d');
-          $resp = $this->OrdenesMuniMasivas->Ejecutar_OT($masivas);
-          $aux =$aux + $resp;
+
+          //simulacion para ots masivas
+          //GUARDA en contenedores_entregados simulando la entrega del contenedor
+          $contenedorEntregado["fec_entrega"] = date('Y-m-d');
+          $contenedorEntregado["cont_id"] = $valor["cont_id"];
+          $contenedorEntregado["soco_id"] = null;
+          $contenedorEntregado["tica_id"] = $valor["tica_id"];
+          $contenedorEntregado["equi_id_entrega"] = $valor["equi_id"];
+          $contenedorEntregado["usuario_app"] = userNick();
+    
+          $contenedor = $this->Pedidocontenedores->GuardarContEntregados($contenedorEntregado);
+        
+          if($contenedor){
+
+            //simula salida de contenedor y ejecucion de ot
+            //necesito coen_id y equi_id
+           /*  $contenedorEntregado["equi_id_salida"] = $valor["equi_id"];
+            $contenedor = $this->Retirocontenedores->actualizarContenedores($contenedorEntregado); */
+
+            log_message('DEBUG','#TRAZA|Contenedor|EjecutarOTs() >> contenedor entregado: '.$valor["cont_id"]);
+
+            $masivas["difi_id"] = $valor["difi_id"];
+            $masivas["sotr_id"] = $valor["sotr_id"];
+            $masivas["equi_id"] = $valor["equi_id"];
+            $masivas["chof_id"] = $valor["chof_id"];
+            $masivas["tran_id"] = $valor["tran_id"];
+            $masivas["usuario_app"] = userNick();//"hugoDS";
+            $masivas["teot_id"] = $valor["teot_id"];
+            $cont["cont_id"] = $valor["cont_id"];
+            //$masivas["contenedores"] = $cont;
+            $masivas["contenedores"] = [
+                [
+                    "cont_id" => $valor["cont_id"]
+                ]
+            ];
+            $masivas["fec_retiro"] =  date('Y-m-d');
+            
+
+            $resp = $this->OrdenesMuniMasivas->Ejecutar_OT($masivas);
+            $aux =$aux + $resp;
+          }else{
+              log_message('ERROR','#TRAZA|Contenedor|EjecutarOTs() >> error al entregar contenedor: '.$valor["cont_id"]);
+          }
         }
         if($aux != 0)
         {echo "ok";}

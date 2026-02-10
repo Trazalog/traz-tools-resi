@@ -49,7 +49,10 @@
         if ($datos['optionsTolva'] == "si") {
 
             $this->load->model('general/Contenedores');
-            $data['codigo'] = $datos['codigo'];
+            //si el vehiculo es con tolva el codigo del contenedor se 
+            // forma con el mismo codigo del vehiculo pero con un prefijo para identificarlo como contenedor de tolva
+            //configurado en constants.php con la constante TIPOS_VEHICULOS_TOLVA
+            $data['codigo'] = TIPOS_VEHICULOS_TOLVA . $datos['codigo'];
             $data['descripcion'] = $datos['dominio'];
             $data['capacidad'] = $datos['capacidad'];
             $data['anio_elaboracion'] = $datos[''];
@@ -68,7 +71,10 @@
                 $datos['cont_id'] = $cont_id;
             }else {
                 log_message('ERROR','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculo | Guardar_Vehiculo() >> ERROR: NO GUARDO CONTENEDOR(EQUIPO CON TOLVA)');
-                echo "error";
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Error al crear el contenedor. Por favor, verifique que no existe el contenedor con ese código."
+                ]);
                 return;
             }
             // asocio tipos carga a contenedor
@@ -89,7 +95,10 @@
             	"equi_id" => $resp  
         	]);
         }else{
-            echo "error";
+            echo json_encode([
+                    "status" => "error",
+                    "message" => "Error al crear el vehiculo."
+            ]);
         }
     }
 

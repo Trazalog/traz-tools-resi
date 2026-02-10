@@ -1,30 +1,34 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH'))
+  exit('No direct script access allowed');
 /**
-* Representa el Proceso Entrega de Orden de Transportes
-*
-* @autor Hugo Gallardo
-*/
-class Entregaordentransportes extends CI_Model {
-  
+ * Representa el Proceso Entrega de Orden de Transportes
+ *
+ * @autor Hugo Gallardo
+ */
+class Entregaordentransportes extends CI_Model
+{
+
   /**
-  * Constructor de Clase
-  * @param 
-  * @return 
-  */
-  function __construct(){
+   * Constructor de Clase
+   * @param 
+   * @return 
+   */
+  function __construct()
+  {
     parent::__construct();
 
   }
 
-    /**
-  * Despliega cabeceras usando helpers
-  * @param array $tarea con info de tarea desde BPM   
-  * @return view cabeceras con info
-  */
-  function desplegarCabecera($tarea){
-    $resp = infoproceso($tarea).infoentidadesproceso($tarea);
+  /**
+   * Despliega cabeceras usando helpers
+   * @param array $tarea con info de tarea desde BPM   
+   * @return view cabeceras con info
+   */
+  function desplegarCabecera($tarea)
+  {
+    $resp = infoproceso($tarea) . infoentidadesproceso($tarea);
     return $resp;
-  } 
+  }
 
   // /**
   // * Despliega cabeceras usando helpers
@@ -38,41 +42,41 @@ class Entregaordentransportes extends CI_Model {
   // }
 
   /**
-  * configuracion de la info que muestra la bandeja de entradas por PROCESO
-  * @param array $tarea info de tarea en BPM
-  * @return array con info de configuracion de datos para la bandeja de entrada
-  */
-  public function map($tarea){   
+   * configuracion de la info que muestra la bandeja de entradas por PROCESO
+   * @param array $tarea info de tarea en BPM
+   * @return array con info de configuracion de datos para la bandeja de entrada
+   */
+  public function map($tarea)
+  {
     $data['descripcion'] = 'Ingreso de contenedores a PTA';
 
     //traigo otra info si es certifica vuelco
-    if($tarea->nombreTarea == 'Certifica Vuelco'){
-       $aux_OT = $this->obtenerInfoEntregaCertificaVuelco($tarea);
-    }
-    else{
+    if ($tarea->nombreTarea == 'Certifica Vuelco') {
+      $aux_OT = $this->obtenerInfoEntregaCertificaVuelco($tarea);
+    } else {
       $aux_OT = $this->obtenerInfoEntrega($tarea);
     }
     $deposito = $this->obtenerDeposito($aux_OT->ortr_id);
 
     $aux = new StdClass();
     $aux->color = 'warning';
-    $aux->texto = 'Estado: '.$aux_OT->estado;
+    $aux->texto = 'Estado: ' . $aux_OT->estado;
     $data['info'][] = $aux;
 
     $aux = new StdClass();
     $aux->color = 'success';
-    $aux->texto = 'Ord. Transporte: '.$aux_OT->ortr_id;
+    $aux->texto = 'Ord. Transporte: ' . $aux_OT->ortr_id;
     $data['info'][] = $aux;
 
     $aux = new StdClass();
     $aux->color = 'primary';
     $dominio = ($aux_OT->dominiopesado) ? $aux_OT->dominiopesado : $aux_OT->dominio;
-    $aux->texto = 'Dominio: '.$dominio;
+    $aux->texto = 'Dominio: ' . $dominio;
     $data['info'][] = $aux;
 
     $aux = new StdClass();
     $aux->color = 'primary';
-    $aux->texto = 'Sector de Descarga: '.$deposito->descripcion;
+    $aux->texto = 'Sector de Descarga: ' . $deposito->descripcion;
     $aux->depo_id = $deposito->depo_id;
     $data['info'][] = $aux;
 
@@ -80,52 +84,54 @@ class Entregaordentransportes extends CI_Model {
   }
 
   /**
-  * Devuelve contrato de cierre tarea, ademas graba en BD lo necesario
-  * @param array $tarea con info tarea BPM, $form info a guardar en BD
-  * @return
-  */
-  public function getContrato($tarea, $form){
-    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | getContrato()");
-      switch ($tarea->nombreTarea) {
-          
-          case 'Registra Ingreso':
-            $resp = $this->entregaOrdenTransporte($form);
-            if (!$resp) {
-              log_message('ERROR','#TRAZA|Entregaordentransportes|getContrato($tarea, $form)/Registra Ingreso >> ERROR ');
-              return;
-              break; 
-            }
-            $contrato = $this->contratoIngreso($form);
-            return $contrato;
-            break;  
+   * Devuelve contrato de cierre tarea, ademas graba en BD lo necesario
+   * @param array $tarea con info tarea BPM, $form info a guardar en BD
+   * @return
+   */
+  public function getContrato($tarea, $form)
+  {
+    log_message('DEBUG', "#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | getContrato()");
+    switch ($tarea->nombreTarea) {
 
-          case 'Certifica Vuelco':
-            $contrato = $this->ContratoCertificadoVuelco($form);
-            return $contrato;
-            break;
+      case 'Registra Ingreso':
+        $resp = $this->entregaOrdenTransporte($form);
+        if (!$resp) {
+          log_message('ERROR', '#TRAZA|Entregaordentransportes|getContrato($tarea, $form)/Registra Ingreso >> ERROR ');
+          return;
+          break;
+        }
+        $contrato = $this->contratoIngreso($form);
+        return $contrato;
+        break;
 
-          case 'Registro Salida':
-            $resp = $this->ContenedoresEntrSalida($form); // escribe en DB fecha salida
-            $contrato = $this->ContratoRegSalida($form);  // devuelve contrato para cerrar tarea
-            return $contrato;
-            break;
+      case 'Certifica Vuelco':
+        $contrato = $this->ContratoCertificadoVuelco($form);
+        return $contrato;
+        break;
 
-          default:
-                # code...
-                break;
-      }
+      case 'Registro Salida':
+        $resp = $this->ContenedoresEntrSalida($form); // escribe en DB fecha salida
+        $contrato = $this->ContratoRegSalida($form);  // devuelve contrato para cerrar tarea
+        return $contrato;
+        break;
+
+      default:
+        # code...
+        break;
+    }
   }
 
   /**
-  * Desplige vista unica por tarea en notificacion estandar
-  * @param array con tarea de bpm
-  * @return view de acuerdo a tarea especifica
-  */
-  function desplegarVista($tarea){
+   * Desplige vista unica por tarea en notificacion estandar
+   * @param array con tarea de bpm
+   * @return view de acuerdo a tarea especifica
+   */
+  function desplegarVista($tarea)
+  {
     switch ($tarea->nombreTarea) {
       case 'Registra Ingreso':
 
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Registra Ingreso): $tarea >> '.json_encode($tarea));
+        log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Registra Ingreso): $tarea >> ' . json_encode($tarea));
         $tarea->infoOTransporte = $this->obtenerInFoOTransporte($tarea->caseId);
         // dataimage/jpegbase64  20 formato que trae
         // 'data:image/jpeg;base64,' formato que tomael src del tag img
@@ -140,16 +146,19 @@ class Entregaordentransportes extends CI_Model {
         $tarea->infoContenedores = $this->obtenerContEntregados($tarea->caseId);
         $tarea->depositos = $this->obtenerDepositos();
         $tarea->infoOT = $this->obtenerInfoOTIncidencia($tarea->caseId);
+        if (isset($tarea->infoOT->teot_id)) {
+          $tarea->dataMovilidadMunicipio = $this->obtenerDataMovilidadMunicipio($tarea->infoOT->ortr_id);
+        }
         $tarea->tipoCarga = $this->obtenerTipoCarga();
         $tarea->tipoIncidencia = $this->obtenerTipoIncidencia();
-        $tarea->camion = $this->ObtenerCamiones($tarea->infoOTransporte->tran_id); 
+        $tarea->camion = $this->ObtenerCamiones($tarea->infoOTransporte->tran_id);
         $resp = $this->load->view(RESI . 'transporte-bpm/proceso/registraIngreso', $tarea, true);
         return $resp;
-      break;
+        break;
 
       case 'Certifica Vuelco':
 
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Certifica Vuelco): $tarea >> '.json_encode($tarea));
+        log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Certifica Vuelco): $tarea >> ' . json_encode($tarea));
         $tarea->infoOTransporteCont = $this->obtenerInFoOTransporteCont($tarea->caseId);
         $tarea->infoOT = $this->obtenerInfoOTIncidencia($tarea->caseId);
         $tarea->tipoCarga = $this->obtenerTipoCarga();
@@ -161,10 +170,10 @@ class Entregaordentransportes extends CI_Model {
         $tarea->depositos = $this->obtenerDepositos();
         $resp = $this->load->view(RESI . 'transporte-bpm/proceso/certificadoVuelco', $tarea, true);
         return $resp;
-      break;
-      
+        break;
+
       case 'Registro Salida':
-        log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Registro Salida): $tarea >> '.json_encode($tarea));
+        log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | desplegarVista(Registro Salida): $tarea >> ' . json_encode($tarea));
         $tarea->infoOTransporte = $this->obtenerInFoOTransporte($tarea->caseId);
         // IMAGEN
         $imagen = $tarea->infoOTransporte->img_chofer;
@@ -181,213 +190,228 @@ class Entregaordentransportes extends CI_Model {
         $tarea->contRestanteDescarga = $this->obtenerContRestanteDesc($tarea->caseId);
         $resp = $this->load->view(RESI . 'transporte-bpm/proceso/registraSalida', $tarea, true);
         return $resp;
-      break;
+        break;
       default:
         # code...
         break;
-    }  
+    }
   }
 
   /**
-  * Actualiza info encontenedores entregados
-  * @param array con info de los contenedores entregados y donde
-  * @return string status de servicio 
-  */
-  function entregaOrdenTransporte($form){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | entregaOrdenTransporte()");
+   * Actualiza info encontenedores entregados
+   * @param array con info de los contenedores entregados y donde
+   * @return string status de servicio 
+   */
+  function entregaOrdenTransporte($form)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | entregaOrdenTransporte()");
     $data['_put_contenedoresentregados_registra_ingreso'] = $form['data'];
-    $aux = $this->rest->callAPI("PUT",REST_RESI."/contenedoresEntregados/registra/ingreso", $data);
-    $aux =json_decode($aux["status"]);
+    $aux = $this->rest->callAPI("PUT", REST_RESI . "/contenedoresEntregados/registra/ingreso", $data);
+    $aux = json_decode($aux["status"]);
     return $aux;
   }
 
   /**
-  * devuelve contrato de cierre tarea registra ingreso
-  * @param array datso de form enviado
-  * @return array contrato de cierre tarea registra ingreso contenedor
-  */
-  function contratoIngreso($form){     
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | contratoIngreso(".json_encode($form).") ");  
+   * devuelve contrato de cierre tarea registra ingreso
+   * @param array datso de form enviado
+   * @return array contrato de cierre tarea registra ingreso contenedor
+   */
+  function contratoIngreso($form)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | contratoIngreso(" . json_encode($form) . ") ");
     $contrato["sectorDescarga"] = $form['data']["depo_id"];
     return $contrato;
   }
 
   /**
-  * Contrato de cierre taera Registrar Salida
-  * @param array info enviada de la vista
-  * @return array contrato cierre
-  */
-  function ContratoRegSalida($form){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContratoRegSalida($form): $form >> '.json_encode($form));
+   * Contrato de cierre taera Registrar Salida
+   * @param array info enviada de la vista
+   * @return array contrato cierre
+   */
+  function ContratoRegSalida($form)
+  {
+    log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContratoRegSalida($form): $form >> ' . json_encode($form));
     $contrato["quedanContenedores"] = $form['salida']['contrato']['quedanContenedores'];
     return $contrato;
   }
   // ---------------------- FUNCIONES OBTENER ----------------------
 
   /**
-  * Obtiene la info de la orden de transporte
-  * @param string case_id
-  * @return array info de orden transporte
-  */
-  function obtenerInFoOTransporte($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporte($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/ordenTransporte/info/entrega/case/".$caseId);
-    $aux =json_decode($aux["data"]);
-    return $aux->ordenTransporte;    
+   * Obtiene la info de la orden de transporte
+   * @param string case_id
+   * @return array info de orden transporte
+   */
+  function obtenerInFoOTransporte($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporte($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/ordenTransporte/info/entrega/case/" . $caseId);
+    $aux = json_decode($aux["data"]);
+    return $aux->ordenTransporte;
   }
 
-    /**
-  * Obtiene la info de la orden de transporte
-  * @param string case_id
-  * @return array info de orden transporte
-  */
-  function obtenerInFoOTransporteVuelco($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporteVuelco($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenTransporte/vuelco/info/entrega/case/".$caseId);
-    $aux =json_decode($aux["data"]);
-    return $aux->ordenTransporte;    
-  }
-  
   /**
-  * devuelve array con contenedores entregados
-  * @param string case_id
-  * @return array con contenedores entregados
-  */
-  function obtenerContEntregados($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerContEntregados($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/info/entrega/case/".$caseId);
-    $aux =json_decode($aux["data"]);
-    return $aux->contenedores->contenedor;    
+   * Obtiene la info de la orden de transporte
+   * @param string case_id
+   * @return array info de orden transporte
+   */
+  function obtenerInFoOTransporteVuelco($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporteVuelco($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI2 . "/ordenTransporte/vuelco/info/entrega/case/" . $caseId);
+    $aux = json_decode($aux["data"]);
+    return $aux->ordenTransporte;
   }
 
-  function obtenerContEntregadosSalida($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerContEntregadosSalida($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI2."/contenedoresEntregadosV2/info/salida/case/".$caseId);
-    $aux =json_decode($aux["data"]);
-    return $aux->contenedor;    
+  /**
+   * devuelve array con contenedores entregados
+   * @param string case_id
+   * @return array con contenedores entregados
+   */
+  function obtenerContEntregados($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerContEntregados($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/contenedoresEntregados/info/entrega/case/" . $caseId);
+    $aux = json_decode($aux["data"]);
+    return $aux->contenedores->contenedor;
+  }
+
+  function obtenerContEntregadosSalida($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerContEntregadosSalida($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI2 . "/contenedoresEntregadosV2/info/salida/case/" . $caseId);
+    $aux = json_decode($aux["data"]);
+    return $aux->contenedor;
   }
   /**
-  * Devuelve sectores de descarga
-  * @param   
-  * @return array con sectores de descarga
-  */
-  function obtenerDepositos(){ 
+   * Devuelve sectores de descarga
+   * @param   
+   * @return array con sectores de descarga
+   */
+  function obtenerDepositos()
+  {
     //FIXME: DESHARDCODEAR ESTABLECIMEINTO 5000
     $esta_id = 5000; //Establecimiento generico
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerDepositos()");
-    $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/depositos_establecimiento/".$esta_id);
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerDepositos()");
+    $aux = $this->rest->callAPI("GET", REST_PRD_RESI . "/depositos_establecimiento/" . $esta_id);
     $aux = json_decode($aux["data"]);
     return $aux->depositos->deposito;
   }
 
   /**
-  * Devuelve info de Otransporte para agregar una incidencia
-  * @param string case_id 
-  * @return array con info de Orden Transporte
-  */
-  function obtenerInfoOTIncidencia($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoOTIncidencia($caseId)"); 
-    $aux = $this->rest->callAPI("GET",REST_RESI."/ordenTransporte/case/".$caseId);
+   * Devuelve info de Otransporte para agregar una incidencia
+   * @param string case_id 
+   * @return array con info de Orden Transporte
+   */
+  function obtenerInfoOTIncidencia($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoOTIncidencia($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/ordenTransporte/case/" . $caseId);
     $aux = json_decode($aux["data"]);
     $date = new DateTime($aux->ordenTransporte->fec_alta);
-    $aux->ordenTransporte->fec_alta = $date->format('Y-m-d');  
+    $aux->ordenTransporte->fec_alta = $date->format('Y-m-d');
     return $aux->ordenTransporte;
   }
 
   /**
-  * Devuelve tipos de carga
-  * @param 
-  * @return array con tipos de carga
-  */
-  function obtenerTipoCarga(){   
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTipoCarga()");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/tipo_carga");
-    $aux =json_decode($aux["data"]);
-    return $aux->valores->valor;    
-  }
-  
-  /**
-  * Devuelve tipos de incidencia 
-  * @param 
-  * @return array con tipos de incidencia
-  */
-  function obtenerTipoIncidencia(){     
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTipoIncidencia()");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/tipos_incidencia");
-    $aux =json_decode($aux["data"]);
+   * Devuelve tipos de carga
+   * @param 
+   * @return array con tipos de carga
+   */
+  function obtenerTipoCarga()
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTipoCarga()");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/tablas/tipo_carga");
+    $aux = json_decode($aux["data"]);
     return $aux->valores->valor;
   }
 
   /**
-  * devuelve imagen de un contenedor entregado por id
-  * @param int coen_id
-  * @return base64 imagen de contenedor entregado
-  */
-  function obtenerImagenContenedor($coen_id){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerImagenContenedor()");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/ingreso/".$coen_id);
-    $aux =json_decode($aux["data"]);
+   * Devuelve tipos de incidencia 
+   * @param 
+   * @return array con tipos de incidencia
+   */
+  function obtenerTipoIncidencia()
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTipoIncidencia()");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/tablas/tipos_incidencia");
+    $aux = json_decode($aux["data"]);
+    return $aux->valores->valor;
+  }
+
+  /**
+   * devuelve imagen de un contenedor entregado por id
+   * @param int coen_id
+   * @return base64 imagen de contenedor entregado
+   */
+  function obtenerImagenContenedor($coen_id)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerImagenContenedor()");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/contenedoresEntregados/ingreso/" . $coen_id);
+    $aux = json_decode($aux["data"]);
     return $aux->imag_contenedor;
   }
 
   /**
-  * Obtiene cantidad de contenedores que aun no fueron descargados en depositos por OT
-  * @param string case_id
-  * @return string noEntregados
-  */
+   * Obtiene cantidad de contenedores que aun no fueron descargados en depositos por OT
+   * @param string case_id
+   * @return string noEntregados
+   */
   function obtenerContRestanteDesc($case_id)
   {
-    log_message('INFO','#TRAZA|ENTREGAORDENTRANSPORTE|obtenerContRestanteDesc($case_id) >> ');
-    log_message('DEBUG','#TRAZA|ENTREGAORDENTRANSPORTE|obtenerContRestanteDesc($caseId): $caseId  >> '.json_encode($case_id));
-    $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/restantes/descarga/case/".$case_id);
-    $res =json_decode($aux["data"]);
+    log_message('INFO', '#TRAZA|ENTREGAORDENTRANSPORTE|obtenerContRestanteDesc($case_id) >> ');
+    log_message('DEBUG', '#TRAZA|ENTREGAORDENTRANSPORTE|obtenerContRestanteDesc($caseId): $caseId  >> ' . json_encode($case_id));
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/contenedoresEntregados/restantes/descarga/case/" . $case_id);
+    $res = json_decode($aux["data"]);
     return $res->contenedores;
   }
 
 
-   // ---------------------- FUNCIONES BANDEJA DE ENTRADA ----------------------
+  // ---------------------- FUNCIONES BANDEJA DE ENTRADA ----------------------
 
   /**
-  * Devuelve info de Orden de Transporte para configuracion Bandeja Entrada 
-  * @param array $tarea con info de tarea BPM 
-  * @return array con info de solicitud de transporte
-  */
-  function obtenerInfoEntrega($tarea){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoEntrega(".json_encode($tarea).")");
+   * Devuelve info de Orden de Transporte para configuracion Bandeja Entrada 
+   * @param array $tarea con info de tarea BPM 
+   * @return array con info de solicitud de transporte
+   */
+  function obtenerInfoEntrega($tarea)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoEntrega(" . json_encode($tarea) . ")");
     $case_id = $tarea->caseId;
-    $aux = $this->rest->callAPI("GET",REST_RESI."/ordenTransporte/info/entrega/case/".$case_id);
-    $data =json_decode($aux["data"]);
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/ordenTransporte/info/entrega/case/" . $case_id);
+    $data = json_decode($aux["data"]);
     $aux_OT = $data->ordenTransporte;
     return $aux_OT;
   }
 
   /**
-  * Devuelve info de Orden de Transporte para configuracion Bandeja Entrada cuando es Certifica Vuelco 
-  * @param array $tarea con info de tarea BPM 
-  * @return array con info de solicitud de transporte
-  */
-  function obtenerInfoEntregaCertificaVuelco($tarea){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoEntregaCertificaVuelco(".json_encode($tarea).")");
+   * Devuelve info de Orden de Transporte para configuracion Bandeja Entrada cuando es Certifica Vuelco 
+   * @param array $tarea con info de tarea BPM 
+   * @return array con info de solicitud de transporte
+   */
+  function obtenerInfoEntregaCertificaVuelco($tarea)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInfoEntregaCertificaVuelco(" . json_encode($tarea) . ")");
     $case_id = $tarea->caseId;
-    $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenTransporte/vuelco/info/entrega/case/".$case_id);
-    $data =json_decode($aux["data"]);
+    $aux = $this->rest->callAPI("GET", REST_RESI2 . "/ordenTransporte/vuelco/info/entrega/case/" . $case_id);
+    $data = json_decode($aux["data"]);
     $aux_OT = $data->ordenTransporte;
     return $aux_OT;
   }
 
-  
+
   /**
-  * Devuelve deposito donde se descargara el contenedor (info en bandeja de entrada)
-  * @param int ortr_id
-  * @return array depo_id, depo_nombre
-  */
-  function obtenerDeposito($ortr_id){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerDeposito($ortr_id)");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/deposito/descarga/".$ortr_id);
+   * Devuelve deposito donde se descargara el contenedor (info en bandeja de entrada)
+   * @param int ortr_id
+   * @return array depo_id, depo_nombre
+   */
+  function obtenerDeposito($ortr_id)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerDeposito($ortr_id)");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/deposito/descarga/" . $ortr_id);
     $aux = json_decode($aux["data"]);
     return $aux->deposito;
-    
-  } 
+
+  }
 
   // obtenerGenerador($tarea)
   // $aux_gen = $this->rest->callAPI("GET",REST_RESI."/solicitantesTransporte/proceso/ingreso/case/".$ent_case_id);
@@ -397,47 +421,52 @@ class Entregaordentransportes extends CI_Model {
   // $aux_tran = $this->rest->callAPI("GET",REST_RESI."/transportistas/proceso/ingreso/case/".$ent_case_id);
   // $aux_tran =json_decode($aux_tran["data"]); 
 
-  function obtenerTamañoDeposito($depo_id){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTamañoDeposito($depo_id)");
-    $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/depositos/$depo_id");
-    $aux =json_decode($aux["data"]);
+  function obtenerTamañoDeposito($depo_id)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerTamañoDeposito($depo_id)");
+    $aux = $this->rest->callAPI("GET", REST_PRD_RESI . "/depositos/$depo_id");
+    $aux = json_decode($aux["data"]);
     return $aux->deposito;
   }
 
-  function obtenerRecipientes($depo_id){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerRecipientes($depo_id)");
-    $aux = $this->rest->callAPI("GET",REST_PRD_RESI."/recipientes/establecimiento/5000/deposito/$depo_id/estado/TODOS/tipo/TODOS/categoria/cate_recipienteBOX");
-    $aux =json_decode($aux["data"]);
+  function obtenerRecipientes($depo_id)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerRecipientes($depo_id)");
+    $aux = $this->rest->callAPI("GET", REST_PRD_RESI . "/recipientes/establecimiento/5000/deposito/$depo_id/estado/TODOS/tipo/TODOS/categoria/cate_recipienteBOX");
+    $aux = json_decode($aux["data"]);
     return $aux->recipientes->recipiente;
   }
 
-  function obtenerInFoOTransporteCont($caseId){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporteCont($caseId)");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/contenedoresEntregados/info/vuelco/case/".$caseId);
-    $aux =json_decode($aux["data"]);
+  function obtenerInFoOTransporteCont($caseId)
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerInFoOTransporteCont($caseId)");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/contenedoresEntregados/info/vuelco/case/" . $caseId);
+    $aux = json_decode($aux["data"]);
     return $aux->contenedores->contenedor;
   }
 
-  function CertificadoVuelco($data){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | CertificadoVuelco()');
+  function CertificadoVuelco($data)
+  {
+    log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | CertificadoVuelco()');
     $dato[]['_put_contenedoresentregados_descargar'] = $data['_put_contenedoresEntregados_descargar'];
     $dato[]['_post_contenedoresentregados_descargar_recipiente'] = $data['_post_contenedoresEntregados_descargar_recipiente'];
 
-    $rsp = requestBox(REST_RESI.'/', $dato);
+    $rsp = requestBox(REST_RESI . '/', $dato);
     $aux = $rsp;
   }
 
-  function obtenerValorizado(){
-    log_message('DEBUG',"#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerValorizado()");
-    $aux = $this->rest->callAPI("GET",REST_RESI."/tablas/tipo_carga_valorizado");
-    $aux =json_decode($aux["data"]);
+  function obtenerValorizado()
+  {
+    log_message('DEBUG', "#TRAZA| TRAZ-TOOLS-RESIDUOS | Entregaordentransportes | obtenerValorizado()");
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/tablas/tipo_carga_valorizado");
+    $aux = json_decode($aux["data"]);
     return $aux->valores->valor;
   }
 
   function ContratoCertificadoVuelco($form)
   {
-    log_message('INFO','#TRAZA|ENTREGAORDENTRANSPORTE|ContratoCertificadoVuelco($form) >> '); 
-    log_message('DEBUG','#TRAZA|ENTREGAORDENTRANSPORTE|ContratoCertificadoVuelco($form): $form >> '.json_encode($form));   
+    log_message('INFO', '#TRAZA|ENTREGAORDENTRANSPORTE|ContratoCertificadoVuelco($form) >> ');
+    log_message('DEBUG', '#TRAZA|ENTREGAORDENTRANSPORTE|ContratoCertificadoVuelco($form): $form >> ' . json_encode($form));
     $contrato["tieneResiduosPeligrosos"] = $form['ResPeligrosos']["opcion"];
     $contrato["redirecciona"] = $form['redirecciona']["opcion"];
     return $contrato;
@@ -445,63 +474,79 @@ class Entregaordentransportes extends CI_Model {
 
   function MoverRecipiente($data)
   {
-    log_message('INFO','#TRAZA|ENTREGAORDENTRANSPORTE|MoverRecipiente($data) >> '); 
-    log_message('DEBUG','#TRAZA|ENTREGAORDENTRANSPORTE|MoverRecipiente($data): $data >> '.json_encode($data));   
-    $aux = $this->rest->callAPI("PUT",REST_PRD_RESI."/lote/recipiente/mover",$data);
-    $aux =json_decode($aux["status"]);
+    log_message('INFO', '#TRAZA|ENTREGAORDENTRANSPORTE|MoverRecipiente($data) >> ');
+    log_message('DEBUG', '#TRAZA|ENTREGAORDENTRANSPORTE|MoverRecipiente($data): $data >> ' . json_encode($data));
+    $aux = $this->rest->callAPI("PUT", REST_PRD_RESI . "/lote/recipiente/mover", $data);
+    $aux = json_decode($aux["status"]);
     return $aux;
   }
   //TODO: No existe este servicio
-  function RedireccionarReci($data){
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | RedireccionarReci()');
-    $aux = $this->rest->callAPI("POST",REST_RESI."/contenedoresEntregados/redireccionar",$data);
+  function RedireccionarReci($data)
+  {
+    log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | RedireccionarReci()');
+    $aux = $this->rest->callAPI("POST", REST_RESI . "/contenedoresEntregados/redireccionar", $data);
     $aux = json_decode($aux["status"]);
     return $aux;
   }
 
-  function obtenerImagen_Cont_Id($cont_id){
-    log_message('DEBUG',"#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | RedireccionarReci($cont_id)");
-    $auxx = $this->rest->callAPI("GET",REST_RESI."/contenedores/get/imagen/$cont_id");
-    $aux =json_decode($auxx["data"]);
+  function obtenerImagen_Cont_Id($cont_id)
+  {
+    log_message('DEBUG', "#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | RedireccionarReci($cont_id)");
+    $auxx = $this->rest->callAPI("GET", REST_RESI . "/contenedores/get/imagen/$cont_id");
+    $aux = json_decode($auxx["data"]);
     return $aux;
   }
 
-  function ContenedoresEntrSalida($form){
-    $dato=$form['salida'];
-    $data['cont_id']= $dato['cont_id'];
-    $data['ortr_id']= $dato['ortr_id'];
-    $post['_put_contenedoresEntregados_salida']= $data;
-    log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContenedoresEntrSalida($post): $post >> '.json_encode($post));
-    $auxx = $this->rest->callAPI("PUT",REST_RESI."/contenedoresEntregados/salida",$post);
-    $aux =json_decode($auxx["status"]);
+  function ContenedoresEntrSalida($form)
+  {
+    $dato = $form['salida'];
+    $data['cont_id'] = $dato['cont_id'];
+    $data['ortr_id'] = $dato['ortr_id'];
+    $post['_put_contenedoresEntregados_salida'] = $data;
+    log_message('DEBUG', '#TRAZA | TRAZ-TOOLS-RESIDUOS | EntregaOrdenTrnasportes | ContenedoresEntrSalida($post): $post >> ' . json_encode($post));
+    $auxx = $this->rest->callAPI("PUT", REST_RESI . "/contenedoresEntregados/salida", $post);
+    $aux = json_decode($auxx["status"]);
     return $aux;
   }
 
 
-   /**
-    * Devuelve informacion de Camiones (todos los equipos)
-    * @param 
-    * @return array informacion de camiones (todos los equipos)
-    */
-    function ObtenerCamiones($tran_id)
-    {
-      log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | ObtenerCamiones()');
-      $aux = $this->rest->callAPI("GET",REST_RESI."/vehiculos/transp/".$tran_id);
-      $aux =json_decode($aux["data"]);
-      return $aux->vehiculos->vehiculo;
-    }
+  /**
+   * Devuelve informacion de Camiones (todos los equipos)
+   * @param 
+   * @return array informacion de camiones (todos los equipos)
+   */
+  function ObtenerCamiones($tran_id)
+  {
+    log_message('DEBUG', '#TRAZA|EntregaOrdenTrnasportes | ObtenerCamiones()');
+    $aux = $this->rest->callAPI("GET", REST_RESI . "/vehiculos/transp/" . $tran_id);
+    $aux = json_decode($aux["data"]);
+    return $aux->vehiculos->vehiculo;
+  }
 
 
-       /**
-    * Devuelve informacion de Camion por equi_id
-    * @param 
-    * @return array informacion de camion 
-    */
-    function obtenerDataCamionPesado($equi_id)
-    {
-      log_message('DEBUG','#TRAZA|EntregaOrdenTrnasportes | obtenerDataCamionPesado()');
-      $aux = $this->rest->callAPI("GET",REST_RESI2."/vehiculo/equi/".$equi_id);
-      $aux =json_decode($aux["data"]);
-      return $aux->equipos->equipo;
-    }
+  /**
+   * Devuelve informacion de Camion por equi_id
+   * @param 
+   * @return array informacion de camion 
+   */
+  function obtenerDataCamionPesado($equi_id)
+  {
+    log_message('DEBUG', '#TRAZA|EntregaOrdenTrnasportes | obtenerDataCamionPesado()');
+    $aux = $this->rest->callAPI("GET", REST_RESI2 . "/vehiculo/equi/" . $equi_id);
+    $aux = json_decode($aux["data"]);
+    return $aux->equipos->equipo;
+  }
+
+  /**
+   * Devuelve informacion de Camion por equi_id
+   * @param 
+   * @return array informacion de camion 
+   */
+  function obtenerDataMovilidadMunicipio($ortr_id)
+  {
+    log_message('DEBUG', '#TRAZA|EntregaOrdenTrnasportes | obtenerDataMovilidadMunicipio($ortr_id)');
+    $aux = $this->rest->callAPI("GET", REST_RESI2 . "/orden/transporte/municipio/" . $ortr_id);
+    $aux = json_decode($aux["data"]);
+    return $aux->orden_transportes->orden_transporte;
+  }
 }

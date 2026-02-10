@@ -148,6 +148,14 @@ function sacar(data){
 }
 
 function guardar(){
+
+    /* validacion tabla vacia */
+    var rows = $('#tbl_temporal tbody tr');
+
+    if (rows.length === 0) {
+        notificar('Alerta', 'No se han seleccionado contenedores.', 'warning');
+         return;
+    }
 	wo();
 	// valida si el retiro es completo
     var rows = $("#tabla_contenedores tbody tr");
