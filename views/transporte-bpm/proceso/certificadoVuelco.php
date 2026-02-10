@@ -749,6 +749,13 @@ async function convertA(){
 <!-- Funcion btn Cretificado de Vuelco -->
 <script>
 function Certificado(){
+
+    // Valida que se haya seleccionado al menos un box para volcar
+    if ($("#idBox").val() == "") {
+        notificar('Alerta', 'Debe volcar al menos un box antes de generar el certificado', 'warning');
+        return; 
+    }
+
     var contEntDesc = new FormData();
     contEntDesc = formToObject(contEntDesc);
     contEntDesc.foto = $("#input_aux_img64").val();

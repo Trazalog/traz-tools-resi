@@ -678,57 +678,55 @@
     var contEnt = new FormData();
 		contEnt = formToObject(contEnt);
 
-    var rows = $('#tbl_cont tbody tr');
-    rows.each(function(i,e) {  
-        datos_contenedor.push(getJson(e));
-    });
-
-    //llenarlo afuera del each y aca solo armar el arreglo con el push(getJson(e)) por lo tanto usar dos arreglos uno dentro dep each para obtener bien los datos de la tabla y luego afuera recorrerlo ir armando el modelos e ir insertando en otro arreglo que es el que se enviara como final 
-    for(var j=0; j<datos_contenedor.length; j++){
-        contEnt.cont_id = datos_contenedor[j].cont_id;
-        contEnt.porc_llenado = datos_contenedor[j].porc_llenado;
-        contEnt.mts_cubicos = datos_contenedor[j].mts_cubicos;
-        cont_entregados_listo.push(contEnt);
-        var contEnt = new FormData();
-        contEnt = formToObject(contEnt);
-    }
-
-    datos.contenedores = cont_entregados_listo;
-
-    if (datos_contenedor.lenght == 0) {
-        notificar('Alerta','Sin datos para registrar.', 'warning');
-        return;
-    }else{
-
-        $.ajax({
-        type: "POST",
-        data: {datos},
-        url: "<?php echo RESI; ?>transporte-bpm/Solicitudretiro/Guardar_SolicitudRetiro",
-        success: function(respuesta) {
-            wc();
-            console.log(respuesta);
-            if (respuesta) {
-                alertify.success("Solicitud de Retiro creada con éxito");
-                $("#formPedidos")[0].reset();
-                $("#boxDatos").hide(500);
-                $("#botonAgregar").removeAttr("disabled");
-                $(".transportistas").removeAttr("style");
-                $("#nom_transportista").attr("style","display:none;");
-
-            } else {
-                console.log(respuesta);
-                alertify.error("Error al crear Solicitud de Retiro");
-                $(".transportistas").removeAttr("style");
-                $("#nom_transportista").attr("style","display:none;");
-            }
+        var rows = $('#tbl_cont tbody tr');
+    
+        if (rows.length === 0) {
+            notificar('Alerta', 'Sin datos para registrar.', 'warning');
+            return;
         }
-    });
+        rows.each(function(i,e) {  
+            datos_contenedor.push(getJson(e));
+        });
+
+        //llenarlo afuera del each y aca solo armar el arreglo con el push(getJson(e)) por lo tanto usar dos arreglos uno dentro dep each para obtener bien los datos de la tabla y luego afuera recorrerlo ir armando el modelos e ir insertando en otro arreglo que es el que se enviara como final 
+        for(var j=0; j<datos_contenedor.length; j++){
+            contEnt.cont_id = datos_contenedor[j].cont_id;
+            contEnt.porc_llenado = datos_contenedor[j].porc_llenado;
+            contEnt.mts_cubicos = datos_contenedor[j].mts_cubicos;
+            cont_entregados_listo.push(contEnt);
+            var contEnt = new FormData();
+            contEnt = formToObject(contEnt);
+        }
+
+        datos.contenedores = cont_entregados_listo;
+
+            $.ajax({
+            type: "POST",
+            data: {datos},
+            url: "<?php echo RESI; ?>transporte-bpm/Solicitudretiro/Guardar_SolicitudRetiro",
+            success: function(respuesta) {
+                wc();
+                console.log(respuesta);
+                if (respuesta) {
+                    alertify.success("Solicitud de Retiro creada con éxito");
+                    $("#formPedidos")[0].reset();
+                    $("#boxDatos").hide(500);
+                    $("#botonAgregar").removeAttr("disabled");
+                    $(".transportistas").removeAttr("style");
+                    $("#nom_transportista").attr("style","display:none;");
+
+                } else {
+                    console.log(respuesta);
+                    alertify.error("Error al crear Solicitud de Retiro");
+                    $(".transportistas").removeAttr("style");
+                    $("#nom_transportista").attr("style","display:none;");
+                }
+            }
+        });
 
     }
 
     
-
-  }
 
   // Initialize Select2 Elements
     $('.select3').select2();

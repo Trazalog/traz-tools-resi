@@ -647,7 +647,7 @@ async function convertA(){
         //datos.imagen = $("#input_aux_img").val();
         //datos.usuario_app = "nachete"; //HARCODE - falta asignar funcion que asigne tipo usuario
         
-        
+        debugger;
         console.table(datos);
   
         //--------------------------------------------------------------
@@ -666,7 +666,6 @@ async function convertA(){
                                 {
                                     var tipocarga= $('#rsu').val(); 
                                      //llama funcion controller
-
                                         wo();
                                         $.ajax({
                                         type: "POST",
@@ -687,8 +686,7 @@ async function convertA(){
 
                                             } else {
                                                 //console.log(r);
-                                                wc();
-                                                alertify.error("Error al Agregar Vehiculo");
+                                                alertify.error('Error al Agregar Vehiculo');
                                             }
                                         }
                                         });
@@ -714,6 +712,7 @@ async function convertA(){
                             url: "general/Estructura/Vehiculo/Guardar_Vehiculo",
                             success: function (r) {
                                 console.log(r);
+                                debugger;
                                 if (r == "ok") {
                                 wc();
                                 $("#cargar_tabla").load("<?php echo base_url(); ?>index.php/general/Estructura/Vehiculo/Listar_Vehiculo");
