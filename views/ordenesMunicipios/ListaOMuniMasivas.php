@@ -91,13 +91,15 @@ if($data["datos"]=="")
                         $("#cargar_tabla").load("<?php echo RESI; ?>general/OrdenMuniMasivas/Listar_OrdenesMuniMasivas");
                         alertify.success("Ejecutadas con exito");
                         // $("#modalEdit").modal('hide');
-                       
-
-                      
-
                     } else {
                         $("#cargar_tabla").load("<?php echo RESI; ?>general/OrdenMuniMasivas/Listar_OrdenesMuniMasivas");
-                        alertify.error("error al ejecutar");
+                        
+                        if(r.includes("TOOLSERROR:RECI_NO_VACIO_DIST_LOTE_IGUAL_ART")  || r.includes("TOOLSERROR:RECI_NO_VACIO_DIST_ART"))
+                        {
+                            alertify.error("Error: No se pudo ejecutar la orden. El recipiente no está vacío o el lote es diferente para el mismo artículo.");
+                        }else{
+                            alertify.error("error al ejecutar");
+                        }
                     }
                 },
             });

@@ -75,6 +75,15 @@ class Vehiculos extends CI_Model
 		$aux =json_decode($aux["status"]);
 		return $aux;
 	}
+
+	function actualizar_Vehiculo_Contenedor($data){
+		log_message('DEBUG','#TRAZA| TRAZ-TOOLS-RESIDUOS | Vehiculos | actualizar_Vehiculo_Contenedor()');  
+		$post["_put_vehiculos"] = $data;
+		$aux = $this->rest->callAPI("PUT",REST_RESI2."/vehiculo/contenedor", $post);
+		$aux =json_decode($aux["status"]);
+		return $aux;
+	}
+
 	function obtenerImagen_Vehi_Id($equi_id)
 	{
 			log_message('INFO','#TRAZA|Vehiculo|obtenerImagen_Vehi_Id() >> ');   

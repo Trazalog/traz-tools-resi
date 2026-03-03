@@ -331,6 +331,23 @@ class Pedidocontenedores extends CI_Model{
       return $aux;
     }
 
+          /**
+    * Guarda informacion de Contenedores a entregar
+    * @param array datos de los contenedores a entregar
+    * @return json status
+    */
+    function GuardarContEntregadosMunicipio($datos){
+      log_message('DEBUG','#TRAZA | TRAZ-TOOLS-RESIDUOS | Pedidocontenedores | GuardarContEntregados()');       
+      $data["_post_contenedores_entregados_entregar_municipio"] = $datos;
+      //$dato["_post_contenedores_entregados_entregar_municipio_batch_req"] = $data;
+      //$aux = $this->rest->callAPI("POST",REST_RESI2."/_post_contenedores_entregados_entregar_municipio_batch_req", $dato);
+      $aux = $this->rest->callAPI("POST",REST_RESI2."/_post_contenedores_entregados_entregar_municipio", $data);
+
+      $aux = json_decode($aux["data"]);
+      return $aux;
+    }
+
+
 
     // ---------------------- FUNCIONES BANDEJA DE ENTRADA ----------------------
     
