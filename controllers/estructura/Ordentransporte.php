@@ -57,11 +57,15 @@ class Ordentransporte extends CI_Controller {
       $search = $this->input->get("search")["value"];
 
       //ORDEN
-      $orderColIndex = $this->input->get("order")[0]["column"];
-      $orderDir      = $this->input->get("order")[0]["dir"];
+      //$orderColIndex = $this->input->get("order")[0]["column"];
+      $orderColIndex = "1";
+
+     // $orderDir      = $this->input->get("order")[0]["dir"];
+      $orderDir      = "desc";
+
       $columns       = $this->input->get("columns");
 
-      $orderColumn   = $columns[$orderColIndex]["data"]; // ejemplo: "ortr_id"
+      $orderColumn   = $columns[$orderColIndex]["data"]; 
 
       /* si es admin tiene que traer todos los datos de todas las empresas */
       $empresas_admin = EMPRESAS_RESI_ADMIN;

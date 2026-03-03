@@ -17,7 +17,7 @@ class Ordentransportes extends CI_Model
         $order = str_replace(' ','%20',$order);
         $sotr_id = str_replace(' ','%20',$sotr_id);
         
-        $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenes/transporte/$start/$length/$search/$order/$sotr_id");
+        $aux = $this->rest->callAPI("GET",REST_RESI2."/ordenes/transporte/$start/$length/$search/$sotr_id");
         $aux =json_decode($aux["data"]);       
         return $aux->ordenes_transportes->orden_transporte;
     }
